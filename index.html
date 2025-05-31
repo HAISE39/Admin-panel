@@ -47,43 +47,42 @@
   <button onclick="saveUser()">💾 Simpan UID</button>
 
   <script type="module">
-    // Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "ISI_DARI_google-services.json",
-      authDomain: "ISI.firebaseapp.com",
-      databaseURL: "https://ISI.firebaseio.com",
-      projectId: "ISI",
-      storageBucket: "ISI.appspot.com",
-      messagingSenderId: "ISI",
-      appId: "ISI"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyBms-rnUosSdpmMKUpaOZ8ML-V0CTv9NOQ",
+    authDomain: "vellixao.firebaseapp.com",
+    databaseURL: "https://vellixao-default-rtdb.firebaseio.com",
+    projectId: "vellixao",
+    storageBucket: "vellixao.appspot.com",
+    messagingSenderId: "9868583650",
+    appId: "1:9868583650:android:8b52b5a3c23b25bc245063"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-    window.saveUser = function () {
-      const uid = document.getElementById("uid").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const expired = document.getElementById("expired").value;
-      const script = document.getElementById("script").value.trim();
-      const banned = document.getElementById("banned").value === "true";
+  window.saveUser = function () {
+    const uid = document.getElementById("uid").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const expired = document.getElementById("expired").value;
+    const script = document.getElementById("script").value.trim();
+    const banned = document.getElementById("banned").value === "true";
 
-      if (!uid || !password || !script || !expired) return alert("Lengkapi semua kolom!");
+    if (!uid || !password || !script || !expired) return alert("Lengkapi semua kolom!");
 
-      set(ref(db, 'users/' + uid), {
-        password: password,
-        expired: expired,
-        banned: banned,
-        script_url: script
-      }).then(() => {
-        alert("✅ UID berhasil disimpan!");
-      }).catch((err) => {
-        alert("❌ Gagal simpan: " + err);
-      });
-    }
-  </script>
+    set(ref(db, 'users/' + uid), {
+      password: password,
+      expired: expired,
+      banned: banned,
+      script_url: script
+    }).then(() => {
+      alert("✅ UID berhasil disimpan!");
+    }).catch((err) => {
+      alert("❌ Gagal simpan: " + err);
+    });
+  }
+</script>
 </body>
 </html>
