@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>VELLIXAO Admin Panel</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #0f0f0f;
+      color: #00FF00;
+      text-align: center;
+      padding: 30px;
+    }
+    input, button, select {
+      padding: 10px;
+      margin: 10px;
+      width: 300px;
+      font-family: monospace;
+      background: #111;
+      color: #00FF00;
+      border: 1px solid #00FF00;
+    }
+    h1 {
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { color: #00FF00; }
+      50% { color: #00aa00; }
+    }
+  </style>
+</head>
+<body>
+  <h1>VELLIXAO ADMIN PANEL</h1>
+
+  <input type="text" id="uid" placeholder="UID (ex: UIDABC1234)" /><br />
+  <input type="text" id="password" placeholder="Password" /><br />
+  <input type="date" id="expired" /><br />
+  <input type="text" id="script" placeholder="Script URL (raw github)" /><br />
+
+  <label>
+    <select id="banned">
+      <option value="false">Aktif</option>
+      <option value="true">Banned</option>
+    </select>
+  </label><br>
+
+  <button onclick="saveUser()">💾 Simpan UID</button>
+
+  <script type="module">
+    // Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "ISI_DARI_google-services.json",
+      authDomain: "ISI.firebaseapp.com",
+      databaseURL: "https://ISI.firebaseio.com",
+      projectId: "ISI",
+      storageBucket: "ISI.appspot.com",
+      messagingSenderId: "ISI",
+      appId: "ISI"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.saveUser = function () {
+      const uid = document.getElementById("uid").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const expired = document.getElementById("expired").value;
+      const script = document.getElementById("script").value.trim();
+      const banned = document.getElementById("banned").value === "true";
+
+      if (!uid || !password || !script || !expired) return alert("Lengkapi semua kolom!");
+
+      set(ref(db, 'users/' + uid), {
+        password: password,
+        expired: expired,
+        banned: banned,
+        script_url: script
+      }).then(() => {
+        alert("✅ UID berhasil disimpan!");
+      }).catch((err) => {
+        alert("❌ Gagal simpan: " + err);
+      });
+    }
+  </script>
+</body>
+</html>
