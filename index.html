@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -98,12 +99,11 @@
     </div>
   </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js"></script>
+  <script type="module">
+    import {{ initializeApp }} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import {{ getDatabase, ref, set, get, child }} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
-  <script>
-    const firebaseConfig = {
+    const firebaseConfig = {{
       apiKey: "AIzaSyBgp47Bupq6ubACCVrifawMxFSTZT6M3EQ",
       authDomain: "iruna-afd77.firebaseapp.com",
       databaseURL: "https://iruna-afd77-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -111,92 +111,69 @@
       storageBucket: "iruna-afd77.appspot.com",
       messagingSenderId: "808281199655",
       appId: "1:808281199655:web:e219616658c2e05905aa02"
-    };
+    }};
 
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const dbRef = ref(db);
 
-    function checkLogin() {
+    window.checkLogin = function () {{
       const input = document.getElementById("adminPass").value;
-      if (input === "2024") {
+      if (input === "2024") {{
         document.getElementById("loginForm").style.display = "none";
         document.getElementById("mainPanel").style.display = "block";
         document.getElementById("bgMusic").play();
-      } else {
+      }} else {{
         alert("Password salah nyan~ 😿");
-      }
-    }
+      }}
+    }}
 
-    function saveUser() {
+    window.saveUser = function () {{
       const uid = document.getElementById("uid").value.trim();
       const password = document.getElementById("password").value.trim();
       const expired = document.getElementById("expired").value;
       const script = document.getElementById("script").value.trim();
       const banned = document.getElementById("banned").value === "true";
 
-      if (!uid || !password || !expired || !script) {
-        alert("Isi semua field yaa~ 😽");
-        return;
-      }
+      if (!uid || !password || !script || !expired) return alert("Isi semua field, nyan~");
 
-      db.ref("users/" + uid).set({
-        password,
-        expired,
-        banned,
-        script_url: script
-      }, function (error) {
-        if (error) {
-          alert("Gagal menyimpan 😿");
-        } else {
-          alert("✅ UID berhasil disimpan ke Firebase!");
-        }
-      });
-    }
+      set(ref(db, 'users/' + uid), {{
+        password, expired, banned, script_url: script
+      }}).then(() => {{
+        alert("✅ UID berhasil disimpan ke Firebase!");
+      }}).catch((err) => alert("Gagal simpan: " + err));
+    }}
 
-    function loadUser() {
+    window.loadUser = function () {{
       const uid = document.getElementById("editUid").value.trim();
       if (!uid) return alert("Masukkan UID!");
 
-      db.ref("users/" + uid).get().then((snapshot) => {
-        if (!snapshot.exists()) {
-          alert("UID tidak ditemukan!");
-          return;
-        }
-
-        const data = snapshot.val();
+      get(child(dbRef, 'users/' + uid)).then((snap) => {{
+        if (!snap.exists()) return alert("UID tidak ditemukan.");
+        const data = snap.val();
         document.getElementById("editForm").style.display = "block";
         document.getElementById("editPassword").value = data.password;
         document.getElementById("editExpired").value = data.expired;
         document.getElementById("editScript").value = data.script_url;
         document.getElementById("editBanned").value = String(data.banned);
-      });
-    }
+      }});
+    }}
 
-    function updateUser() {
+    window.updateUser = function () {{
       const uid = document.getElementById("editUid").value.trim();
       const password = document.getElementById("editPassword").value.trim();
       const expired = document.getElementById("editExpired").value;
       const script = document.getElementById("editScript").value.trim();
       const banned = document.getElementById("editBanned").value === "true";
 
-      if (!uid || !password || !expired || !script) {
-        alert("Semua harus diisi yaa~");
-        return;
-      }
+      if (!uid || !password || !script || !expired) return alert("Semua wajib diisi ya~");
 
-      db.ref("users/" + uid).set({
-        password,
-        expired,
-        banned,
-        script_url: script
-      }, function (error) {
-        if (error) {
-          alert("❌ Gagal menyimpan perubahan!");
-        } else {
-          alert("✅ Perubahan UID disimpan!");
-        }
-      });
-    }
+      set(ref(db, 'users/' + uid), {{
+        password, expired, banned, script_url: script
+      }}).then(() => {{
+        alert("✅ Perubahan berhasil disimpan ke Firebase!");
+      }}).catch((err) => alert("Gagal update: " + err));
+    }}
   </script>
 
   <audio id="bgMusic" hidden loop autoplay>
