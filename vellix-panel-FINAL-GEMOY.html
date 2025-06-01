@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>VELLIX - PANEL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: url('https://files.catbox.moe/2kowsh.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffb6c1;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      font-size: 3em;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+    .maskot {
+      width: 100px;
+      height: auto;
+      float: right;
+      margin-top: -40px;
+    }
+    input, button, select {
+      padding: 12px;
+      margin: 12px;
+      width: 80%;
+      max-width: 400px;
+      font-size: 1em;
+      border: 2px solid #ffb6c1;
+      border-radius: 12px;
+      background-color: #1f1f1f;
+      color: #fff;
+    }
+    button {
+      cursor: pointer;
+      background-color: #ff69b4;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background-color: #ff85c1;
+      transform: scale(1.05);
+    }
+    .toast {
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      z-index: 1000;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background-color: #2a2a2a;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px #ff85c1;
+    }
+    .section-title {
+      margin-top: 30px;
+      font-size: 1.5em;
+    }
+  </style>
+</head>
+<body>
+  <h1>VELLIX - PANEL <img class="maskot" src="https://files.catbox.moe/jvfgtp.png" alt="neko" /></h1>
+  <div class="container">
+    <div id="loginForm">
+      <p>🔐 Masukkan Password Admin:</p>
+      <input type="password" id="adminPass" placeholder="Password Admin">
+      <button onclick="checkLogin()">Login</button>
+    </div>
+
+    <div id="mainPanel" style="display:none;">
+      <div class="section-title">Tambah UID Baru</div>
+      <input type="text" id="uid" placeholder="UID (ex: VX-XXXX-CUTE)">
+      <input type="text" id="password" placeholder="Password">
+      <input type="date" id="expired">
+      <input type="text" id="script" placeholder="Script Raw URL">
+      <select id="banned">
+        <option value="false">Aktif</option>
+        <option value="true">Banned</option>
+      </select>
+      <button onclick="saveUser()">💾 Simpan UID</button>
+
+      <div class="section-title">Edit UID</div>
+      <input type="text" id="editUid" placeholder="Masukkan UID untuk Edit">
+      <button onclick="loadUser()">🔍 Cari UID</button>
+      <div id="editForm" style="display:none;">
+        <input type="text" id="editPassword" placeholder="Password Baru">
+        <input type="date" id="editExpired">
+        <input type="text" id="editScript" placeholder="Script Raw URL">
+        <select id="editBanned">
+          <option value="false">Aktif</option>
+          <option value="true">Banned</option>
+        </select>
+        <button onclick="updateUser()">💾 Simpan Perubahan</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toastMsg">✅ UID berhasil disimpan!</div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBms-rnUosSdpmMKUpaOZ8ML-V0CTv9NOQ",
+      authDomain: "vellixao.firebaseapp.com",
+      databaseURL: "https://vellixao-default-rtdb.firebaseio.com",
+      projectId: "vellixao",
+      storageBucket: "vellixao.appspot.com",
+      messagingSenderId: "9868583650",
+      appId: "1:9868583650:android:8b52b5a3c23b25bc245063"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const dbRef = ref(db);
+
+    function showToast(msg) {
+      const toast = document.getElementById("toastMsg");
+      toast.textContent = msg;
+      toast.style.display = "block";
+      setTimeout(() => toast.style.display = "none", 3000);
+    }
+
+    window.checkLogin = function () {
+      const input = document.getElementById("adminPass").value;
+      if (input === "2024") {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("mainPanel").style.display = "block";
+        document.getElementById("bgMusic").play();
+      } else {
+        alert("Password salah nyan~ 😿");
+      }
+    }
+
+    window.saveUser = function () {
+      const uid = document.getElementById("uid").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const expired = document.getElementById("expired").value;
+      const script = document.getElementById("script").value.trim();
+      const banned = document.getElementById("banned").value === "true";
+
+      if (!uid || !password || !script || !expired) return alert("Isi semua field, nyan~");
+
+      set(ref(db, 'users/' + uid), {
+        password, expired, banned, script_url: script
+      }).then(() => {
+        showToast("✅ UID berhasil disimpan!");
+      }).catch((err) => alert("Gagal: " + err));
+    }
+
+    window.loadUser = function () {
+      const uid = document.getElementById("editUid").value.trim();
+      if (!uid) return alert("Masukkan UID!");
+
+      get(child(dbRef, `users/${uid}`)).then((snap) => {
+        if (!snap.exists()) return alert("UID tidak ditemukan.");
+        const data = snap.val();
+        document.getElementById("editForm").style.display = "block";
+        document.getElementById("editPassword").value = data.password;
+        document.getElementById("editExpired").value = data.expired;
+        document.getElementById("editScript").value = data.script_url;
+        document.getElementById("editBanned").value = String(data.banned);
+      });
+    }
+
+    window.updateUser = function () {
+      const uid = document.getElementById("editUid").value.trim();
+      const password = document.getElementById("editPassword").value.trim();
+      const expired = document.getElementById("editExpired").value;
+      const script = document.getElementById("editScript").value.trim();
+      const banned = document.getElementById("editBanned").value === "true";
+
+      if (!uid || !password || !script || !expired) return alert("Semua wajib diisi ya~");
+
+      set(ref(db, 'users/' + uid), {
+        password, expired, banned, script_url: script
+      }).then(() => {
+        showToast("✅ Perubahan disimpan!");
+      }).catch((err) => alert("Gagal update: " + err));
+    }
+  </script>
+
+  <audio id="bgMusic" hidden loop>
+    <source src="https://files.catbox.moe/elp1ez.m4a" type="audio/mp4">
+    Your browser does not support the audio element.
+  </audio>
+</body>
+</html>
