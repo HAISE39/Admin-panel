@@ -13,15 +13,19 @@
       text-align: center;
       padding: 30px;
     }
+
     h1 {
       font-size: 3em;
       animation: fadeIn 1.5s ease-in-out;
     }
+
     .maskot {
       width: 100px;
+      height: auto;
       float: right;
       margin-top: -40px;
     }
+
     input, button, select {
       padding: 12px;
       margin: 12px;
@@ -33,19 +37,23 @@
       background-color: #1f1f1f;
       color: #fff;
     }
+
     button {
       cursor: pointer;
       background-color: #ff69b4;
       transition: all 0.3s ease;
     }
+
     button:hover {
       background-color: #ff85c1;
       transform: scale(1.05);
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     .container {
       max-width: 600px;
       margin: auto;
@@ -54,6 +62,7 @@
       border-radius: 20px;
       box-shadow: 0 0 15px #ff85c1;
     }
+
     .section-title {
       margin-top: 30px;
       font-size: 1.5em;
@@ -71,7 +80,7 @@
 
     <div id="mainPanel" style="display:none;">
       <div class="section-title">Tambah UID Baru</div>
-      <input type="text" id="uid" placeholder="UID (ex: UIDABC123)">
+      <input type="text" id="uid" placeholder="UID (ex: VX-XXXX-CUTE)">
       <input type="text" id="password" placeholder="Password">
       <input type="date" id="expired">
       <input type="text" id="script" placeholder="Script Raw URL">
@@ -97,27 +106,25 @@
     </div>
   </div>
 
-  <!-- Firebase CDN -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
-  <!-- Firebase Logic -->
-  <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyBgp47Bupq6ubACCVrifawMxFSTZT6M3EQ",
-      authDomain: "iruna-afd77.firebaseapp.com",
-      databaseURL: "https://iruna-afd77-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "iruna-afd77",
-      storageBucket: "iruna-afd77.appspot.com",
-      messagingSenderId: "808281199655",
-      appId: "1:808281199655:web:e219616658c2e05905aa02",
-      measurementId: "G-V65FP30RBF"
+      apiKey: "AIzaSyBms-rnUosSdpmMKUpaOZ8ML-V0CTv9NOQ",
+      authDomain: "vellixao.firebaseapp.com",
+      databaseURL: "https://vellixao-default-rtdb.firebaseio.com",
+      projectId: "vellixao",
+      storageBucket: "vellixao.appspot.com",
+      messagingSenderId: "9868583650",
+      appId: "1:9868583650:android:8b52b5a3c23b25bc245063"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const dbRef = ref(db);
 
-    function checkLogin() {
+    window.checkLogin = function () {
       const input = document.getElementById("adminPass").value;
       if (input === "2024") {
         document.getElementById("loginForm").style.display = "none";
@@ -128,7 +135,7 @@
       }
     }
 
-    function saveUser() {
+    window.saveUser = function () {
       const uid = document.getElementById("uid").value.trim();
       const password = document.getElementById("password").value.trim();
       const expired = document.getElementById("expired").value;
@@ -137,17 +144,18 @@
 
       if (!uid || !password || !script || !expired) return alert("Isi semua field, nyan~");
 
-      db.ref('users/' + uid).set({
+      set(ref(db, 'users/' + uid), {
         password, expired, banned, script_url: script
-      }).then(() => alert("✅ UID berhasil disimpan!"))
-        .catch((err) => alert("Gagal: " + err));
+      }).then(() => {
+        alert("✅ UID berhasil disimpan!");
+      }).catch((err) => alert("Gagal: " + err));
     }
 
-    function loadUser() {
+    window.loadUser = function () {
       const uid = document.getElementById("editUid").value.trim();
       if (!uid) return alert("Masukkan UID!");
 
-      db.ref('users/' + uid).get().then((snap) => {
+      get(child(dbRef, `users/${uid}`)).then((snap) => {
         if (!snap.exists()) return alert("UID tidak ditemukan.");
         const data = snap.val();
         document.getElementById("editForm").style.display = "block";
@@ -158,7 +166,7 @@
       });
     }
 
-    function updateUser() {
+    window.updateUser = function () {
       const uid = document.getElementById("editUid").value.trim();
       const password = document.getElementById("editPassword").value.trim();
       const expired = document.getElementById("editExpired").value;
@@ -167,16 +175,17 @@
 
       if (!uid || !password || !script || !expired) return alert("Semua wajib diisi ya~");
 
-      db.ref('users/' + uid).set({
+      set(ref(db, 'users/' + uid), {
         password, expired, banned, script_url: script
-      }).then(() => alert("✅ Perubahan disimpan!"))
-        .catch((err) => alert("Gagal update: " + err));
+      }).then(() => {
+        alert("✅ Perubahan disimpan!");
+      }).catch((err) => alert("Gagal update: " + err));
     }
   </script>
 
-  <!-- Musik Login -->
-  <audio id="bgMusic" hidden loop>
+  <audio id="bgMusic" hidden loop autoplay>
     <source src="https://files.catbox.moe/elp1ez.m4a" type="audio/mp4">
+    Your browser does not support the audio element.
   </audio>
 </body>
 </html>
