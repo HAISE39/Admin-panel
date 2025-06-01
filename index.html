@@ -67,21 +67,6 @@
       margin-top: 30px;
       font-size: 1.5em;
     }
-
-    #toast {
-      display: none;
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ff69b4;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 12px pink;
-      font-size: 16px;
-      z-index: 1000;
-    }
   </style>
 </head>
 <body>
@@ -121,8 +106,6 @@
     </div>
   </div>
 
-  <div id="toast">✅ UID berhasil disimpan!</div>
-
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
@@ -140,13 +123,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const dbRef = ref(db);
-
-    function showToast(message) {
-      const toast = document.getElementById("toast");
-      toast.textContent = message;
-      toast.style.display = "block";
-      setTimeout(() => toast.style.display = "none", 3000);
-    }
 
     window.checkLogin = function () {
       const input = document.getElementById("adminPass").value;
@@ -166,13 +142,13 @@
       const script = document.getElementById("script").value.trim();
       const banned = document.getElementById("banned").value === "true";
 
-      if (!uid || !password || !script || !expired) return alert("😿 Isi semua field dulu, nyan~");
+      if (!uid || !password || !script || !expired) return alert("Isi semua field, nyan~");
 
       set(ref(db, 'users/' + uid), {
         password, expired, banned, script_url: script
       }).then(() => {
-        showToast(`🎀 UID ${uid} berhasil disimpan!`);
-      }).catch((err) => alert("Gagal simpan: " + err));
+        alert("✅ UID berhasil disimpan!");
+      }).catch((err) => alert("Gagal: " + err));
     }
 
     window.loadUser = function () {
@@ -202,7 +178,7 @@
       set(ref(db, 'users/' + uid), {
         password, expired, banned, script_url: script
       }).then(() => {
-        showToast(`✨ UID ${uid} diperbarui!`);
+        alert("✅ Perubahan disimpan!");
       }).catch((err) => alert("Gagal update: " + err));
     }
   </script>
