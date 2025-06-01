@@ -44,6 +44,18 @@
       background-color: #ff85c1;
       transform: scale(1.05);
     }
+    .toast {
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      z-index: 1000;
+    }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -99,36 +111,45 @@
     </div>
   </div>
 
-  <script type="module">
-    import {{ initializeApp }} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import {{ getDatabase, ref, set, get, child }} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+  <div class="toast" id="toastMsg">✅ UID berhasil disimpan!</div>
 
-    const firebaseConfig = {{
-      apiKey: "AIzaSyBgp47Bupq6ubACCVrifawMxFSTZT6M3EQ",
-      authDomain: "iruna-afd77.firebaseapp.com",
-      databaseURL: "https://iruna-afd77-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "iruna-afd77",
-      storageBucket: "iruna-afd77.appspot.com",
-      messagingSenderId: "808281199655",
-      appId: "1:808281199655:web:e219616658c2e05905aa02"
-    }};
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBms-rnUosSdpmMKUpaOZ8ML-V0CTv9NOQ",
+      authDomain: "vellixao.firebaseapp.com",
+      databaseURL: "https://vellixao-default-rtdb.firebaseio.com",
+      projectId: "vellixao",
+      storageBucket: "vellixao.appspot.com",
+      messagingSenderId: "9868583650",
+      appId: "1:9868583650:android:8b52b5a3c23b25bc245063"
+    };
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const dbRef = ref(db);
 
-    window.checkLogin = function () {{
+    function showToast(msg) {
+      const toast = document.getElementById("toastMsg");
+      toast.textContent = msg;
+      toast.style.display = "block";
+      setTimeout(() => toast.style.display = "none", 3000);
+    }
+
+    window.checkLogin = function () {
       const input = document.getElementById("adminPass").value;
-      if (input === "2024") {{
+      if (input === "2024") {
         document.getElementById("loginForm").style.display = "none";
         document.getElementById("mainPanel").style.display = "block";
         document.getElementById("bgMusic").play();
-      }} else {{
+      } else {
         alert("Password salah nyan~ 😿");
-      }}
-    }}
+      }
+    }
 
-    window.saveUser = function () {{
+    window.saveUser = function () {
       const uid = document.getElementById("uid").value.trim();
       const password = document.getElementById("password").value.trim();
       const expired = document.getElementById("expired").value;
@@ -137,18 +158,18 @@
 
       if (!uid || !password || !script || !expired) return alert("Isi semua field, nyan~");
 
-      set(ref(db, 'users/' + uid), {{
+      set(ref(db, 'users/' + uid), {
         password, expired, banned, script_url: script
-      }}).then(() => {{
-        alert("✅ UID berhasil disimpan ke Firebase!");
-      }}).catch((err) => alert("Gagal simpan: " + err));
-    }}
+      }).then(() => {
+        showToast("✅ UID berhasil disimpan!");
+      }).catch((err) => alert("Gagal: " + err));
+    }
 
-    window.loadUser = function () {{
+    window.loadUser = function () {
       const uid = document.getElementById("editUid").value.trim();
       if (!uid) return alert("Masukkan UID!");
 
-      get(child(dbRef, 'users/' + uid)).then((snap) => {{
+      get(child(dbRef, `users/${uid}`)).then((snap) => {
         if (!snap.exists()) return alert("UID tidak ditemukan.");
         const data = snap.val();
         document.getElementById("editForm").style.display = "block";
@@ -156,10 +177,10 @@
         document.getElementById("editExpired").value = data.expired;
         document.getElementById("editScript").value = data.script_url;
         document.getElementById("editBanned").value = String(data.banned);
-      }});
-    }}
+      });
+    }
 
-    window.updateUser = function () {{
+    window.updateUser = function () {
       const uid = document.getElementById("editUid").value.trim();
       const password = document.getElementById("editPassword").value.trim();
       const expired = document.getElementById("editExpired").value;
@@ -168,15 +189,15 @@
 
       if (!uid || !password || !script || !expired) return alert("Semua wajib diisi ya~");
 
-      set(ref(db, 'users/' + uid), {{
+      set(ref(db, 'users/' + uid), {
         password, expired, banned, script_url: script
-      }}).then(() => {{
-        alert("✅ Perubahan berhasil disimpan ke Firebase!");
-      }}).catch((err) => alert("Gagal update: " + err));
-    }}
+      }).then(() => {
+        showToast("✅ Perubahan disimpan!");
+      }).catch((err) => alert("Gagal update: " + err));
+    }
   </script>
 
-  <audio id="bgMusic" hidden loop autoplay>
+  <audio id="bgMusic" hidden loop>
     <source src="https://files.catbox.moe/elp1ez.m4a" type="audio/mp4">
     Your browser does not support the audio element.
   </audio>
