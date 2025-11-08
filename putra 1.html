@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <!-- Mengatur viewport agar selalu dalam mode desktop -->
+    <meta name="viewport" content="width=1200px, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RANGKUMAN PUTRA SPA FLEXO E - Panduan Lengkap Pemrograman</title>
+    <meta name="description" content="Panduan lengkap dan terperinci untuk pemula yang ingin belajar coding, struktur data, HTML, CSS, JavaScript, PHP, Python, Java, dan pengembangan website profesional bersama Sunis Tyansyah.">
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa; /* Warna latar belakang lembut */
+            color: #333;
+            line-height: 1.7; /* Baris tinggi untuk keterbacaan */
+            scroll-behavior: smooth; /* Gulir halus untuk navigasi */
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2c3e50, #1a1a2e); /* Gradien gelap */
+            color: white;
+            padding: 2.5rem 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Bayangan lebih kuat */
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+            color: #3498db; /* Warna biru cerah untuk logo */
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-style: italic;
+            margin-bottom: 2rem; /* Tambah margin bawah untuk tombol */
+        }
+
+        /* CSS untuk Tombol Cepat */
+        .quick-link-buttons {
+            text-align: center;
+            padding-bottom: 1.5rem; /* Padding bawah untuk header */
+        }
+
+        .quick-link-button {
+            display: inline-block;
+            background-color: #3498db; /* Warna biru */
+            color: white;
+            padding: 12px 25px;
+            margin: 8px; /* Jarak antar tombol */
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .quick-link-button:hover {
+            background-color: #2980b9; /* Biru lebih gelap saat hover */
+            transform: translateY(-3px); /* Efek sedikit terangkat */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Navigation */
+        nav {
+            background-color: #2c3e50;
+            position: sticky; /* Navigasi tetap di atas */
+            top: 0;
+            z-index: 1000; /* Pastikan di atas elemen lain */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 1rem 0;
+            flex-wrap: wrap; /* Agar responsif pada layar kecil */
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0.8rem;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active { /* 'active' class bisa ditambahkan via JS untuk highlight halaman saat ini */
+            color: #3498db;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08); /* Bayangan lebih lembut */
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 1.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 3px solid #3498db; /* Garis bawah yang lebih tebal */
+            display: inline-block;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section h3 {
+            color: #34495e;
+            margin: 2.5rem 0 1.2rem;
+            font-size: 1.7rem;
+            border-left: 5px solid #5cb85c; /* Garis hijau di kiri untuk sub-heading */
+            padding-left: 1rem;
+        }
+        
+        .section h4 {
+            color: #555;
+            margin: 1.8rem 0 1rem;
+            font-size: 1.3rem;
+        }
+
+        .section p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            font-size: 1.05rem;
+            color: #444;
+        }
+
+        .section ul, .section ol {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            color: #444;
+        }
+        .section ul li, .section ol li {
+            margin-bottom: 0.8rem;
+        }
+
+        .code-block {
+            background-color: #282c34; /* Warna gelap ala editor kode */
+            color: #abb2bf; /* Warna teks kode */
+            padding: 1.8rem;
+            border-radius: 8px;
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace; /* Font monospace yang modern */
+            overflow-x: auto; /* Gulir horizontal jika kode panjang */
+            margin: 2rem 0;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .code-block code {
+            display: block;
+            white-space: pre-wrap; /* Agar kode tidak keluar batas jika terlalu panjang */
+        }
+
+        .note, .info-box, .warning-box {
+            padding: 1.2rem;
+            margin: 1.8rem 0;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .note {
+            background-color: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            color: #1976d2;
+        }
+
+        .info-box {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            color: #2e7d32;
+        }
+
+        .warning-box {
+            background-color: #fff3e0;
+            border-left: 5px solid #ff9800;
+            color: #ef6c00;
+        }
+
+        .note strong, .info-box strong, .warning-box strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Grid Layout for Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 2.5rem 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            border-left: none;
+            padding-left: 0;
+        }
+
+        .card p {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+        }
+
+        footer p {
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .social-links a {
+            color: white;
+            margin: 0 15px;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            color: #3498db;
+        }
+
+        /* Media queries dihapus karena viewport sudah diatur untuk mode desktop */
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">RANGKUMAN PUTRA SPA FLEXO E</div>
+        <div class="tagline">Panduan Lengkap Pemrograman Web & Aplikasi Bersama Sunis Tyansyah</div>
+
+        <!-- Tombol cepat yang bisa diklik -->
+        <div class="quick-link-buttons">
+            <a href="#html" class="quick-link-button">HTML</a>
+            <a href="#css" class="quick-link-button">CSS</a>
+            <a href="#javascript" class="quick-link-button">JavaScript</a>
+            <a href="#php" class="quick-link-button">PHP</a>
+            <a href="#python" class="quick-link-button">Python</a>
+            <a href="#java" class="quick-link-button">Java</a>
+            <a href="#struktur-data" class="quick-link-button">Struktur Data</a>
+            <a href="#cara-membuat-script" class="quick-link-button">Membuat Script</a>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#pengantar">Pengantar</a></li>
+            <li><a href="#apa-itu-coding">Apa Itu Coding?</a></li>
+            <li><a href="#struktur-data">Struktur Data</a></li>
+            <li><a href="#cara-membuat-script">Membuat Script</a></li>
+            <li><a href="#html">HTML</a></li>
+            <li><a href="#css">CSS</a></li>
+            <li><a href="#javascript">JavaScript</a></li>
+            <li><a href="#php">PHP</a></li>
+            <li><a href="#python">Python</a></li>
+            <li><a href="#java">Java</a></li>
+            <li><a href="#kesimpulan">Kesimpulan</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="pengantar" class="section">
+            <h2>Pengantar</h2>
+            <p>Selamat datang di <strong>RANGKUMAN PUTRA SPA FLEXO E</strong>, panduan terlengkap Anda untuk menjelajahi dunia pemrograman yang menarik! Apakah Anda seorang pemula yang sama sekali tidak memiliki pengalaman, atau seseorang yang ingin memperdalam pengetahuan, situs ini dirancang untuk Anda.</p>
+            <p>Kami akan membahas secara tuntas berbagai konsep fundamental, mulai dari apa itu "coding" dan "struktur data", hingga bahasa pemrograman populer seperti HTML, CSS, JavaScript, PHP, Python, dan Java. Tujuan kami adalah menyajikan informasi ini dengan cara yang paling jelas, terstruktur, dan mudah dipahami, seolah-olah Anda sedang dipandu langkah demi langkah oleh seorang mentor.</p>
+            
+            <div class="info-box">
+                <strong>Visi Sunis Tyansyah:</strong> Kami percaya bahwa setiap orang berhak mendapatkan akses ke pendidikan pemrograman berkualitas tinggi. Panduan ini adalah upaya kami untuk mewujudkan visi tersebut, membantu Anda membangun dasar yang kuat untuk karir di bidang teknologi.
+            </div>
+            
+            <h3>Bagaimana Menggunakan Panduan Ini?</h3>
+            <ol>
+                <li><strong>Mulai dari Awal:</strong> Jika Anda benar-benar pemula, disarankan untuk membaca secara berurutan, mulai dari bagian "Apa Itu Coding?".</li>
+                <li><strong>Pilih Topik:</strong> Jika Anda sudah memiliki dasar dan ingin fokus pada bahasa tertentu, gunakan navigasi di atas atau **tombol cepat di bagian atas halaman** untuk langsung menuju bagian yang Anda minati.</li>
+                <li><strong>Praktikkan:</strong> Membaca saja tidak cukup! Cobalah setiap contoh kode, ubah, dan eksperimenkan. Ini adalah kunci pembelajaran terbaik.</li>
+                <li><strong>Jangan Menyerah:</strong> Pemrograman bisa menantang, tetapi juga sangat memuaskan. Jika ada konsep yang sulit, istirahatlah, cari sumber lain, atau kembali lagi nanti.</li>
+            </ol>
+        </section>
+
+        <section id="apa-itu-coding" class="section">
+            <h2>Apa Itu Coding?</h2>
+            <p>Secara sederhana, <strong>Coding</strong> (atau pemrograman) adalah proses memberikan instruksi kepada komputer untuk melakukan tugas-tugas tertentu. Bayangkan komputer sebagai robot yang sangat cerdas tetapi tidak punya inisiatif. Robot itu hanya akan melakukan persis apa yang Anda perintahkan.</p>
+            <p>Instruksi-instruksi ini ditulis dalam "bahasa" khusus yang disebut <strong>Bahasa Pemrograman</strong> (seperti HTML, JavaScript, Python, dll.). Setiap bahasa memiliki aturan dan sintaksnya sendiri, mirip dengan bahasa manusia.</p>
+            <p>Untuk informasi lebih lanjut tentang dasar-dasar pemrograman, Anda bisa merujuk ke sumber-sumber seperti <a href="https://www.freecodecamp.org/news/what-is-coding-and-why-is-it-important/" target="_blank">FreeCodeCamp - What is Coding?</a> atau <a href="https://www.geeksforgeeks.org/introduction-to-programming/" target="_blank">GeeksforGeeks - Introduction to Programming</a>.</p>
+
+            <h3>Analogi Sederhana: Memasak Resep</h3>
+            <p>Anggap saja Anda ingin membuat kue:</p>
+            <ul>
+                <li><strong>Kue (Produk Akhir):</strong> Ini adalah <em>aplikasi</em> atau <em>website</em> yang ingin Anda buat.</li>
+                <li><strong>Resep (Algoritma):</strong> Ini adalah <em>logika</em> atau <em>langkah-langkah</em> yang harus diikuti untuk membuat kue.</li>
+                <li><strong>Bahan-bahan (Data):</strong> Ini adalah <em>informasi</em> yang diolah (misalnya, nama pengguna, angka, gambar).</li>
+                <li><strong>Anda (Programmer/Coder):</strong> Anda adalah orang yang <em>menulis resep</em> dan <em>menginstruksikan</em> langkah-langkahnya.</li>
+                <li><strong>Oven/Blender (Komputer):</strong> Ini adalah <em>mesin</em> yang mengeksekusi instruksi dari resep.</li>
+                <li><strong>Bahasa Resep (Bahasa Pemrograman):</strong> Cara Anda menulis resep (misalnya, bahasa Indonesia, Inggris, dengan istilah-istilah dapur tertentu).</li>
+            </ul>
+
+            <h3>Mengapa Kita Melakukan Coding?</h3>
+            <p>Tujuan utama coding adalah untuk:</p>
+            <ol>
+                <li><strong>Mengotomatisasi Tugas:</strong> Membuat komputer melakukan pekerjaan yang berulang dan membosankan dengan cepat dan akurat.</li>
+                <li><strong>Memecahkan Masalah:</strong> Mengembangkan solusi digital untuk masalah di kehidupan nyata atau bisnis (misalnya, aplikasi perbankan, sistem inventori).</li>
+                <li><strong>Menciptakan Sesuatu:</strong> Membangun website, aplikasi mobile, game, kecerdasan buatan, dan banyak lagi.</li>
+                <li><strong>Berinteraksi dengan Data:</strong> Mengumpulkan, menyimpan, memproses, dan menampilkan informasi.</li>
+            </ol>
+
+            <div class="note">
+                <strong>Intinya:</strong> Coding adalah seni dan sains untuk "berbicara" dengan komputer, memberitahunya apa yang harus dilakukan, langkah demi langkah, untuk mencapai suatu tujuan.
+            </div>
+        </section>
+
+        <section id="struktur-data" class="section">
+            <h2>Struktur Data: Fondasi Pengolahan Informasi</h2>
+            <p>Setelah Anda memahami apa itu coding, langkah selanjutnya adalah memahami bagaimana komputer menyimpan dan mengatur data. Di sinilah konsep <strong>Struktur Data</strong> menjadi sangat penting.</p>
+            <p>Struktur data adalah cara khusus untuk menyimpan dan mengatur data dalam memori komputer agar data tersebut dapat diakses dan dimodifikasi secara efisien. Bayangkan Anda sedang mengatur koleksi buku Anda. Anda bisa menumpuknya sembarangan, mengaturnya berdasarkan abjad judul, berdasarkan genre, atau berdasarkan ukuran. Masing-masing cara memiliki kelebihan dan kekurangan tergantung tujuan Anda.</p>
+            <p>Untuk eksplorasi lebih lanjut mengenai Struktur Data, kunjungi <a href="https://www.geeksforgeeks.org/data-structures/" target="_blank">GeeksforGeeks - Data Structures</a> atau <a href="https://www.programiz.com/dsa/" target="_blank">Programiz - Data Structures and Algorithms</a>.</p>
+
+            <h3>Mengapa Struktur Data Penting?</h3>
+            <ul>
+                <li><strong>Efisiensi:</strong> Pilihan struktur data yang tepat dapat membuat program berjalan jauh lebih cepat dan menggunakan memori lebih sedikit.</li>
+                <li><strong>Organisasi:</strong> Membantu programmer mengatur data secara logis, membuat kode lebih mudah dibaca dan dikelola.</li>
+                <li><strong>Algoritma:</strong> Struktur data seringkali terkait erat dengan algoritma (langkah-langkah untuk memecahkan masalah). Pilihan struktur data yang benar dapat menyederhanakan algoritma.</li>
+            </ul>
+
+            <h3>Jenis-jenis Struktur Data Umum</h3>
+            <h4>1. Array (Larangan/Larik)</h4>
+            <p>Kumpulan item dengan tipe data yang sama yang disimpan dalam lokasi memori yang berdekatan. Diakses menggunakan indeks (posisi).</p>
+            <div class="code-block">
+                <code>
+                    // JavaScript Array
+                    let namaSiswa = ["Andi", "Budi", "Citra"];
+                    console.log(namaSiswa[0]); // Output: Andi
+
+                    // Python List (mirip array, lebih fleksibel)
+                    nama_siswa = ["Andi", "Budi", "Citra"]
+                    print(nama_siswa[0]) # Output: Andi
+                </code>
+            </div>
+            
+            <h4>2. Linked List (Daftar Berantai)</h4>
+            <p>Kumpulan elemen (node) di mana setiap node berisi data dan pointer (penunjuk) ke node berikutnya dalam urutan. Tidak perlu lokasi memori yang berdekatan.</p>
+            <div class="info-box">
+                <strong>Analogi:</strong> Array seperti rak buku panjang yang sudah ada ukurannya. Linked List seperti rantai gerbong kereta, Anda bisa menambah/mengurangi gerbong di mana saja tanpa menggeser semua gerbong lain.
+            </div>
+
+            <h4>3. Stack (Tumpukan)</h4>
+            <p>Struktur data yang mengikuti prinsip LIFO (Last In, First Out). Item yang terakhir dimasukkan adalah yang pertama kali dikeluarkan. Mirip tumpukan piring.</p>
+            <ul>
+                <li><strong>Push:</strong> Menambahkan item ke atas tumpukan.</li>
+                <li><strong>Pop:</strong> Menghapus item dari atas tumpukan.</li>
+            </ul>
+
+            <h4>4. Queue (Antrian)</h4>
+            <p>Struktur data yang mengikuti prinsip FIFO (First In, First Out). Item yang pertama dimasukkan adalah yang pertama kali dikeluarkan. Mirip antrian di bank.</p>
+            <ul>
+                <li><strong>Enqueue:</strong> Menambahkan item ke belakang antrian.</li>
+                <li><strong>Dequeue:</strong> Menghapus item dari depan antrian.</li>
+            </ul>
+
+            <h4>5. Tree (Pohon)</h4>
+            <p>Struktur data hierarkis yang terdiri dari node-node yang saling terhubung, dimulai dari satu "akar" (root) dan bercabang menjadi "anak" (children). Contohnya adalah struktur folder di komputer Anda.</p>
+
+            <h4>6. Hash Table (Tabel Hash)</h4>
+            <p>Struktur data yang menyimpan pasangan kunci-nilai (key-value pairs) dan menggunakan fungsi hash untuk menghitung indeks di mana nilai akan disimpan. Sangat cepat untuk pencarian, penambahan, dan penghapusan data.</p>
+            <div class="code-block">
+                <code>
+                    // JavaScript Object (sering diimplementasikan sebagai Hash Table)
+                    let user = {
+                        "nama": "Putra",
+                        "umur": 25,
+                        "kota": "Jakarta"
+                    };
+                    console.log(user["nama"]); // Output: Putra
+
+                    // Python Dictionary (Hash Table)
+                    user = {
+                        "nama": "Putra",
+                        "umur": 25,
+                        "kota": "Jakarta"
+                    }
+                    print(user["nama"]) # Output: Putra
+                </code>
+            </div>
+
+            <div class="warning-box">
+                <strong>Catatan Penting:</strong> Pemilihan struktur data yang tepat sangat kruksial dalam membangun aplikasi yang performa tinggi. Anda akan belajar lebih banyak tentang ini seiring Anda mendalami setiap bahasa pemrograman.
+            </div>
+        </section>
+
+        <section id="cara-membuat-script" class="section">
+            <h2>Cara Pembuatan Script: Langkah Demi Langkah</h2>
+            <p>Membuat "script" atau program adalah proses yang terstruktur. Ini bukan hanya tentang menulis kode, tetapi juga tentang berpikir logis dan sistematis. Berikut adalah panduan langkah demi langkah yang bisa Anda ikuti:</p>
+            <p>Proses pembuatan script melibatkan siklus pengembangan perangkat lunak secara mini. Untuk pemahaman lebih lanjut tentang metodologi ini, Anda dapat mengunjungi <a href="https://www.geeksforgeeks.org/software-development-life-cycle-sdlc/" target="_blank">GeeksforGeeks - SDLC</a>.</p>
+
+            <h3>1. Pahami Masalah atau Kebutuhan</h3>
+            <ul>
+                <li><strong>Apa yang ingin Anda capai?</strong> Buat website? Aplikasi mobile? Otomatisasi tugas?</li>
+                <li><strong>Siapa penggunanya?</strong> Apa kebutuhan mereka?</li>
+                <li><strong>Apa saja fitur yang diperlukan?</strong></li>
+            </ul>
+            <div class="note">
+                <strong>Contoh:</strong> Anda ingin membuat website pribadi untuk menampilkan portofolio. Kebutuhannya: halaman utama, halaman portofolio, halaman kontak. Penggunanya: calon klien/perekrut.
+            </div>
+
+            <h3>2. Rencanakan & Desain (Algoritma)</h3>
+            <p>Sebelum menulis kode, buatlah "cetak biru" atau rencana. Ini bisa berupa:</p>
+            <ul>
+                <li><strong>Flowchart:</strong> Diagram alir yang menunjukkan langkah-langkah logis dari program.</li>
+                <li><strong>Pseudocode:</strong> Deskripsi langkah-langkah program menggunakan bahasa mirip manusia, tetapi lebih terstruktur daripada bahasa biasa.</li>
+                <li><strong>Wireframe/Mockup:</strong> Untuk website/aplikasi, gambarlah tata letak antarmuka pengguna.</li>
+            </ul>
+            <div class="info-box">
+                <strong>Algoritma:</strong> Serangkaian instruksi terdefinisi dengan baik, berurutan, dan jelas untuk memecahkan suatu masalah atau mencapai suatu tujuan. Pelajari lebih lanjut di <a href="https://www.geeksforgeeks.org/introduction-to-algorithms/" target="_blank">GeeksforGeeks - Algorithms</a>.
+            </div>
+
+            <h3>3. Pilih Bahasa Pemrograman & Alat</h3>
+            <ul>
+                <li><strong>Pilih Bahasa:</strong> Tergantung pada tujuan Anda.
+                    <ul>
+                        <li>Frontend Web: HTML, CSS, JavaScript</li>
+                        <li>Backend Web: Python, PHP, Java, Node.js (JavaScript)</li>
+                        <li>Mobile App: Java/Kotlin (Android), Swift (iOS), React Native/Flutter (Cross-platform)</li>
+                        <li>Data Science/AI: Python</li>
+                    </ul>
+                </li>
+                <li><strong>Pilih Lingkungan Pengembangan (IDE/Text Editor):</strong> Ini adalah software tempat Anda menulis kode. Contoh: VS Code, Sublime Text, Atom, IntelliJ IDEA.</li>
+                <li><strong>Pilih Browser (untuk Web):</strong> Chrome, Firefox, Edge, dll., untuk melihat hasil kerja Anda.</li>
+            </ul>
+
+            <h3>4. Tulis Kode (Coding)</h3>
+            <p>Ini adalah bagian inti! Mulai terjemahkan rencana Anda ke dalam bahasa pemrograman yang dipilih. Ingat:</p>
+            <ul>
+                <li><strong>Mulai dari yang Kecil:</strong> Jangan mencoba menulis seluruh program sekaligus. Buat bagian-bagian kecil yang berfungsi, lalu gabungkan.</li>
+                <li><strong>Komentar Kode:</strong> Tambahkan komentar dalam kode Anda untuk menjelaskan apa yang dilakukan oleh bagian kode tertentu. Ini sangat membantu di kemudian hari atau jika orang lain membaca kode Anda.</li>
+                <li><strong>Ikuti Best Practice:</strong> Pelajari dan ikuti gaya penulisan kode yang baik (indentasi, penamaan variabel yang jelas).</li>
+            </ul>
+            <div class="code-block">
+                <code>
+                    // Contoh Komentar di JavaScript
+                    // Ini adalah baris komentar tunggal
+
+                    /*
+                        Ini adalah komentar
+                        dengan banyak baris.
+                    */
+                    let pesan = "Halo dunia!"; // Ini adalah komentar di akhir baris
+                    console.log(pesan);
+                </code>
+            </div>
+
+            <h3>5. Uji & Debugging</h3>
+            <ul>
+                <li><strong>Uji (Testing):</strong> Jalankan program Anda dan periksa apakah berfungsi seperti yang diharapkan.</li>
+                <li><strong>Debugging:</strong> Jika ada kesalahan (bug), temukan dan perbaiki. Ini adalah bagian yang sangat normal dan penting dalam proses coding. Gunakan fitur "debugger" di IDE Anda atau metode sederhana seperti mencetak nilai variabel untuk melacak masalah. Pelajari teknik debugging di <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Debugging" target="_blank">MDN Web Docs - Debugging HTML, CSS, and JavaScript</a>.</li>
+            </ul>
+
+            <h3>6. Deploy & Pemeliharaan</h3>
+            <ul>
+                <li><strong>Deploy:</strong> Setelah program Anda selesai dan berfungsi dengan baik, Anda perlu "menyebarkannya" agar bisa digunakan oleh orang lain. Untuk website, ini berarti mengunggahnya ke server web.</li>
+                <li><strong>Pemeliharaan:</strong> Program tidak akan selamanya sempurna. Anda mungkin perlu melakukan update, menambahkan fitur baru, atau memperbaiki bug yang muncul di kemudian hari.</li>
+            </ul>
+            <div class="note">
+                <strong>Pesan Penting:</strong> Proses ini bersifat iteratif. Anda mungkin akan kembali ke langkah 1 atau 2 berulang kali saat Anda belajar atau menemukan masalah baru. Itu wajar!
+            </div>
+        </section>
+
+        <section id="html" class="section">
+            <h2>HTML (HyperText Markup Language): Kerangka Website</h2>
+            <p>HTML adalah **tulang punggung** dari setiap halaman web. Jika website adalah sebuah rumah, maka HTML adalah kerangka struktur bangunan rumah itu: dinding, lantai, dan atapnya. HTML tidak bisa "melakukan" apa pun; ia hanya **menyajikan struktur dan konten**.</p>
+            <p>Pelajari lebih lanjut tentang HTML dan spesifikasi resminya di <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">MDN Web Docs - HTML</a> atau <a href="https://www.w3.org/standards/webdesign/htmlcss" target="_blank">W3C - HTML & CSS</a>.</p>
+            
+            <h3>Konsep Dasar HTML</h3>
+            <ul>
+                <li><strong>Markup Language:</strong> Bukan bahasa pemrograman. Ia menggunakan "tag" untuk mendefinisikan elemen.</li>
+                <li><strong>Elemen:</strong> Dibentuk oleh tag pembuka (<code>&lt;tag&gt;</code>) dan tag penutup (<code>&lt;/tag&gt;</code>), serta konten di antaranya. Contoh: <code>&lt;p&gt;Ini paragraf&lt;/p&gt;</code>.</li>
+                <li><strong>Atribut:</strong> Memberikan informasi tambahan tentang sebuah elemen, diletakkan di dalam tag pembuka. Contoh: <code>&lt;img src="gambar.jpg" alt="Sebuah gambar"&gt;</code>.</li>
+            </ul>
+
+            <h3>Struktur Dokumen HTML Minimal</h3>
+            <p>Setiap dokumen HTML memiliki struktur dasar yang wajib ada:</p>
+            <div class="code-block">
+                <code>
+                    &lt;!DOCTYPE html&gt; <span style="color: #6a9955;">&lt;!-- Deklarasi tipe dokumen (HTML5) --&gt;</span>
+                    &lt;html lang="id"&gt; <span style="color: #6a9955;">&lt;!-- Elemen root, menandakan bahasa dokumen --&gt;</span>
+                    &lt;head&gt; <span style="color: #6a9955;">&lt;!-- Berisi metadata tentang halaman --&gt;</span>
+                        &lt;meta charset="UTF-8"&gt; <span style="color: #6a9955;">&lt;!-- Set karakter untuk mendukung semua bahasa --&gt;</span>
+                        &lt;meta name="viewport" content="width=1200px, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt; <span style="color: #6a9955;">&lt;!-- Penting untuk mode desktop --&gt;</span>
+                        &lt;title&gt;Judul Halaman Web Saya&lt;/title&gt; <span style="color: #6a9955;">&lt;!-- Judul yang muncul di tab browser --&gt;</span>
+                    &lt;/head&gt;
+                    &lt;body&gt; <span style="color: #6a9955;">&lt;!-- Berisi semua konten yang terlihat oleh pengguna --&gt;</span>
+                        &lt;h1&gt;Selamat Datang di Website Saya&lt;/h1&gt;
+                        &lt;p&gt;Ini adalah paragraf pertama saya di HTML.&lt;/p&gt;
+                    &lt;/body&gt;
+                    &lt;/html&gt;
+                </code>
+            </div>
+            
+            <div class="info-box">
+                <strong>Penjelasan Singkat:</strong>
+                <ul>
+                    <li><code>&lt;!DOCTYPE html&gt;</code>: Memberi tahu browser bahwa ini adalah dokumen HTML5.</li>
+                    <li><code>&lt;html&gt;</code>: Elemen paling atas, membungkus seluruh konten halaman. Atribut <code>lang="id"</code> membantu pembaca layar dan mesin pencari.</li>
+                    <li><code>&lt;head&gt;</code>: Bagian ini tidak ditampilkan di halaman web itu sendiri, tetapi berisi informasi penting seperti judul halaman, tautan ke CSS, dan metadata lainnya.</li>
+                    <li><code>&lt;body&gt;</code>: Semua konten yang Anda ingin tampilkan kepada pengguna (teks, gambar, video, tombol, dll.) ditempatkan di sini.</li>
+                </ul>
+            </div>
+
+            <h3>Tag HTML Penting dan Penggunaannya</h3>
+            <h4>1. Struktur Konten</h4>
+            <ul>
+                <li><code>&lt;h1&gt;</code> sampai <code>&lt;h6&gt;</code>: Untuk judul dan sub-judul. <code>&lt;h1&gt;</code> adalah yang paling penting.</li>
+                <li><code>&lt;p&gt;</code>: Untuk paragraf teks.</li>
+                <li><code>&lt;div&gt;</code>: Elemen "container" generik untuk mengelompokkan elemen lain. Sangat sering digunakan.</li>
+                <li><code>&lt;span&gt;</code>: Elemen "container" inline generik untuk mengelompokkan teks atau elemen kecil dalam satu baris.</li>
+                <li><code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;aside&gt;</code>, <code>&lt;footer&gt;</code>: Elemen semantik HTML5 yang memberikan makna struktural pada konten, lebih baik dari <code>&lt;div&gt;</code>.</li>
+            </ul>
+
+            <h4>2. Tautan dan Gambar</h4>
+            <ul>
+                <li><code>&lt;a href="url_tujuan"&gt;Teks Tautan&lt;/a&gt;</code>: Untuk membuat hyperlink. Atribut <code>href</code> menentukan tujuan.</li>
+                <li><code>&lt;img src="path_gambar.jpg" alt="Deskripsi gambar"&gt;</code>: Untuk menampilkan gambar. Atribut <code>src</code> adalah sumber gambar, <code>alt</code> penting untuk SEO dan aksesibilitas.</li>
+            </ul>
+
+            <h4>3. Daftar (Lists)</h4>
+            <ul>
+                <li><code>&lt;ul&gt;</code>: Unordered List (daftar tak berurutan, biasanya dengan bullet points).
+                    <ul>
+                        <li><code>&lt;li&gt;</code>: List Item.</li>
+                    </ul>
+                </li>
+                <li><code>&lt;ol&gt;</code>: Ordered List (daftar berurutan, biasanya dengan angka).
+                    <ul>
+                        <li><code>&lt;li&gt;</code>: List Item.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>4. Tabel</h4>
+            <ul>
+                <li><code>&lt;table&gt;</code>: Elemen pembungkus tabel.</li>
+                <li><code>&lt;tr&gt;</code>: Table Row (baris tabel).</li>
+                <li><code>&lt;th&gt;</code>: Table Header (header kolom).</li>
+                <li><code>&lt;td&gt;</code>: Table Data (data sel).</li>
+            </ul>
+
+            <h4>5. Formulir (Forms)</h4>
+            <p>Untuk mengumpulkan input dari pengguna.</p>
+            <ul>
+                <li><code>&lt;form action="/submit-data" method="POST"&gt;</code>: Elemen pembungkus formulir. <code>action</code> adalah URL tujuan data dikirim, <code>method</code> (GET/POST) cara pengiriman.</li>
+                <li><code>&lt;input type="text" name="nama" placeholder="Nama Anda"&gt;</code>: Berbagai jenis input (text, email, password, number, submit, checkbox, radio).</li>
+                <li><code>&lt;textarea&gt;</code>: Untuk input teks banyak baris.</li>
+                <li><code>&lt;button&gt;</code>: Tombol.</li>
+            </ul>
+
+            <h3>Contoh HTML Lengkap: Halaman Profil Sederhana</h3>
+            <div class="code-block">
+                <code>
+                    &lt;!DOCTYPE html&gt;
+                    &lt;html lang="id"&gt;
+                    &lt;head&gt;
+                        &lt;meta charset="UTF-8"&gt;
+                        &lt;meta name="viewport" content="width=1200px, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;
+                        &lt;title&gt;Profil Saya - RANGKUMAN PUTRA SPA FLEXO E&lt;/title&gt;
+                        &lt;!-- Di sini nanti kita akan menghubungkan CSS --&gt;
+                    &lt;/head&gt;
+                    &lt;body&gt;
+                        &lt;header&gt;
+                            &lt;h1&gt;Profil Saya&lt;/h1&gt;
+                            &lt;nav&gt;
+                                &lt;ul&gt;
+                                    &lt;li&gt;&lt;a href="#tentang"&gt;Tentang Saya&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href="#keahlian"&gt;Keahlian&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href="#kontak"&gt;Kontak&lt;/a&gt;&lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/nav&gt;
+                        &lt;/header&gt;
+
+                        &lt;main&gt;
+                            &lt;section id="tentang"&gt;
+                                &lt;h2&gt;Tentang Saya&lt;/h2&gt;
+                                &lt;img src="https://via.placeholder.com/150" alt="Foto Profil" style="float: right; margin-left: 20px;"&gt;
+                                &lt;p&gt;Halo! Saya Putra, seorang pembelajar yang antusias di dunia pengembangan web. Saya tertarik pada bagaimana teknologi dapat digunakan untuk menciptakan solusi yang inovatif dan bermanfaat.&lt;/p&gt;
+                                &lt;p&gt;Saya sedang giat mempelajari HTML, CSS, dan JavaScript untuk membangun fondasi yang kuat dalam pengembangan frontend.&lt;/p&gt;
+                            &lt;/section&gt;
+
+                            &lt;section id="keahlian"&gt;
+                                &lt;h2&gt;Keahlian&lt;/h2&gt;
+                                &lt;ul&gt;
+                                    &lt;li&gt;HTML (Strukturisasi Konten Web)&lt;/li&gt;
+                                    &lt;li&gt;CSS (Penataan Gaya Visual)&lt;/li&gt;
+                                    &lt;li&gt;JavaScript Dasar (Interaksi Halaman)&lt;/li&gt;
+                                    &lt;li&gt;Konsep Dasar Pemrograman&lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/section&gt;
+
+                            &lt;section id="kontak"&gt;
+                                &lt;h2&gt;Hubungi Saya&lt;/h2&gt;
+                                &lt;p&gt;Jika Anda tertarik untuk berkolaborasi atau hanya ingin menyapa, jangan ragu untuk menghubungi saya melalui formulir di bawah ini atau email.&lt;/p&gt;
+                                &lt;form action="#" method="POST"&gt;
+                                    &lt;label for="nama"&gt;Nama:&lt;/label&gt;&lt;br&gt;
+                                    &lt;input type="text" id="nama" name="nama" required&gt;&lt;br&gt;&lt;br&gt;
+                                    
+                                    &lt;label for="email"&gt;Email:&lt;/label&gt;&lt;br&gt;
+                                    &lt;input type="email" id="email" name="email" required&gt;&lt;br&gt;&lt;br&gt;
+                                    
+                                    &lt;label for="pesan"&gt;Pesan:&lt;/label&gt;&lt;br&gt;
+                                    &lt;textarea id="pesan" name="pesan" rows="5" required&gt;&lt;/textarea&gt;&lt;br&gt;&lt;br&gt;
+                                    
+                                    &lt;button type="submit"&gt;Kirim Pesan&lt;/button&gt;
+                                &lt;/form&gt;
+                            &lt;/section&gt;
+                        &lt;/main&gt;
+
+                        &lt;footer&gt;
+                            &lt;p&gt;&amp;copy; 2023 Putra. Dibuat dengan semangat belajar.&lt;/p&gt;
+                        &lt;/footer&gt;
+                    &lt;/body&gt;
+                    &lt;/html&gt;
+                </code>
+            </div>
+            <div class="warning-box">
+                <strong>Ingat:</strong> HTML hanya untuk struktur! Tampilan visual (warna, font, tata letak) sepenuhnya diurus oleh CSS. Formulir di atas tidak akan benar-benar mengirim data tanpa adanya backend (PHP, Python, dll.).
+            </div>
+        </section>
+
+        <section id="css" class="section">
+            <h2>CSS (Cascading Style Sheets): Pakaian dan Dekorasi Website</h2>
+            <p>Jika HTML adalah kerangka rumah, maka CSS adalah **desain interior dan eksteriornya**. Dengan CSS, Anda bisa membuat website Anda terlihat menarik, profesional, dan sesuai dengan merek Anda. CSS mengontrol segalanya mulai dari warna teks, ukuran font, tata letak elemen, hingga animasi kompleks.</p>
+            <p>Untuk belajar lebih dalam tentang CSS dan semua kemampuannya, kunjungi <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank">MDN Web Docs - CSS</a> atau <a href="https://www.w3schools.com/css/" target="_blank">W3Schools - CSS Tutorial</a>.</p>
+
+            <h3>Konsep Dasar CSS</h3>
+            <ul>
+                <li><strong>Selector:</strong> Digunakan untuk "memilih" elemen HTML yang ingin Anda beri gaya.</li>
+                <li><strong>Property:</strong> Atribut visual yang ingin Anda ubah (misalnya, <code>color</code>, <code>font-size</code>, <code>background-color</code>).</li>
+                <li><strong>Value:</strong> Nilai yang Anda berikan ke properti (misalnya, <code>blue</code>, <code>16px</code>, <code>#f0f0f0</code>).</li>
+            </ul>
+            <div class="code-block">
+                <code>
+                    selector {
+                        property: value;
+                        property2: value2;
+                    }
+                </code>
+            </div>
+
+            <h3>Cara Menghubungkan CSS ke HTML</h3>
+            <p>Ada tiga cara utama untuk menerapkan CSS:</p>
+
+            <h4>1. Inline CSS</h4>
+            <p>Menulis gaya CSS langsung di dalam tag HTML menggunakan atribut <code>style</code>. **Tidak disarankan** untuk proyek besar karena sulit diatur.</p>
+            <div class="code-block">
+                <code>
+                    &lt;p style="color: blue; font-size: 18px;"&gt;Teks ini berwarna biru dan lebih besar.&lt;/p&gt;
+                </code>
+            </div>
+
+            <h4>2. Internal CSS</h4>
+            <p>Menulis gaya CSS di dalam tag <code>&lt;style&gt;</code> yang diletakkan di bagian <code>&lt;head&gt;</code> dokumen HTML. Cocok untuk halaman tunggal.</p>
+            <div class="code-block">
+                <code>
+                    &lt;head&gt;
+                        &lt;style&gt;
+                            h1 {
+                                color: purple;
+                                text-align: center;
+                            }
+                            p {
+                                font-family: 'Verdana', sans-serif;
+                            }
+                        &lt;/style&gt;
+                    &lt;/head&gt;
+                </code>
+            </div>
+
+            <h4>3. External CSS (Paling Disarankan)</h4>
+            <p>Menulis gaya CSS dalam file terpisah (misalnya, <code>style.css</code>) dan menghubungkannya ke dokumen HTML menggunakan tag <code>&lt;link&gt;</code> di bagian <code>&lt;head&gt;</code>. Ini adalah praktik terbaik karena membuat kode lebih rapi dan mudah dikelola.</p>
+            <p><strong>Di file HTML (dalam <code>&lt;head&gt;</code>):</strong></p>
+            <div class="code-block">
+                <code>
+                    &lt;link rel="stylesheet" href="style.css"&gt;
+                </code>
+            </div>
+            <p><strong>Di file <code>style.css</code>:</strong></p>
+            <div class="code-block">
+                <code>
+                    body {
+                        margin: 0;
+                        font-family: Arial, sans-serif;
+                    }
+                    h1 {
+                        color: #333;
+                        text-decoration: underline;
+                    }
+                </code>
+            </div>
+
+            <h3>Selector CSS Populer</h3>
+            <ul>
+                <li><strong>Element Selector:</strong> Memilih semua elemen dengan nama tag tertentu (misalnya, <code>p</code>, <code>h1</code>, <code>a</code>).</li>
+                <li><strong>Class Selector:</strong> Memilih elemen dengan atribut <code>class</code> tertentu (misalnya, <code>.button</code>, <code>.card</code>). Sangat fleksibel!</li>
+                <li><strong>ID Selector:</strong> Memilih elemen dengan atribut <code>id</code> tertentu (misalnya, <code>#header</code>, <code>#main-content</code>). ID harus unik di satu halaman.</li>
+                <li><strong>Descendant Selector:</strong> Memilih elemen yang merupakan turunan dari elemen lain (misalnya, <code>ul li a</code> akan memilih semua link di dalam list item di dalam unordered list).</li>
+                <li><strong>Pseudo-classes:</strong> Memberi gaya pada elemen berdasarkan statusnya (misalnya, <code>:hover</code> untuk efek saat mouse di atas elemen, <code>:active</code>, <code>:focus</code>).</li>
+            </ul>
+
+            <h3>Properti CSS Esensial</h3>
+            <ul>
+                <li><strong>Warna:</strong> <code>color</code> (teks), <code>background-color</code> (latar belakang). Nilai bisa nama warna (<code>red</code>), HEX (<code>#FF0000</code>), RGB (<code>rgb(255,0,0)</code>), RGBA (<code>rgba(255,0,0,0.5)</code>).</li>
+                <li><strong>Font:</strong> <code>font-family</code>, <code>font-size</code>, <code>font-weight</code> (boldness), <code>font-style</code> (italic).</li>
+                <li><strong>Text:</strong> <code>text-align</code> (left, center, right), <code>text-decoration</code> (underline, none), <code>line-height</code> (tinggi baris).</li>
+                <li><strong>Box Model:</strong> Setiap elemen HTML dianggap sebagai kotak.
+                    <ul>
+                        <li><code>width</code>, <code>height</code>: Ukuran elemen.</li>
+                        <li><code>padding</code>: Ruang di dalam batas elemen, antara konten dan border.</li>
+                        <li><code>border</code>: Garis batas di sekitar padding dan konten.</li>
+                        <li><code>margin</code>: Ruang di luar batas elemen, antara elemen dengan elemen lain.</li>
+                    </ul>
+                </li>
+                <li><strong>Display:</strong> Mengontrol bagaimana elemen ditampilkan.
+                    <ul>
+                        <li><code>block</code>: Memulai baris baru dan mengambil lebar penuh yang tersedia (misalnya, <code>&lt;p&gt;</code>, <code>&lt;div&gt;</code>).</li>
+                        <li><code>inline</code>: Tidak memulai baris baru dan hanya mengambil lebar yang diperlukan (misalnya, <code>&lt;span&gt;</code>, <code>&lt;a&gt;</code>).</li>
+                        <li><code>inline-block</code>: Menggabungkan sifat inline dan block.</li>
+                        <li><code>flex</code>, <code>grid</code>: Untuk membuat tata letak yang kompleks dan responsif.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>Contoh CSS untuk Halaman Profil Sebelumnya</h3>
+            <p>Mari kita terapkan gaya pada HTML halaman profil kita. Simpan kode ini sebagai <code>style.css</code> di folder yang sama dengan file HTML Anda.</p>
+            <div class="code-block">
+                <code>
+                    /* style.css */
+
+                    body {
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        line-height: 1.6;
+                        margin: 0;
+                        background-color: #f4f7f6;
+                        color: #333;
+                    }
+
+                    header {
+                        background-color: #2c3e50;
+                        color: white;
+                        text-align: center;
+                        padding: 2rem 0;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    }
+
+                    header h1 {
+                        margin: 0;
+                        font-size: 2.5rem;
+                        color: #3498db;
+                    }
+
+                    nav ul {
+                        list-style: none;
+                        padding: 0;
+                        margin: 1rem 0 0;
+                        display: flex;
+                        justify-content: center;
+                    }
+
+                    nav ul li {
+                        margin: 0 15px;
+                    }
+
+                    nav ul li a {
+                        color: white;
+                        text-decoration: none;
+                        font-weight: bold;
+                        transition: color 0.3s;
+                    }
+
+                    nav ul li a:hover {
+                        color: #2ecc71; /* Warna hijau saat hover */
+                    }
+
+                    main {
+                        max-width: 900px;
+                        margin: 30px auto;
+                        padding: 0 20px;
+                    }
+
+                    section {
+                        background-color: white;
+                        padding: 30px;
+                        margin-bottom: 30px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+                    }
+
+                    section h2 {
+                        color: #2c3e50;
+                        border-bottom: 2px solid #2ecc71; /* Garis bawah hijau */
+                        padding-bottom: 10px;
+                        margin-bottom: 20px;
+                        font-size: 2rem;
+                    }
+
+                    section img {
+                        border-radius: 50%; /* Membuat gambar profil lingkaran */
+                        border: 3px solid #3498db;
+                        max-width: 120px;
+                        height: auto;
+                        object-fit: cover;
+                    }
+
+                    ul {
+                        list-style-type: disc; /* bullet point */
+                        margin-left: 20px;
+                    }
+
+                    form label {
+                        display: block; /* Membuat label di baris baru */
+                        margin-bottom: 5px;
+                        font-weight: bold;
+                    }
+
+                    form input[type="text"],
+                    form input[type="email"],
+                    form textarea {
+                        width: 100%;
+                        padding: 10px;
+                        margin-bottom: 15px;
+                        border: 1px solid #ddd;
+                        border-radius: 4px;
+                        box-sizing: border-box; /* Agar padding tidak menambah lebar */
+                    }
+
+                    form textarea {
+                        resize: vertical; /* Hanya bisa resize secara vertikal */
+                    }
+
+                    form button[type="submit"] {
+                        background-color: #3498db;
+                        color: white;
+                        padding: 12px 20px;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 1rem;
+                        transition: background-color 0.3s ease;
+                    }
+
+                    form button[type="submit"]:hover {
+                        background-color: #2980b9;
+                    }
+
+                    footer {
+                        background-color: #2c3e50;
+                        color: white;
+                        text-align: center;
+                        padding: 2rem 0;
+                        margin-top: 40px;
+                    }
+
+                    footer p {
+                        margin: 0;
+                    }
+                </code>
+            </div>
+            <div class="note">
+                <strong>Tips CSS:</strong>
+                <ul>
+                    <li>Gunakan Chrome DevTools (klik kanan &gt; Inspect Element) untuk menginspeksi dan mengubah gaya secara langsung di browser. Ini sangat membantu untuk debugging!</li>
+                    <li>Pelajari tentang Flexbox dan CSS Grid untuk layout yang modern dan responsif.</li>
+                    <li>Sistem satuan: <code>px</code> (piksel), <code>em</code> (relatif terhadap ukuran font elemen induk), <code>rem</code> (relatif terhadap ukuran font root), <code>%</code> (persen), <code>vw</code> (viewport width), <code>vh</code> (viewport height).</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="javascript" class="section">
+            <h2>JavaScript: Otak Interaktif Website</h2>
+            <p>Jika HTML adalah kerangka dan CSS adalah tampilannya, maka <strong>JavaScript (JS)</strong> adalah **otak** yang membuatnya hidup dan interaktif. Dengan JavaScript, Anda bisa membuat hal-hal dinamis terjadi di website Anda tanpa harus memuat ulang halaman.</p>
+            <p>Untuk panduan lengkap dan dokumentasi resmi JavaScript, kunjungi <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">MDN Web Docs - JavaScript</a> atau <a href="https://javascript.info/" target="_blank">The Modern JavaScript Tutorial</a>.</p>
+
+            <h3>Apa yang Bisa Dilakukan JavaScript?</h3>
+            <ul>
+                <li><strong>Mengubah Konten HTML:</strong> Menambah, menghapus, atau memodifikasi elemen HTML dan teks.</li>
+                <li><strong>Mengubah Gaya CSS:</strong> Mengubah warna, ukuran, posisi elemen secara dinamis.</li>
+                <li><strong>Bereaksi terhadap Aksi Pengguna:</strong> Menanggapi klik tombol, input keyboard, gerakan mouse, dll.</li>
+                <li><strong>Memvalidasi Formulir:</strong> Memastikan input pengguna sudah benar sebelum dikirim ke server.</li>
+                <li><strong>Mengambil Data dari Server (AJAX/Fetch API):</strong> Mengupdate bagian halaman tanpa memuat ulang seluruhnya (misalnya, feed berita, notifikasi).</li>
+                <li><strong>Membuat Animasi dan Game:</strong> Menciptakan pengalaman visual yang menarik.</li>
+            </ul>
+
+            <h3>Cara Menghubungkan JavaScript ke HTML</h3>
+            <p>Sama seperti CSS, ada beberapa cara, tetapi external JavaScript adalah yang terbaik.</p>
+
+            <h4>1. Internal JavaScript</h4>
+            <p>Menulis kode JS di dalam tag <code>&lt;script&gt;</code> di mana saja dalam dokumen HTML, biasanya di akhir <code>&lt;body&gt;</code> untuk memastikan elemen HTML sudah dimuat.</p>
+            <div class="code-block">
+                <code>
+                    &lt;body&gt;
+                        &lt;h1 id="judul"&gt;Halo Dunia!&lt;/h1&gt;
+                        &lt;script&gt;
+                            document.getElementById("judul").innerHTML = "Halo JavaScript!";
+                            console.log("Script berhasil dijalankan.");
+                        &lt;/script&gt;
+                    &lt;/body&gt;
+                </code>
+            </div>
+
+            <h4>2. External JavaScript (Paling Disarankan)</h4>
+            <p>Menulis kode JS dalam file terpisah (misalnya, <code>script.js</code>) dan menghubungkannya menggunakan tag <code>&lt;script src="path_ke_file.js"&gt;&lt;/script&gt;</code>. Idealnya, letakkan di akhir tag <code>&lt;body&gt;</code>.</p>
+            <p><strong>Di file HTML (di akhir <code>&lt;body&gt;</code>):</strong></p>
+            <div class="code-block">
+                <code>
+                    &lt;script src="script.js"&gt;&lt;/script&gt;
+                </code>
+            </div>
+            <p><strong>Di file <code>script.js</code>:</strong></p>
+            <div class="code-block">
+                <code>
+                    // script.js
+                    console.log("Website telah dimuat sepenuhnya!");
+                    let element = document.getElementById("judul");
+                    if (element) {
+                        element.innerHTML = "Selamat Datang di Dunia Interaktif!";
+                    }
+                </code>
+            </div>
+
+            <h3>Dasar-dasar JavaScript</h3>
+            <h4>1. Variabel</h4>
+            <p>Digunakan untuk menyimpan data.</p>
+            <ul>
+                <li><code>let</code>: Variabel yang bisa diubah nilainya (reassign).</li>
+                <li><code>const</code>: Variabel konstan, nilainya tidak bisa diubah setelah diinisialisasi.</li>
+                <li><code>var</code>: Cara lama, hindari jika memungkinkan.</li>
+            </ul>
+            <div class="code-block">
+                <code>
+                    let nama = "Putra";
+                    const umur = 25;
+                    // umur = 26; // Ini akan error!
+                    console.log(nama, umur);
+                </code>
+            </div>
+
+            <h4>2. Tipe Data</h4>
+            <ul>
+                <li><code>String</code>: Teks (<code>"Halo"</code>, <code>'Dunia'</code>)</li>
+                <li><code>Number</code>: Angka (<code>10</code>, <code>3.14</code>)</li>
+                <li><code>Boolean</code>: Benar atau salah (<code>true</code>, <code>false</code>)</li>
+                <li><code>Array</code>: Kumpulan item (<code>[1, 2, 3]</code>, <code>["Apel", "Mangga"]</code>)</li>
+                <li><code>Object</code>: Kumpulan pasangan kunci-nilai (<code>{ nama: "Budi", usia: 30 }</code>)</li>
+                <li><code>null</code>, <code>undefined</code></li>
+            </ul>
+
+            <h4>3. Operator</h4>
+            <ul>
+                <li>Aritmatika: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code> (modulus)</li>
+                <li>Perbandingan: <code>==</code> (sama nilai), <code>===</code> (sama nilai dan tipe), <code>!=</code>, <code>!==</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></li>
+                <li>Logika: <code>&&</code> (AND), <code>||</code> (OR), <code>!</code> (NOT)</li>
+            </ul>
+
+            <h4>4. Kontrol Alur (Control Flow)</h4>
+            <ul>
+                <li><strong><code>if...else if...else</code>:</strong> Untuk pengambilan keputusan bersyarat.</li>
+                <li><strong><code>for</code>, <code>while</code>:</strong> Untuk perulangan (looping).</li>
+            </ul>
+            <div class="code-block">
+                <code>
+                    let nilai = 75;
+                    if (nilai >= 80) {
+                        console.log("Lulus dengan sangat baik!");
+                    } else if (nilai >= 60) {
+                        console.log("Lulus.");
+                    } else {
+                        console.log("Tidak lulus.");
+                    }
+
+                    for (let i = 0; i < 3; i++) {
+                        console.log("Iterasi ke-" + (i + 1));
+                    }
+                </code>
+            </div>
+
+            <h4>5. Fungsi (Functions)</h4>
+            <p>Blok kode yang dapat digunakan kembali untuk melakukan tugas tertentu.</p>
+            <div class="code-block">
+                <code>
+                    function sapa(nama) {
+                        return "Halo, " + nama + "!";
+                    }
+                    let pesanSapaan = sapa("Putra"); // Memanggil fungsi
+                    console.log(pesanSapaan); // Output: Halo, Putra!
+                </code>
+            </div>
+
+            <h4>6. DOM Manipulation (Document Object Model)</h4>
+            <p>Cara JavaScript "melihat" dan berinteraksi dengan struktur HTML di halaman web.</p>
+            <ul>
+                <li><code>document.getElementById("id_elemen")</code>: Mengambil elemen berdasarkan ID.</li>
+                <li><code>document.querySelector("selector_css")</code>: Mengambil elemen pertama yang cocok dengan selector CSS.</li>
+                <li><code>element.innerHTML = "teks baru"</code>: Mengubah konten HTML di dalam elemen.</li>
+                <li><code>element.style.color = "red"</code>: Mengubah gaya CSS elemen.</li>
+                <li><code>element.addEventListener("event", function)</code>: Menambahkan "pendengar" untuk event (misalnya, klik) pada elemen.</li>
+            </ul>
+
+            <h3>Contoh Interaktif JavaScript (untuk halaman profil)</h3>
+            <p>Mari kita tambahkan sedikit interaktivitas ke halaman profil kita. Buat file <code>script.js</code> dan tambahkan kode ini:</p>
+            <div class="code-block">
+                <code>
+                    // script.js
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Mengubah judul header setelah halaman dimuat
+                        const headerH1 = document.querySelector('header h1');
+                        if (headerH1) {
+                            headerH1.textContent = "Profil Sunis Tyansyah - Putra";
+                        }
+
+                        // Menambahkan efek klik pada tombol submit formulir
+                        const submitButton = document.querySelector('form button[type="submit"]');
+                        if (submitButton) {
+                            submitButton.addEventListener('click', function(event) {
+                                // Mencegah form untuk submit secara default (memuat ulang halaman)
+                                event.preventDefault();
+
+                                // Ambil nilai dari input
+                                const namaInput = document.getElementById('nama');
+                                const emailInput = document.getElementById('email');
+                                const pesanInput = document.getElementById('pesan');
+
+                                // Validasi sederhana
+                                if (namaInput.value.trim() === '' || emailInput.value.trim() === '' || pesanInput.value.trim() === '') {
+                                    alert('Mohon lengkapi semua kolom formulir!');
+                                    return; // Hentikan eksekusi jika ada yang kosong
+                                }
+
+                                // Tampilkan pesan konfirmasi
+                                alert('Terima kasih, ' + namaInput.value + '! Pesan Anda telah terkirim (simulasi).');
+
+                                // Kosongkan formulir setelah pengiriman (simulasi)
+                                namaInput.value = '';
+                                emailInput.value = '';
+                                pesanInput.value = '';
+                            });
+                        }
+
+                        // Contoh mengubah warna teks keahlian saat di-hover
+                        const keahlianListItems = document.querySelectorAll('#keahlian li');
+                        keahlianListItems.forEach(item => {
+                            item.addEventListener('mouseover', function() {
+                                item.style.color = '#e74c3c'; // Merah
+                            });
+                            item.addEventListener('mouseout', function() {
+                                item.style.color = '#444'; // Kembali ke warna default
+                            });
+                        });
+                    });
+                </code>
+            </div>
+            <div class="warning-box">
+                <strong>Penting:</strong> Kode di atas hanya simulasi pengiriman formulir. Untuk benar-benar mengirim data, Anda memerlukan script sisi server (PHP, Python, dll.) dan mungkin Fetch API/AJAX.
+            </div>
+        </section>
+
+        <section id="php" class="section">
+            <h2>PHP: Kekuatan Sisi Server untuk Website Dinamis</h2>
+            <p>PHP (Hypertext Preprocessor) adalah bahasa scripting **server-side** yang sangat populer, khusus dirancang untuk pengembangan web. Berbeda dengan HTML, CSS, dan JavaScript (yang sebagian besar berjalan di browser pengguna/client-side), PHP berjalan di server web.</p>
+            <p>Ini berarti PHP dapat melakukan hal-hal yang tidak bisa dilakukan oleh client-side scripting, seperti berinteraksi dengan database, mengelola sesi pengguna, dan memproses data formulir secara aman.</p>
+            <p>Untuk informasi lebih lanjut dan dokumentasi resmi PHP, kunjungi <a href="https://www.php.net/" target="_blank">php.net</a>.</p>
+
+            <h3>Server-side vs. Client-side Scripting</h3>
+            <ul>
+                <li><strong>Client-side (HTML, CSS, JavaScript):</strong> Kode dieksekusi di browser pengguna. Hasilnya bisa langsung terlihat, tetapi tidak bisa mengakses file di server atau database secara langsung.</li>
+                <li><strong>Server-side (PHP, Python, Node.js, Java):</strong> Kode dieksekusi di server web. Hasilnya (biasanya HTML yang dihasilkan) kemudian dikirimkan ke browser pengguna. Ini memungkinkan interaksi dengan database, otentikasi pengguna, dll.</li>
+            </ul>
+
+            <h3>Apa yang Bisa Dilakukan PHP?</h3>
+            <ul>
+                <li>Menghasilkan konten halaman HTML secara dinamis.</li>
+                <li>Mengumpulkan data formulir.</li>
+                <li>Mengelola database (MySQL, PostgreSQL, dll.) - membaca, menulis, memperbarui, menghapus data.</li>
+                <li>Mengelola sesi pengguna (login, keranjang belanja).</li>
+                <li>Mengirim dan menerima cookies.</li>
+                <li>Mengenkripsi data.</li>
+                <li>Membatasi akses pengguna ke beberapa halaman di website Anda.</li>
+            </ul>
+
+            <h3>Sintaks Dasar PHP</h3>
+            <p>Kode PHP selalu diawali dengan <code>&lt;?php</code> dan diakhiri dengan <code>?&gt;</code>. Apa pun di luar tag ini dianggap HTML biasa.</p>
+            <div class="code-block">
+                <code>
+                    &lt;!DOCTYPE html&gt;
+                    &lt;html lang="id"&gt;
+                    &lt;head&gt;
+                        &lt;title&gt;Halaman PHP Saya&lt;/title&gt;
+                    &lt;/head&gt;
+                    &lt;body&gt;
+                        &lt;h1&gt;Selamat Datang di Halaman Dinamis!&lt;/h1&gt;
+                        &lt;?php
+                            // Ini adalah komentar satu baris di PHP
+                            /*
+                                Ini adalah komentar
+                                multi-baris di PHP
+                            */
+                            $nama = "Sunis Tyansyah"; // Deklarasi variabel diawali $
+                            echo "&lt;p&gt;Halo, " . $nama . "!&lt;/p&gt;"; // Mencetak teks ke HTML
+                            echo "&lt;p&gt;Tanggal hari ini: " . date("Y-m-d H:i:s") . "&lt;/p&gt;";
+                        ?&gt;
+                        &lt;p&gt;Ini adalah konten HTML biasa setelah kode PHP.&lt;/p&gt;
+                    &lt;/body&gt;
+                    &lt;/html&gt;
+                </code>
+            </div>
+
+            <h3>Variabel, Tipe Data, dan Operator</h3>
+            <ul>
+                <li><strong>Variabel:</strong> Diawali dengan tanda dolar (<code>$</code>). Contoh: <code>$nama = "Budi";</code></li>
+                <li><strong>Tipe Data:</strong> Integer, Float, String, Boolean, Array, Object, NULL. PHP secara otomatis menentukan tipe data.</li>
+                <li><strong>Operator:</strong> Mirip dengan JavaScript (+, -, *, /, %, ==, ===, &&, ||, !).</li>
+            </ul>
+
+            <h3>Struktur Kontrol</h3>
+            <ul>
+                <li><strong><code>if...else if...else</code>:</strong> Pengambilan keputusan bersyarat.</li>
+                <li><strong><code>for</code>, <code>while</code>, <code>foreach</code>:</strong> Perulangan. <code>foreach</code> sangat berguna untuk array.</li>
+            </ul>
+            <div class="code-block">
+                <code>
+                    &lt;?php
+                        $nilai = 85;
+                        if ($nilai >= 75) {
+                            echo "&lt;p&gt;Anda Lulus!&lt;/p&gt;";
+                        } else {
+                            echo "&lt;p&gt;Anda Perlu Mengulang.&lt;/p&gt;";
+                        }
+
+                        $buah = array("Apel", "Mangga", "Jeruk");
+                        echo "&lt;h3&gt;Daftar Buah:&lt;/h3&gt;&lt;ul&gt;";
+                        foreach ($buah as $item) {
+                            echo "&lt;li&gt;" . $item . "&lt;/li&gt;";
+                        }
+                        echo "&lt;/ul&gt;";
+                    ?&gt;
+                </code>
+            </div>
+
+            <h3>Fungsi</h3>
+            <p>Blok kode yang dapat digunakan kembali.</p>
+            <div class="code-block">
+                <code>
+                    &lt;?php
+                        function sapaUser($namaUser) {
+                            return "Halo, " . $namaUser . " dari PHP!";
+                        }
+                        echo sapaUser("Pengunjung");
+                    ?&gt;
+                </code>
+            </div>
+
+            <h3>Interaksi Formulir Sederhana dengan PHP</h3>
+            <p>Contoh ini menunjukkan bagaimana PHP dapat memproses data yang dikirim dari formulir HTML.</p>
+            <p><strong>File HTML (<code>index.html</code>):</strong></p>
+            <div class="code-block">
+                <code>
+                    &lt;!-- index.html --&gt;
+                    &lt;form action="proses.php" method="POST"&gt;
+                        &lt;label for="nama_pengguna"&gt;Nama Anda:&lt;/label&gt;&lt;br&gt;
+                        &lt;input type="text" id="nama_pengguna" name="nama_pengguna" required&gt;&lt;br&gt;&lt;br&gt;
+                        &lt;button type="submit"&gt;Kirim&lt;/button&gt;
+                    &lt;/form&gt;
+                </code>
+            </div>
+            <p><strong>File PHP (<code>proses.php</code>):</strong></p>
+            <div class="code-block">
+                <code>
+                    &lt;?php
+                        // proses.php
+                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                            // Ambil data dari formulir
+                            $nama_pengguna = $_POST['nama_pengguna'];
+
+                            // Tampilkan data
+                            echo "&lt;h1&gt;Halo, " . htmlspecialchars($nama_pengguna) . "!&lt;/h1&gt;";
+                            echo "&lt;p&gt;Terima kasih sudah mengirimkan nama Anda.&lt;/p&gt;";
+                        } else {
+                            // Jika akses langsung ke proses.php tanpa POST
+                            echo "&lt;p&gt;Akses tidak valid.&lt;/p&gt;";
+                        }
+                    ?&gt;
+                </code>
+            </div>
+            <div class="note">
+                <strong>Cara menjalankan PHP:</strong> Anda memerlukan server web (seperti Apache atau Nginx) dengan PHP terinstal. Cara termudah adalah menggunakan XAMPP atau Laragon (untuk Windows), atau MAMP (untuk macOS). Setelah terinstal, letakkan file Anda di folder <code>htdocs</code> (XAMPP) atau <code>www</code> (Laragon/MAMP), lalu akses melalui browser (misalnya, <code>http://localhost/nama_folder_anda/index.html</code>).
+            </div>
+        </section>
+
+        <section id="python" class="section">
+            <h2>Python: Bahasa Serbaguna untuk Segala Kebutuhan</h2>
+            <p>Python adalah bahasa pemrograman tingkat tinggi yang sangat populer karena **sintaksnya yang bersih dan mudah dibaca**, serta **keserbagunaannya yang luar biasa**. Ia digunakan di berbagai bidang, mulai dari pengembangan web, analisis data, kecerdasan buatan, machine learning, otomasi, hingga pembuatan game.</p>
+            <p>Unduh Python dan jelajahi dokumentasi resminya di <a href="https://www.python.org/" target="_blank">python.org</a>. Cek instalasi dengan perintah <code>python --version</code> di Command Prompt.</p>
+
+            <h3>Keunggulan Python</h3>
+            <ul>
+                <li><strong>Mudah Dipelajari:</strong> Sintaksnya mirip bahasa Inggris, membuatnya ideal untuk pemula.</li>
+                <li><strong>Sangat Serbaguna:</strong> Dapat digunakan untuk hampir semua jenis proyek.</li>
+                <li><strong>Ekosistem yang Besar:</strong> Memiliki perpustakaan (libraries) dan framework yang melimpah untuk mempercepat pengembangan.</li>
+                <li><strong>Komunitas Besar:</strong> Banyak sumber daya, tutorial, dan bantuan tersedia.</li>
+            </ul>
+
+            <h3>Sintaks Dasar Python</h3>
+            <p>Python tidak menggunakan kurung kurawal <code>{}</code> atau titik koma <code>;</code> seperti banyak bahasa lain. Ia menggunakan **indentasi** (spasi atau tab) untuk menandai blok kode.</p>
+            <div class="code-block">
+                <code>
+                    # Ini adalah komentar satu baris di Python
+
+                    """
+                    Ini adalah komentar
+                    multi-baris di Python
+                    """
+
+                    # Mencetak teks ke konsol
+                    print("Halo, Dunia Python!")
+
+                    # Variabel (tidak perlu deklarasi tipe)
+                    nama = "RANGKUMAN"
+                    umur = 5
+                    tinggi_badan = 175.5 # Float
+
+                    # String formatting (f-string, modern dan direkomendasikan)
+                    print(f"Nama: {nama}, Umur: {umur} tahun, Tinggi: {tinggi_badan} cm")
+
+                    # Input dari pengguna
+                    # nama_anda = input("Masukkan nama Anda: ")
+                    # print(f"Halo, {nama_anda}!")
+                </code>
+            </div>
+
+            <h3>Tipe Data & Struktur Data di Python</h3>
+            <ul>
+                <li><strong>Numerik:</strong> <code>int</code> (integer), <code>float</code>.</li>
+                <li><strong>String:</strong> Teks (<code>"abc"</code>, <code>'xyz'</code>).</li>
+                <li><strong>Boolean:</code> True</code>, <code>False</code>.</li>
+                <li><strong>List:</strong> Mirip array, kumpulan item yang bisa diubah (mutable). <code>[1, "dua", 3.0]</code></li>
+                <li><strong>Tuple:</strong> Mirip list, tapi tidak bisa diubah (immutable). <code>(1, 2, 3)</code></li>
+                <li><strong>Dictionary:</strong> Kumpulan pasangan kunci-nilai (key-value pairs), mirip Hash Table. <code>{"nama": "Budi", "usia": 30}</code></li>
+                <li><strong>Set:</strong> Kumpulan item unik yang tidak berurutan.</li>
+            </ul>
+            <div class="code-block">
+                <code>
+                    buah = ["Apel", "Pisang", "Ceri"] # List
+                    print(buah[1]) # Output: Pisang
+                    buah.append("Mangga") # Menambahkan item
+                    print(buah) # Output: ['Apel', 'Pisang', 'Ceri', 'Mangga']
+
+                    data_user = {
+                        "id": 101,
+                        "username": "flexo_e",
+                        "email": "flexo@example.com"
+                    }
+                    print(data_user["username"]) # Output: flexo_e
+                    data_user["email"] = "baru@example.com" # Mengubah nilai
+                    print(data_user)
+                </code>
+            </div>
+
+            <h3>Kontrol Alur (Control Flow)</h3>
+            <ul>
+                <li><strong><code>if...elif...else</code>:</strong> Pengambilan keputusan bersyarat.</li>
+                <li><strong><code>for</code> loop:</strong> Untuk iterasi pada koleksi (list, tuple, string, dictionary).</li>
+                <li><strong><code>while</code> loop:</strong> Untuk perulangan selama suatu kondisi benar.</li>
+            </ul>
+            <div class="code-block">
+                <code>
+                    usia = 18
+                    if usia >= 17:
+                        print("Anda cukup umur untuk memiliki KTP.")
+                    else:
+                        print("Anda belum cukup umur.")
+
+                    for x in buah: # Iterasi pada list buah yang sudah didefinisikan
+                        print(f"Saya suka {x}")
+
+                    counter = 0
+                    while counter < 3:
+                        print(f"Counter: {counter}")
+                        counter += 1 # counter = counter + 1
+                </code>
+            </div>
+
+            <h3>Fungsi (Functions)</h3>
+            <p>Untuk mengelompokkan kode yang dapat digunakan kembali.</p>
+            <div class="code-block">
+                <code>
+                    def hitung_luas_persegi(sisi):
+                        return sisi * sisi
+
+                    luas = hitung_luas_persegi(5)
+                    print(f"Luas persegi dengan sisi 5 adalah: {luas}") # Output: 25
+                </code>
+            </div>
+
+            <h3>Contoh Sederhana Python: Kalkulator Mini</h3>
+            <div class="code-block">
+                <code>
+                    # kalkulator_mini.py
+
+                    def tambah(a, b):
+                        return a + b
+
+                    def kurang(a, b):
+                        return a - b
+
+                    def kali(a, b):
+                        return a * b
+
+                    def bagi(a, b):
+                        if b == 0:
+                            return "Error: Tidak bisa dibagi nol!"
+                        return a / b
+
+                    print("Pilih operasi:")
+                    print("1. Tambah")
+                    print("2. Kurang")
+                    print("3. Kali")
+                    print("4. Bagi")
+
+                    # while True:
+                    #     pilihan = input("Masukkan pilihan(1/2/3/4): ")
+
+                    #     if pilihan in ('1', '2', '3', '4'):
+                    #         try:
+                    #             num1 = float(input("Masukkan angka pertama: "))
+                    #             num2 = float(input("Masukkan angka kedua: "))
+                    #         except ValueError:
+                    #             print("Input tidak valid. Mohon masukkan angka.")
+                    #             continue
+
+                    #         if pilihan == '1':
+                    #             print(f"{num1} + {num2} = {tambah(num1, num2)}")
+                    #         elif pilihan == '2':
+                    #             print(f"{num1} - {num2} = {kurang(num1, num2)}")
+                    #         elif pilihan == '3':
+                    #             print(f"{num1} * {num2} = {kali(num1, num2)}")
+                    #         elif pilihan == '4':
+                    #             print(f"{num1} / {num2} = {bagi(num1, num2)}")
+                    #         break
+                    #     else:
+                    #         print("Pilihan tidak valid. Coba lagi.")
+
+                    # Karena ini hanya contoh teks di website, bagian input interaktif saya komentari
+                    # Anggap kita langsung memanggil fungsi untuk demonstrasi
+                    print(f"Hasil 10 + 5 = {tambah(10, 5)}")
+                    print(f"Hasil 10 / 0 = {bagi(10, 0)}")
+                </code>
+            </div>
+            <div class="info-box">
+                <strong>Cara menjalankan Python:</strong>
+                <ol>
+                    <li>Instal Python dari <a href="https://www.python.org/downloads/" target="_blank">python.org</a>.</li>
+                    <li>Simpan kode Anda dalam file dengan ekstensi <code>.py</code> (misalnya, <code>kalkulator_mini.py</code>).</li>
+                    <li>Buka Command Prompt/Terminal, navigasikan ke folder tempat file disimpan.</li>
+                    <li>Jalankan dengan perintah: <code>python nama_file_anda.py</code></li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="java" class="section">
+            <h2>Java: Bahasa Serius untuk Aplikasi Skala Besar</h2>
+            <p>Java adalah bahasa pemrograman yang kuat, berorientasi objek, dan **platform-independent** (bisa berjalan di berbagai sistem operasi berkat Java Virtual Machine - JVM). Java dikenal karena keandalan, keamanan, dan skalabilitasnya, menjadikannya pilihan utama untuk aplikasi enterprise, Android, big data, dan sistem back-end.</p>
+            <p>Dapatkan JDK (Java Development Kit) dan dokumentasi Java resmi di <a href="https://www.oracle.com/java/technologies/downloads/" target="_blank">Oracle Java Downloads</a> atau jelajahi <a href="https://openjdk.org/" target="_blank">OpenJDK</a>.</p>
+
+            <h3>Konsep Utama Java</h3>
+            <ul>
+                <li><strong>Platform Independent (WORA - Write Once, Run Anywhere):</strong> Kode Java dikompilasi menjadi bytecode, yang kemudian dieksekusi oleh JVM di OS apa pun.</li>
+                <li><strong>Object-Oriented Programming (OOP):</strong> Java sepenuhnya berorientasi objek, yang berarti semuanya diatur sebagai "objek" yang memiliki properti (data) dan perilaku (metode).</li>
+                <li><strong>Strongly Typed:</strong> Setiap variabel harus dideklarasikan dengan tipe datanya, dan tipe tersebut tidak bisa berubah.</li>
+            </ul>
+
+            <h3>Sintaks Dasar Java</h3>
+            <p>Setiap program Java dimulai dengan sebuah kelas, dan eksekusi dimulai dari metode <code>main</code>.</p>
+            <div class="code-block">
+                <code>
+                    // HelloWorld.java
+
+                    public class HelloWorld {
+                        // Metode utama, titik masuk program Java
+                        public static void main(String[] args) {
+                            // Mencetak teks ke konsol
+                            System.out.println("Halo, Dunia Java!");
+
+                            // Deklarasi variabel dengan tipe data eksplisit
+                            String nama = "Putra";
+                            int tahunLahir = 1998;
+                            boolean isStudent = true;
+
+                            System.out.println("Nama: " + nama);
+                            System.out.println("Tahun Lahir: " + tahunLahir);
+                            System.out.println("Adalah Mahasiswa: " + isStudent);
+                        }
+                    }
+                </code>
+            </div>
+
+            <h3>Variabel, Tipe Data, dan Operator</h3>
+            <ul>
+                <li><strong>Variabel:</strong> Harus dideklarasikan dengan tipe datanya. Contoh: <code>int umur = 30;</code>, <code>String kota = "Bandung";</code></li>
+                <li><strong>Tipe Data Primitif:</strong>
+                    <ul>
+                        <li>Numerik: <code>byte</code>, <code>short</code>, <code>int</code>, <code>long</code> (integer); <code>float</code>, <code>double</code> (floating point).</li>
+                        <li>Karakter: <code>char</code>.</li>
+                        <li>Boolean: <code>boolean</code> (true/false).</li>
+                    </ul>
+                </li>
+                <li><strong>Tipe Data Non-Primitif/Referensi:</strong> <code>String</code>, <code>Array</code>, dan semua kelas yang Anda buat atau yang disediakan Java.</li>
+                <li><strong>Operator:</strong> Mirip dengan C++/JavaScript (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&amp;&amp;</code>, <code>||</code>, <code>!</code>).</li>
+            </ul>
+
+            <h3>Struktur Kontrol</h3>
+            <ul>
+                <li><strong><code>if...else if...else</code>:</strong> Pengambilan keputusan bersyarat.</li>
+                <li><strong><code>for</code>, <code>while</code>, <code>do-while</code>:</strong> Perulangan.</li>
+                <li><strong><code>switch</code>:</strong> Untuk banyak kondisi.</li>
+            </ul>
+            <div class="code-block">
+                <code>
+                    public class KontrolAlur {
+                        public static void main(String[] args) {
+                            int skor = 90;
+                            if (skor >= 80) {
+                                System.out.println("Nilai A");
+                            } else if (skor >= 70) {
+                                System.out.println("Nilai B");
+                            } else {
+                                System.out.println("Nilai C");
+                            }
+
+                            String[] buah = {"Apel", "Pisang", "Ceri"};
+                            System.out.println("Daftar Buah:");
+                            for (String item : buah) { // Enhanced for loop
+                                System.out.println("- " + item);
+                            }
+                        }
+                    }
+                </code>
+            </div>
+
+            <h3>Metode (Methods)</h3>
+            <p>Mirip fungsi di bahasa lain, tetapi selalu berada di dalam sebuah kelas.</p>
+            <div class="code-block">
+                <code>
+                    public class Kalkulator {
+                        // Metode statis (tidak memerlukan objek Kalkulator)
+                        public static int tambah(int a, int b) {
+                            return a + b;
+                        }
+
+                        // Metode non-statis
+                        public int kali(int a, int b) {
+                            return a * b;
+                        }
+
+                        public static void main(String[] args) {
+                            System.out.println("Hasil penambahan: " + tambah(10, 5));
+
+                            // Untuk memanggil metode non-statis, kita perlu membuat objek
+                            Kalkulator objKalkulator = new Kalkulator();
+                            System.out.println("Hasil perkalian: " + objKalkulator.kali(10, 5));
+                        }
+                    }
+                </code>
+            </div>
+
+            <h3>Konsep OOP (Object-Oriented Programming)</h3>
+            <p>Java dibangun di atas 4 pilar OOP:</p>
+            <ol>
+                <li><strong>Encapsulation (Pembungkusan):</strong> Menggabungkan data (variabel) dan metode (fungsi) yang beroperasi pada data tersebut ke dalam satu unit (kelas), serta menyembunyikan detail implementasi.</li>
+                <li><strong>Inheritance (Pewarisan):</strong> Memungkinkan kelas baru (child class) mewarisi properti dan metode dari kelas yang sudah ada (parent class), mempromosikan reusable code.</li>
+                <li><strong>Polymorphism (Bentuk Banyak):</strong> Kemampuan objek untuk mengambil banyak bentuk, misalnya objek dari kelas yang berbeda dapat dipanggil melalui antarmuka umum.</li>
+                <li><strong>Abstraction (Abstraksi):</strong> Menyembunyikan detail implementasi yang kompleks dan hanya menunjukkan fungsionalitas yang relevan kepada pengguna.</li>
+            </ol>
+            
+            <h3>Contoh Lengkap Java: Kelas Karyawan Sederhana</h3>
+            <div class="code-block">
+                <code>
+                    // Karyawan.java
+                    class Karyawan {
+                        String nama;
+                        String departemen;
+                        double gaji;
+
+                        // Konstruktor: Dipanggil saat objek Karyawan dibuat
+                        public Karyawan(String nama, String departemen, double gaji) {
+                            this.nama = nama;
+                            this.departemen = departemen;
+                            this.gaji = gaji;
+                        }
+
+                        // Metode untuk menampilkan informasi karyawan
+                        public void tampilkanInfo() {
+                            System.out.println("Nama: " + nama);
+                            System.out.println("Departemen: " + departemen);
+                            System.out.println("Gaji: " + gaji);
+                        }
+
+                        // Contoh metode lain
+                        public void naikkanGaji(double persentase) {
+                            this.gaji += this.gaji * (persentase / 100);
+                            System.out.println(nama + " mendapatkan kenaikan gaji. Gaji baru: " + gaji);
+                        }
+                    }
+
+                    // MainClass.java (kelas yang akan menjalankan program)
+                    public class MainClass {
+                        public static void main(String[] args) {
+                            // Membuat objek (instance) dari kelas Karyawan
+                            Karyawan karyawan1 = new Karyawan("Budi Santoso", "IT", 5000000);
+                            Karyawan karyawan2 = new Karyawan("Citra Dewi", "HRD", 4500000);
+
+                            System.out.println("Informasi Karyawan 1:");
+                            karyawan1.tampilkanInfo();
+
+                            System.out.println("\nInformasi Karyawan 2:");
+                            karyawan2.tampilkanInfo();
+
+                            // Memanggil metode naikkanGaji
+                            karyawan1.naikkanGaji(10); // Kenaikan 10%
+
+                            System.out.println("\nInformasi Karyawan 1 setelah kenaikan:");
+                            karyawan1.tampilkanInfo();
+                        }
+                    }
+                </code>
+            </div>
+            <div class="info-box">
+                <strong>Cara menjalankan Java:</strong>
+                <ol>
+                    <li>Instal Java Development Kit (JDK) dari Oracle atau OpenJDK.</li>
+                    <li>Simpan kode Anda dalam file dengan ekstensi <code>.java</code> (misalnya, <code>HelloWorld.java</code>, <code>Karyawan.java</code>, <code>MainClass.java</code>). Pastikan nama file sama dengan nama kelas.</li>
+                    <li>Buka Command Prompt/Terminal, navigasikan ke folder tempat file disimpan.</li>
+                    <li>Kompilasi kode: <code>javac NamaKelasAnda.java</code> (misalnya, <code>javac MainClass.java Karyawan.java</code>).</li>
+                    <li>Jalankan program: <code>java NamaKelasAnda</code> (misalnya, <code>java MainClass</code>).</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="kesimpulan" class="section">
+            <h2>Kesimpulan dan Langkah Selanjutnya</h2>
+            <p>Selamat! Anda telah menuntaskan perjalanan awal yang komprehensif ke dunia pemrograman. Dari memahami apa itu coding dan struktur data, hingga mendalami HTML, CSS, JavaScript, PHP, Python, dan Java, Anda kini memiliki fondasi yang kuat untuk terus belajar dan berkembang.</p>
+            
+            <h3>Pesan Utama dari Sunis Tyansyah:</h3>
+            <ul>
+                <li><strong>Praktik, Praktik, Praktik:</strong> Membaca saja tidak akan membuat Anda menjadi programmer. Tulis kode, buat proyek kecil, eksperimen, dan jangan takut membuat kesalahan. Kesalahan adalah bagian dari proses belajar.</li>
+                <li><strong>Pilih Jalur Anda:</strong> Dunia pemrograman sangat luas. Apakah Anda tertarik dengan Frontend, Backend, Mobile, Data Science, atau lainnya? Fokus pada satu area yang paling menarik minat Anda terlebih dahulu.</li>
+                <li><strong>Pelajari Konsep, Bukan Hanya Sintaks:</strong> Sintaks bahasa bisa berubah, tetapi konsep dasar (variabel, fungsi, kontrol alur, OOP, struktur data) tetap sama.</li>
+                <li><strong>Jangan Ragu Mencari Bantuan:</strong> Bergabunglah dengan komunitas developer online (Stack Overflow, Discord, forum), tonton tutorial YouTube, atau ikuti kursus online.</li>
+                <li><strong>Tetap Up-to-Date:</strong> Industri teknologi bergerak cepat. Selalu ada teknologi, framework, dan best practice baru untuk dipelajari. Jadikan belajar sebagai kebiasaan.</li>
+            </ul>
+
+            <h3>Roadmap Pembelajaran Lanjutan</h3>
+            <h4>Frontend Developer</h4>
+            <p>Fokus pada tampilan dan interaksi yang dilihat pengguna.</p>
+            <ul>
+                <li><strong>Lanjutkan dengan JavaScript:</strong> Pelajari ES6+, Async/Await, Web APIs.</li>
+                <li><strong>Framework JavaScript:</strong> React.js, Vue.js, atau Angular (sangat diminati).</li>
+                <li><strong>CSS Frameworks:</strong> Bootstrap, Tailwind CSS (untuk pengembangan UI lebih cepat).</li>
+                <li><strong>Tools:</strong> Webpack/Vite (modul bundler), Git (kontrol versi).</li>
+            </ul>
+
+            <h4>Backend Developer</h4>
+            <p>Fokus pada logika server, database, dan API.</p>
+            <ul>
+                <li><strong>Perdalam Bahasa Pilihan:</strong> PHP (Laravel/CodeIgniter), Python (Django/Flask), Node.js (Express.js), Java (Spring Boot).</li>
+                <li><strong>Database:</strong> MySQL, PostgreSQL (SQL), MongoDB (NoSQL).</li>
+                <li><strong>API:</strong> RESTful API, GraphQL.</li>
+                <li><strong>Cloud:</strong> AWS, Google Cloud, Azure (konsep dasar).</li>
+            </ul>
+
+            <h4>Fullstack Developer</h4>
+            <p>Menguasai Frontend dan Backend.</p>
+            <ul>
+                <li>Kombinasikan keahlian Frontend dan Backend.</li>
+                <li>Pahami cara kerja server-client, deployment, dan integrasi penuh.</li>
+            </ul>
+
+            <h4>Mobile Developer</h4>
+            <p>Membuat aplikasi untuk perangkat bergerak.</p>
+            <ul>
+                <li><strong>Native:</strong> Kotlin/Java (Android), Swift (iOS).</li>
+                <li><strong>Cross-platform:</strong> React Native, Flutter (satu kode untuk Android/iOS).</li>
+            </ul>
+
+            <div class="note">
+                <strong>Ingat:</strong> Perjalanan menjadi seorang developer profesional adalah maraton, bukan sprint. Nikmati setiap prosesnya, bangun sesuatu yang Anda banggakan, dan teruslah belajar! Semoga sukses dalam petualangan coding Anda bersama RANGKUMAN PUTRA SPA FLEXO E dan Sunis Tyansyah!
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 RANGKUMAN PUTRA SPA FLEXO E - Panduan Lengkap Pemrograman Sunis Tyansyah</p>
+        <div class="social-links">
+            <a href="#" title="Facebook">FB</a> |
+            <a href="#" title="Twitter">TW</a> |
+            <a href="#" title="Instagram">IG</a> |
+            <a href="https://github.com/your-github" target="_blank" title="GitHub">GH</a>
+        </div>
+        <p>Email: achmadsunistyansyah44@gmail.com | Website: www.putraspaflexoe.vercel.app</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling untuk navigasi
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => { // Mengubah selector agar juga mencakup quick-link-button
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Offset untuk header tetap (sticky nav)
+                    const offset = document.querySelector('nav').offsetHeight;
+                    const bodyRect = document.body.getBoundingClientRect().top;
+                    const elementRect = targetElement.getBoundingClientRect().top;
+                    const elementPosition = elementRect - bodyRect;
+                    const offsetPosition = elementPosition - offset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Highlight aktif pada navigasi saat menggulir
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('nav ul li a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - document.querySelector('nav').offsetHeight;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Inisialisasi animasi pada saat DOMContentLoaded (pertama kali dimuat)
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                // Set initial state for animation
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.7s ease-out, transform 0.7s ease-out';
+            });
+            
+            // Trigger animation for visible sections on load
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, { threshold: 0.2 }); // Trigger when 20% of the section is visible
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
