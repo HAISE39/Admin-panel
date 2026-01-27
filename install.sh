@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ====================================================
-# VELLTOOLS INSTALLER - CYBER EDITION (v3.3)
+# JULES AI INSTALLER - CYBER EDITION (v3.4)
 # ====================================================
 
 # Colors
@@ -63,7 +63,7 @@ header() {
 install_deps() {
     clear
     header
-    echo -e "             ${CYAN}${BOLD}◈ PROTOCOL: VELLTOOLS-X ◈${NC}"
+    echo -e "             ${CYAN}${BOLD}◈ PROTOCOL: JULES-X CORE ◈${NC}"
     echo -e "${MAGENTA}─────────────────────────────────────────────────────────────────────────${NC}"
     fake_loader "Synchronizing system environment"
     pkg update -y &>/dev/null && pkg upgrade -y -o Dpkg::Options::="--force-confold" &>/dev/null
@@ -88,7 +88,7 @@ setup_config() {
     fake_loader "Initializing neural configuration"
     cat > "$CONFIG_FILE" <<INNER_EOF
 model: gemini:gemini-2.5-flash
-prompt: "╭─[VELLTOOLS@CORE]─(%model%)\n╰─> "
+prompt: "╭─[JULES@CORE]─(%model%)\n╰─> "
 clients:
 - type: gemini
   api_key: you_apikey
@@ -98,7 +98,7 @@ INNER_EOF
 setup_prompt() {
     fake_loader "Hardcoding system constraints"
     cat > "$PROMPT_FILE" <<'INNER_EOF'
-You are VELLTOOLS AI, a specialized Coding and Programming Assistant.
+You are JULES AI, a specialized Coding and Programming Assistant.
 
 SYSTEM ROLE PARAMETERS:
 - DOMAIN: Coding & Programming ONLY.
@@ -146,8 +146,8 @@ draw_table() {
     echo -e "  ├──────────────────────┬───────────────────────────────────┤"
     echo -e "  │ \${CYAN}Property\${NC}             \${MAGENTA}│\${NC} \${CYAN}Value\${NC}                             \${MAGENTA}│"
     echo -e "  ├──────────────────────┼───────────────────────────────────┤"
-    echo -e "  │ \${YELLOW}Neural Engine\${NC}        \${MAGENTA}│\${NC} \${GREEN}Gemini 2.5 Flash\${NC}                 \${MAGENTA}│"
-    echo -e "  │ \${YELLOW}Core Protocol\${NC}        \${MAGENTA}│\${NC} \${GREEN}v3.3-CYBER\${NC}                       \${MAGENTA}│"
+    echo -e "  │ \${YELLOW}Neural Engine\${NC}        \${MAGENTA}│\${NC} \${GREEN}JULES CORE (G-Flash)\${NC}             \${MAGENTA}│"
+    echo -e "  │ \${YELLOW}Core Protocol\${NC}        \${MAGENTA}│\${NC} \${GREEN}v3.4-JULES\${NC}                       \${MAGENTA}│"
     echo -e "  │ \${YELLOW}System Status\${NC}        \${MAGENTA}│\${NC} \${GREEN}OPERATIONAL\${NC}                       \${MAGENTA}│"
     echo -e "  └──────────────────────┴───────────────────────────────────┘\${NC}"
 }
@@ -162,7 +162,7 @@ boot_sequence() {
 if [ "\$#" -eq 0 ]; then
     clear
     header
-    echo -e "             \033[0;36m\033[1m◈ SYSTEM STARTUP: VELLTOOLS CORE ◈\033[0m"
+    echo -e "             \033[0;36m\033[1m◈ SYSTEM STARTUP: JULES CORE ◈\033[0m"
     echo -e "\033[0;35m─────────────────────────────────────────────────────────────────────────\033[0m"
 
     # Audio trigger
@@ -170,18 +170,16 @@ if [ "\$#" -eq 0 ]; then
         python3 -c "import os; os.system('play-audio $AUDIO_FILE &>/dev/null &')"
     fi
 
-    boot_sequence "SYNCHRONIZING NEURAL LINK"
+    boot_sequence "SYNCHRONIZING JULES LINK"
     boot_sequence "INITIALIZING CYBER CORE"
     boot_sequence "ESTABLISHING SECURE PROTOCOL"
     sleep 0.4
     clear
     header
     draw_table
-    echo -e "\n\${BLUE}◈ STARTING AI INTERFACE...\${NC}"
+    echo -e "\n\${BLUE}◈ STARTING JULES INTERFACE...\${NC}"
 
-    # Use a background process to clear the welcome message lines
-    # aichat prints 2-3 lines of welcome at the start.
-    # We wait a bit then move cursor up and clear those lines.
+    # Background process to clear the aichat welcome message
     (sleep 0.5 && printf "\033[3A\033[2K\033[1A\033[2K\033[1A\033[2K") &
 fi
 
@@ -198,7 +196,7 @@ else
     if [ -f "$BIN_PATH" ]; then
         "$BIN_PATH" "\$@"
     else
-        echo -e "${RED}[ERROR]${NC} VELLTOOLS binary not found."
+        echo -e "${RED}[ERROR]${NC} JULES binary not found."
         return 1 2>/dev/null || exit 1
     fi
 fi
@@ -217,8 +215,8 @@ main() {
     echo -e "${MAGENTA}│${NC}  ${GREEN}${BOLD}SYSTEM INTEGRATION REPORT${NC}                          ${MAGENTA}│${NC}"
     echo -e "${MAGENTA}├──────────────────────────────────────────────────────────┤${NC}"
     echo -e "${MAGENTA}│${NC}  ${CYAN}Status:${NC}      ${GREEN}STABLE / OPERATIONAL${NC}                ${MAGENTA}│${NC}"
-    echo -e "${MAGENTA}│${NC}  ${CYAN}Engine:${NC}      ${YELLOW}Gemini 2.5 Flash${NC}                    ${MAGENTA}│${NC}"
-    echo -e "${MAGENTA}│${NC}  ${CYAN}Identity:${NC}    ${MAGENTA}VELLTOOLS-X${NC}                           ${MAGENTA}│${NC}"
+    echo -e "${MAGENTA}│${NC}  ${CYAN}Engine:${NC}      ${YELLOW}JULES-X (G-Flash)${NC}                   ${MAGENTA}│${NC}"
+    echo -e "${MAGENTA}│${NC}  ${CYAN}Identity:${NC}    ${MAGENTA}JULES-CORE${NC}                            ${MAGENTA}│${NC}"
     echo -e "${MAGENTA}│${NC}  ${CYAN}Command:${NC}     ${BOLD}velltools${NC}                             ${MAGENTA}│${NC}"
     echo -e "${MAGENTA}├──────────────────────────────────────────────────────────┤${NC}"
     echo -e "${MAGENTA}│${NC}  ${BLUE}Type ${BOLD}velltools${NC}${BLUE} to initialize neural link.          ${MAGENTA}│${NC}"
