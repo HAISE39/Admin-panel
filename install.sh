@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ====================================================
-# VELLTOOLS INSTALLER - CYBER EDITION (v2.0)
+# VELLTOOLS INSTALLER - CYBER EDITION (v3.0)
 # ====================================================
 
 # Colors
@@ -11,6 +11,7 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 YELLOW='\033[1;33m'
 MAGENTA='\033[0;35m'
+PURPLE='\033[38;5;129m'
 BOLD='\033[1m'
 NC='\033[0m'
 
@@ -33,7 +34,7 @@ cyber_spinner() {
         local e1=${emojis[$i]}
         local e2=${emojis[($i+1)%9]}
         local e3=${emojis[($i+2)%9]}
-        printf "\r  ${CYAN}▐${NC}${e1}${e2}${e3}${CYAN}▌${NC} "
+        printf "\r  ${PURPLE}▐${NC}${e1}${e2}${e3}${PURPLE}▌${NC} "
         i=$(( (i+1) % 9 ))
         sleep $delay
     done
@@ -43,9 +44,8 @@ cyber_spinner() {
 fake_loader() {
     local msg=$1
     echo -ne "${CYAN}▸${NC} $msg "
-    # Actual command would be here, but using sleep for visual
     sleep 1.2 & cyber_spinner
-    echo -e "${GREEN}${BOLD}✔ STABLE${NC}"
+    echo -e "${GREEN}${BOLD}✔ DONE${NC}"
 }
 
 header() {
@@ -58,7 +58,7 @@ header() {
     echo "     ╚████╔╝ ███████╗███████╗███████╗   ██║   ╚██████╔╝╚██████╔╝███████╗███████║"
     echo "      ╚═══╝  ╚══════╝╚══════╝╚══════╝   ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝"
     echo -e "${NC}"
-    echo -e "             ${CYAN}${BOLD}◈ CORE AI SYSTEM - PROTOCOL 2.5 ◈${NC}"
+    echo -e "             ${CYAN}${BOLD}◈ PROTOCOL: VELLTOOLS-X ◈${NC}"
     echo -e "${MAGENTA}─────────────────────────────────────────────────────────────────────────${NC}"
 }
 
@@ -84,8 +84,10 @@ setup_files() {
 
 setup_config() {
     fake_loader "Initializing neural configuration"
+    # Note: custom prompt in aichat config using ANSI
     cat > "$CONFIG_FILE" <<INNER_EOF
 model: gemini:gemini-2.5-flash
+prompt: "╭─[VELLTOOLS@CORE]─(%model%)\n╰─> "
 clients:
 - type: gemini
   api_key: you_apikey
@@ -118,18 +120,34 @@ create_launcher() {
     cat > "$BIN_PATH" <<INNER_EOF
 #!/bin/bash
 header() {
-    echo -e "${MAGENTA}${BOLD}"
+    clear
+    echo -e "\033[0;35m\033[1m"
     echo "    ██╗   ██╗███████╗██╗     ██╗     ████████╗ ██████╗  ██████╗ ██╗     ███████╗"
     echo "    ██║   ██║██╔════╝██║     ██║     ╚══██╔══╝██╔═══██╗██╔═══██╗██║     ██╔════╝"
     echo "    ██║   ██║█████╗  ██║     ██║        ██║   ██║   ██║██║   ██║██║     ███████╗"
     echo "    ╚██╗ ██╔╝██╔══╝  ██║     ██║        ██║   ██║   ██║██║   ██║██║     ╚════██║"
     echo "     ╚████╔╝ ███████╗███████╗███████╗   ██║   ╚██████╔╝╚██████╔╝███████╗███████║"
     echo "      ╚═══╝  ╚══════╝╚══════╝╚══════╝   ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝"
-    echo -e "${NC}"
+    echo -e "\033[0m"
+    echo -e "             \033[0;36m\033[1m◈ SYSTEM STARTUP: VELLTOOLS CORE ◈\033[0m"
+    echo -e "\033[0;35m─────────────────────────────────────────────────────────────────────────\033[0m"
 }
+
+boot_sequence() {
+    local msg=\$1
+    echo -ne "\033[0;36m[BOOT]\033[0m \$msg..."
+    sleep 0.3
+    echo -e " \033[0;32mREADY\033[0m"
+}
+
 if [ "\$#" -eq 0 ]; then
     header
+    boot_sequence "LOADING NEURAL NETWORK"
+    boot_sequence "MOUNTING LOGICAL CORES"
+    boot_sequence "CONNECTING TO GEMINI"
+    echo ""
 fi
+
 aichat --prompt "\$(cat "$PROMPT_FILE")" "\$@"
 INNER_EOF
     chmod +x "$BIN_PATH"
@@ -143,7 +161,7 @@ else
     if [ -f "$BIN_PATH" ]; then
         "$BIN_PATH" "\$@"
     else
-        echo -e "${RED}[ERROR]${NC} VELLTOOLS binary not found. Protocol failure."
+        echo -e "${RED}[ERROR]${NC} VELLTOOLS binary not found."
         return 1 2>/dev/null || exit 1
     fi
 fi
@@ -159,9 +177,16 @@ main() {
     setup_prompt
     create_launcher
 
-    echo -e "\n${GREEN}${BOLD}✔ SYSTEM INTEGRATION COMPLETE${NC}"
-    echo -e "${CYAN}▸ ACCESS COMMAND: ${BOLD}velltools${NC}"
-    echo -e "${CYAN}▸ LOCAL LAUNCHER: ${BOLD}./velltools${NC}\n"
+    echo -e "\n${MAGENTA}┌──────────────────────────────────────────────────────────┐${NC}"
+    echo -e "${MAGENTA}│${NC}  ${GREEN}${BOLD}SYSTEM INTEGRATION REPORT${NC}                          ${MAGENTA}│${NC}"
+    echo -e "${MAGENTA}├──────────────────────────────────────────────────────────┤${NC}"
+    echo -e "${MAGENTA}│${NC}  ${CYAN}Status:${NC}      ${GREEN}STABLE / OPERATIONAL${NC}                ${MAGENTA}│${NC}"
+    echo -e "${MAGENTA}│${NC}  ${CYAN}Engine:${NC}      ${YELLOW}Gemini 2.5 Flash${NC}                    ${MAGENTA}│${NC}"
+    echo -e "${MAGENTA}│${NC}  ${CYAN}Identity:${NC}    ${MAGENTA}VELLTOOLS-X${NC}                           ${MAGENTA}│${NC}"
+    echo -e "${MAGENTA}│${NC}  ${CYAN}Command:${NC}     ${BOLD}velltools${NC}                             ${MAGENTA}│${NC}"
+    echo -e "${MAGENTA}├──────────────────────────────────────────────────────────┤${NC}"
+    echo -e "${MAGENTA}│${NC}  ${BLUE}Type ${BOLD}velltools${NC}${BLUE} to initialize neural link.          ${MAGENTA}│${NC}"
+    echo -e "${MAGENTA}└──────────────────────────────────────────────────────────┘${NC}\n"
 }
 
 main
