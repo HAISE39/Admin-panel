@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ====================================================
-# VELLTOOLS INSTALLER - CYBER EDITION (v3.1)
+# VELLTOOLS INSTALLER - CYBER EDITION (v3.3)
 # ====================================================
 
 # Colors
@@ -50,7 +50,6 @@ fake_loader() {
 }
 
 header() {
-    clear
     echo -e "${MAGENTA}${BOLD}"
     echo "    ██╗   ██╗███████╗██╗     ██╗     ████████╗ ██████╗  ██████╗ ██╗     ███████╗"
     echo "    ██║   ██║██╔════╝██║     ██║     ╚══██╔══╝██╔═══██╗██╔═══██╗██║     ██╔════╝"
@@ -59,11 +58,13 @@ header() {
     echo "     ╚████╔╝ ███████╗███████╗███████╗   ██║   ╚██████╔╝╚██████╔╝███████╗███████║"
     echo "      ╚═══╝  ╚══════╝╚══════╝╚══════╝   ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝"
     echo -e "${NC}"
-    echo -e "             ${CYAN}${BOLD}◈ PROTOCOL: VELLTOOLS-X ◈${NC}"
-    echo -e "${MAGENTA}─────────────────────────────────────────────────────────────────────────${NC}"
 }
 
 install_deps() {
+    clear
+    header
+    echo -e "             ${CYAN}${BOLD}◈ PROTOCOL: VELLTOOLS-X ◈${NC}"
+    echo -e "${MAGENTA}─────────────────────────────────────────────────────────────────────────${NC}"
     fake_loader "Synchronizing system environment"
     pkg update -y &>/dev/null && pkg upgrade -y -o Dpkg::Options::="--force-confold" &>/dev/null
 
@@ -119,18 +120,36 @@ create_launcher() {
     mkdir -p "$(dirname "$BIN_PATH")"
     cat > "$BIN_PATH" <<INNER_EOF
 #!/bin/bash
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+MAGENTA='\033[0;35m'
+BOLD='\033[1m'
+NC='\033[0m'
+
 header() {
-    clear
-    echo -e "\033[0;35m\033[1m"
+    echo -e "\${MAGENTA}\${BOLD}"
     echo "    ██╗   ██╗███████╗██╗     ██╗     ████████╗ ██████╗  ██████╗ ██╗     ███████╗"
     echo "    ██║   ██║██╔════╝██║     ██║     ╚══██╔══╝██╔═══██╗██╔═══██╗██║     ██╔════╝"
     echo "    ██║   ██║█████╗  ██║     ██║        ██║   ██║   ██║██║   ██║██║     ███████╗"
     echo "    ╚██╗ ██╔╝██╔══╝  ██║     ██║        ██║   ██║   ██║██║   ██║██║     ╚════██║"
     echo "     ╚████╔╝ ███████╗███████╗███████╗   ██║   ╚██████╔╝╚██████╔╝███████╗███████║"
     echo "      ╚═══╝  ╚══════╝╚══════╝╚══════╝   ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝"
-    echo -e "\033[0m"
-    echo -e "             \033[0;36m\033[1m◈ SYSTEM STARTUP: VELLTOOLS CORE ◈\033[0m"
-    echo -e "\033[0;35m─────────────────────────────────────────────────────────────────────────\033[0m"
+    echo -e "\${NC}"
+}
+
+draw_table() {
+    echo -e "  \${MAGENTA}┌──────────────────────────────────────────────────────────┐"
+    echo -e "  │ \${CYAN}\${BOLD}SYSTEM IDENTIFICATION\${NC}                                  \${MAGENTA}│"
+    echo -e "  ├──────────────────────┬───────────────────────────────────┤"
+    echo -e "  │ \${CYAN}Property\${NC}             \${MAGENTA}│\${NC} \${CYAN}Value\${NC}                             \${MAGENTA}│"
+    echo -e "  ├──────────────────────┼───────────────────────────────────┤"
+    echo -e "  │ \${YELLOW}Neural Engine\${NC}        \${MAGENTA}│\${NC} \${GREEN}Gemini 2.5 Flash\${NC}                 \${MAGENTA}│"
+    echo -e "  │ \${YELLOW}Core Protocol\${NC}        \${MAGENTA}│\${NC} \${GREEN}v3.3-CYBER\${NC}                       \${MAGENTA}│"
+    echo -e "  │ \${YELLOW}System Status\${NC}        \${MAGENTA}│\${NC} \${GREEN}OPERATIONAL\${NC}                       \${MAGENTA}│"
+    echo -e "  └──────────────────────┴───────────────────────────────────┘\${NC}"
 }
 
 boot_sequence() {
@@ -141,15 +160,29 @@ boot_sequence() {
 }
 
 if [ "\$#" -eq 0 ]; then
+    clear
     header
-    # Audio trigger using Python as requested
+    echo -e "             \033[0;36m\033[1m◈ SYSTEM STARTUP: VELLTOOLS CORE ◈\033[0m"
+    echo -e "\033[0;35m─────────────────────────────────────────────────────────────────────────\033[0m"
+
+    # Audio trigger
     if [ -f "$AUDIO_FILE" ]; then
         python3 -c "import os; os.system('play-audio $AUDIO_FILE &>/dev/null &')"
     fi
-    boot_sequence "LOADING NEURAL NETWORK"
-    boot_sequence "MOUNTING LOGICAL CORES"
-    boot_sequence "CONNECTING TO GEMINI"
-    echo ""
+
+    boot_sequence "SYNCHRONIZING NEURAL LINK"
+    boot_sequence "INITIALIZING CYBER CORE"
+    boot_sequence "ESTABLISHING SECURE PROTOCOL"
+    sleep 0.4
+    clear
+    header
+    draw_table
+    echo -e "\n\${BLUE}◈ STARTING AI INTERFACE...\${NC}"
+
+    # Use a background process to clear the welcome message lines
+    # aichat prints 2-3 lines of welcome at the start.
+    # We wait a bit then move cursor up and clear those lines.
+    (sleep 0.5 && printf "\033[3A\033[2K\033[1A\033[2K\033[1A\033[2K") &
 fi
 
 aichat --prompt "\$(cat "$PROMPT_FILE")" "\$@"
@@ -174,7 +207,6 @@ INNER_EOF
 }
 
 main() {
-    header
     install_deps
     setup_files
     setup_config
