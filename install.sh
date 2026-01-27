@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ====================================================
-# VELLTOOLS INSTALLER - CYBER EDITION (v3.0)
+# VELLTOOLS INSTALLER - CYBER EDITION (v3.1)
 # ====================================================
 
 # Colors
@@ -23,6 +23,7 @@ PROMPT_FILE="$AICHAT_DIR/velltools.prompt"
 CONFIG_FILE="$AICHAT_DIR/config.yml"
 BIN_PATH="$PREFIX_PATH/bin/velltools"
 LAUNCHER="$HOME_PATH/velltools"
+AUDIO_FILE="$AICHAT_DIR/velltools.mp3"
 
 # Cyber Spinner - Emoji Wave
 cyber_spinner() {
@@ -64,10 +65,10 @@ header() {
 
 install_deps() {
     fake_loader "Synchronizing system environment"
-    pkg update -y &>/dev/null && pkg upgrade -y &>/dev/null
+    pkg update -y &>/dev/null && pkg upgrade -y -o Dpkg::Options::="--force-confold" &>/dev/null
 
-    fake_loader "Injecting core binaries (git, aichat, play-audio)"
-    pkg install -y git aichat play-audio &>/dev/null
+    fake_loader "Injecting core binaries (git, aichat, play-audio, python)"
+    pkg install -y git aichat play-audio python &>/dev/null
 }
 
 setup_files() {
@@ -84,7 +85,6 @@ setup_files() {
 
 setup_config() {
     fake_loader "Initializing neural configuration"
-    # Note: custom prompt in aichat config using ANSI
     cat > "$CONFIG_FILE" <<INNER_EOF
 model: gemini:gemini-2.5-flash
 prompt: "╭─[VELLTOOLS@CORE]─(%model%)\n╰─> "
@@ -142,6 +142,10 @@ boot_sequence() {
 
 if [ "\$#" -eq 0 ]; then
     header
+    # Audio trigger using Python as requested
+    if [ -f "$AUDIO_FILE" ]; then
+        python3 -c "import os; os.system('play-audio $AUDIO_FILE &>/dev/null &')"
+    fi
     boot_sequence "LOADING NEURAL NETWORK"
     boot_sequence "MOUNTING LOGICAL CORES"
     boot_sequence "CONNECTING TO GEMINI"
