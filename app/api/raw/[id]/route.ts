@@ -6,21 +6,17 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const { id } = await params;
   const ua = request.headers.get('user-agent') || '';
 
-  // LOGIC: Hanya alihkan jika terdeteksi Desktop Browser murni.
-  // Jika mengandung GameGuardian, Android, atau jika UA kosong/mobile, izinkan.
-  const isDesktop = /Windows|Macintosh|X11/i.test(ua);
-  const isGameGuardian = /GameGuardian/i.test(ua);
-  const isMobile = /Android|Dalvik|iPhone|iPad/i.test(ua);
+  // LOGIC PROTEKSI RAW:
+  // 1. Izinkan jika mengandung GameGuardian, Dalvik (Android), atau libcurl.
+  // 2. Izinkan jika User-Agent kosong (umum di GG/custom loader).
+  // 3. Blokir/Alihkan jika mengandung Mozilla, Chrome, Safari, dll (Browser Umum).
 
-  // Jika itu Desktop DAN bukan GameGuardian DAN bukan Mobile Agent, alihkan ke Home (404 stealth)
-  if (isDesktop && !isGameGuardian && !isMobile) {
+  const isAllowed = /GameGuardian|Dalvik|libcurl/i.test(ua) || ua === '';
+  const isBrowser = /Mozilla|Chrome|Safari|Firefox|Edge|Opera/i.test(ua);
+
+  // Jika terdeteksi perambah (browser) DAN bukan identitas khusus GG/Android Core, maka alihkan.
+  if (isBrowser && !isAllowed) {
     return NextResponse.redirect(new URL('/', request.url));
-  }
-
-  // Jika User Agent sangat mencurigakan sebagai Browser Desktop tapi mencoba menyamar tanpa Mobile tag
-  const isGenericBrowser = /Mozilla|Chrome|Safari|Firefox/i.test(ua);
-  if (isGenericBrowser && !isMobile && !isGameGuardian && !ua.includes('Dalvik')) {
-      return NextResponse.redirect(new URL('/', request.url));
   }
 
   const script = await getScriptById(id);
