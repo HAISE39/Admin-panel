@@ -5,10 +5,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const { id } = await params;
   const ua = request.headers.get('user-agent') || '';
 
-  // Basic browser detection
-  const isBrowser = /Mozilla|Chrome|Safari|Edge|Firefox/i.test(ua);
+  // Perketat proteksi: Izinkan GameGuardian, blokir perambah (browser)
+  const isGameGuardian = /GameGuardian/i.test(ua);
+  const isCommonBrowser = /Mozilla|Chrome|Safari|Edge|Firefox/i.test(ua);
 
-  if (isBrowser) {
+  // Jika terdeteksi browser DAN bukan GameGuardian, maka alihkan ke halaman utama
+  if (isCommonBrowser && !isGameGuardian) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
