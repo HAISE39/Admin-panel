@@ -1,17 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Home, Globe, ShoppingCart, User, Zap } from "lucide-react";
+import { createTimeline, utils } from 'animejs';
 import { cn } from "@/lib/utils";
 import HomeSection from "@/components/HomeSection";
 import WebsitesSection from "@/components/WebsitesSection";
 import StoreSection from "@/components/StoreSection";
+import MascotCharacter from "@/components/MascotCharacter";
 
 type Tab = "home" | "websites" | "store";
 
 export default function Main() {
   const [activeTab, setActiveTab] = useState<Tab>("home");
+  const [isBooted, setIsBooted] = useState(false);
+
+  useEffect(() => {
+    const tl = createTimeline({
+      defaults: {
+        ease: 'easeOutExpo',
+      },
+      onComplete: () => setIsBooted(true)
+    });
+
+    tl.add('.boot-text', {
+      opacity: [0, 1],
+      translateY: [20, 0],
+      delay: utils.stagger(100),
+      duration: 800,
+    })
+    .add('.boot-screen', {
+      opacity: [1, 0],
+      duration: 1000,
+      ease: 'easeInOutQuad',
+    }, '+=500');
+  }, []);
 
   const tabs = [
     { id: "home", label: "HOME", icon: Home },
@@ -21,7 +45,23 @@ export default function Main() {
 
   return (
     <main className="min-h-screen pb-20 pt-10 px-4 md:px-0">
-      <div className="max-w-4xl mx-auto">
+      <AnimatePresence>
+        {!isBooted && (
+          <motion.div
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black flex items-center justify-center boot-screen"
+          >
+            <div className="space-y-2 font-mono text-[10px] tracking-[0.3em] uppercase">
+              <div className="boot-text text-neon-pink">Initializing V-01 Protocol...</div>
+              <div className="boot-text text-white/50">Loading Neural Assets...</div>
+              <div className="boot-text text-neon-cyan">Access Granted.</div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <MascotCharacter />
+      <div className={cn("max-w-4xl mx-auto transition-all duration-1000", isBooted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10")}>
         {/* Header / Logo */}
         <div className="text-center mb-12 relative">
           <motion.h1
