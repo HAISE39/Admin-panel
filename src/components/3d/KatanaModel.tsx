@@ -1,44 +1,51 @@
 'use client';
 
-import React, { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { Float, Sparkles } from '@react-three/drei';
+import React, { useRef, useMemo, useState } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
+import { Float, Sparkles, Html } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface KatanaProps {
   mode: 'sheathed' | 'unsheathed' | 'disassembled';
+  pull: number;
 }
 
-export const KatanaModel: React.FC<KatanaProps> = ({ mode }) => {
+export const KatanaModel: React.FC<KatanaProps> = ({ mode, pull }) => {
   const bladeRef = useRef<THREE.Group>(null);
   const sayaRef = useRef<THREE.Group>(null);
   const tsubaRef = useRef<THREE.Group>(null);
   const tsukaRef = useRef<THREE.Group>(null);
 
-  // Target positions/rotations based on mode
-  const targets = useMemo(() => ({
-    sheathed: {
-      blade: { pos: [0, 0, 0], rot: [0, 0, 0] },
-      saya: { pos: [0, 0, 0], rot: [0, 0, 0] },
-      tsuba: { pos: [0, 0, 0], rot: [0, 0, 0] },
-      tsuka: { pos: [0, 0, 0], rot: [0, 0, 0] },
-    },
-    unsheathed: {
-      blade: { pos: [0, 0, 4], rot: [0, 0, 0.1] },
-      saya: { pos: [0, 0, -1], rot: [0, 0, 0] },
-      tsuba: { pos: [0, 0, 4], rot: [0, 0, 0.1] },
-      tsuka: { pos: [0, 0, 4], rot: [0, 0, 0.1] },
-    },
-    disassembled: {
-      blade: { pos: [1.5, 0, 0], rot: [0, 1.57, 0] },
-      saya: { pos: [-1.5, 0, 0], rot: [0, 1.57, 0] },
-      tsuba: { pos: [0, 0, 1], rot: [1.57, 0, 0] },
-      tsuka: { pos: [0, 0, 2.5], rot: [0, 1.57, 0] },
-    }
-  }), []);
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  // Target positions/rotations based on mode and pull
+  const targets = useMemo(() => {
+    const pullOffset = pull * 4.5;
+
+    return {
+      sheathed: {
+        blade: { pos: [0, 0, pullOffset], rot: [0, 0, 0] },
+        saya: { pos: [0, 0, 0], rot: [0, 0, 0] },
+        tsuba: { pos: [0, 0, pullOffset], rot: [0, 0, 0] },
+        tsuka: { pos: [0, 0, pullOffset], rot: [0, 0, 0] },
+      },
+      unsheathed: {
+        blade: { pos: [0, 0, 4.5], rot: [0, 0, 0.2] },
+        saya: { pos: [0, 0, -1.5], rot: [0, 0, 0] },
+        tsuba: { pos: [0, 0, 4.5], rot: [0, 0, 0.2] },
+        tsuka: { pos: [0, 0, 4.5], rot: [0, 0, 0.2] },
+      },
+      disassembled: {
+        blade: { pos: [1.8, 0.5, 0], rot: [0, 1.57, 0] },
+        saya: { pos: [-1.8, -0.5, 0], rot: [0, 1.57, 0] },
+        tsuba: { pos: [0, 0, 1.5], rot: [1.57, 0, 0] },
+        tsuka: { pos: [0, 0, 3], rot: [0, 1.57, 0] },
+      }
+    };
+  }, [mode, pull]);
 
   useFrame((state, delta) => {
-    const step = 5 * delta;
+    const step = 6 * delta;
     const target = targets[mode];
 
     const lerp = (ref: React.RefObject<THREE.Group | null>, t: { pos: number[], rot: number[] }) => {
@@ -57,66 +64,107 @@ export const KatanaModel: React.FC<KatanaProps> = ({ mode }) => {
 
   return (
     <group>
-      {/* GLOWING BLADE (Nagasa) */}
-      <group ref={bladeRef}>
+      {/* GLOWING BLADE (Nagasa) - Black Blade with Red Edge */}
+      <group ref={bladeRef} onPointerOver={() => setHovered('blade')} onPointerOut={() => setHovered(null)}>
         <mesh position={[0, 0, 1.5]}>
-          <boxGeometry args={[0.05, 0.4, 3]} />
+          <boxGeometry args={[0.04, 0.45, 3]} />
           <meshStandardMaterial
-            color="#ff0000"
-            emissive="#ff0000"
-            emissiveIntensity={4}
-            metalness={0.9}
+            color="#0a0a0a"
+            metalness={1}
             roughness={0.1}
           />
         </mesh>
-        <mesh position={[0, -0.15, 1.5]}>
-          <boxGeometry args={[0.01, 0.1, 3.1]} />
-          <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={2} />
+        {/* Red Heat Edge */}
+        <mesh position={[0, 0.21, 1.5]}>
+          <boxGeometry args={[0.05, 0.04, 3.05]} />
+          <meshStandardMaterial
+            color="#ff1144"
+            emissive="#ff1144"
+            emissiveIntensity={15}
+          />
         </mesh>
+        {/* White Edge Highlight */}
+        <mesh position={[0, 0.23, 1.5]}>
+          <boxGeometry args={[0.01, 0.01, 3.1]} />
+          <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={10} />
+        </mesh>
+        {hovered === 'blade' && mode !== 'sheathed' && (
+          <Html position={[0, 0.5, 1.5]} center distanceFactor={10}>
+            <div className="bg-black/90 border border-rose-500 p-2 text-[8px] whitespace-nowrap text-white font-mono uppercase tracking-widest backdrop-blur-sm shadow-[0_0_15px_rgba(225,29,72,0.5)]">
+              <p className="text-rose-500 font-black">MATERIAL: PLASMA STEEL</p>
+              <p>HARDNESS: 68 HRC</p>
+              <p>TEMP: SUPERCRITICAL</p>
+            </div>
+          </Html>
+        )}
       </group>
 
       {/* GUARD (Tsuba) */}
-      <group ref={tsubaRef}>
+      <group ref={tsubaRef} onPointerOver={() => setHovered('tsuba')} onPointerOut={() => setHovered(null)}>
         <mesh position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.35, 0.35, 0.08, 32]} />
-          <meshStandardMaterial color="#111111" metalness={1} roughness={0.2} />
+          <cylinderGeometry args={[0.4, 0.4, 0.1, 32]} />
+          <meshStandardMaterial color="#111111" metalness={1} roughness={0.1} />
         </mesh>
+        {hovered === 'tsuba' && mode === 'disassembled' && (
+          <Html position={[0, 0.5, 0]} center distanceFactor={10}>
+            <div className="bg-black/90 border border-cyan-500 p-2 text-[8px] whitespace-nowrap text-white font-mono uppercase tracking-widest backdrop-blur-sm">
+              <p className="text-cyan-500 font-black">COMPONENT: TSUBA</p>
+              <p>ALLOY: TITANIUM-G</p>
+            </div>
+          </Html>
+        )}
       </group>
 
       {/* HANDLE (Tsuka) */}
-      <group ref={tsukaRef}>
+      <group ref={tsukaRef} onPointerOver={() => setHovered('tsuka')} onPointerOut={() => setHovered(null)}>
         <mesh position={[0, 0, -0.8]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.12, 0.12, 1.5, 16]} />
-          <meshStandardMaterial color="#050505" metalness={0.5} roughness={0.8} />
+          <cylinderGeometry args={[0.15, 0.15, 1.5, 16]} />
+          <meshStandardMaterial color="#0a0a0a" metalness={0.8} roughness={0.5} />
         </mesh>
-        {[...Array(6)].map((_, i) => (
-          <mesh key={i} position={[0, 0, -0.3 - i * 0.2]} rotation={[Math.PI / 2, 0, 0]}>
-            <torusGeometry args={[0.13, 0.02, 8, 24]} />
-            <meshStandardMaterial color="#222222" />
+        {[...Array(8)].map((_, i) => (
+          <mesh key={i} position={[0, 0, -0.2 - i * 0.18]} rotation={[Math.PI / 2, 0, 0]}>
+            <torusGeometry args={[0.16, 0.03, 8, 24]} />
+            <meshStandardMaterial color="#333333" />
           </mesh>
         ))}
+        {hovered === 'tsuka' && mode === 'disassembled' && (
+          <Html position={[0, 0.5, -0.8]} center distanceFactor={10}>
+            <div className="bg-black/90 border border-yellow-500 p-2 text-[8px] whitespace-nowrap text-white font-mono uppercase tracking-widest backdrop-blur-sm">
+              <p className="text-yellow-500 font-black">GRIP: NEURAL LINKED</p>
+              <p>TEXTURE: CARBON WEAVE</p>
+            </div>
+          </Html>
+        )}
       </group>
 
       {/* SCABBARD (Saya) */}
-      <group ref={sayaRef}>
+      <group ref={sayaRef} onPointerOver={() => setHovered('saya')} onPointerOut={() => setHovered(null)}>
         <mesh position={[0, 0, 1.6]}>
-          <boxGeometry args={[0.12, 0.5, 3.2]} />
-          <meshStandardMaterial color="#0a0a0a" metalness={0.8} roughness={0.2} />
+          <boxGeometry args={[0.15, 0.55, 3.2]} />
+          <meshStandardMaterial color="#050505" metalness={1} roughness={0.05} />
         </mesh>
         <mesh position={[0, 0, 0.5]} rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[0.15, 0.03, 8, 24]} />
-          <meshStandardMaterial color="#440000" />
+          <torusGeometry args={[0.18, 0.04, 8, 24]} />
+          <meshStandardMaterial color="#660000" emissive="#660000" emissiveIntensity={2} />
         </mesh>
+        {hovered === 'saya' && mode !== 'unsheathed' && (
+          <Html position={[0, 0.7, 1.6]} center distanceFactor={10}>
+            <div className="bg-black/90 border border-white/20 p-2 text-[8px] whitespace-nowrap text-white font-mono uppercase tracking-widest backdrop-blur-sm">
+              <p className="font-black">CONTAINMENT: SAYA</p>
+              <p>COATING: ANTI-MATTER</p>
+            </div>
+          </Html>
+        )}
       </group>
 
       {/* PARTICLES */}
       {mode !== 'sheathed' && (
         <Sparkles
-          count={40}
-          scale={4}
-          size={2}
-          speed={0.4}
-          color="#ff3333"
+          count={80}
+          scale={5}
+          size={4}
+          speed={1.5}
+          color="#ff1144"
         />
       )}
     </group>

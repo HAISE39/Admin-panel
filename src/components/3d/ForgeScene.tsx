@@ -16,44 +16,74 @@ import { KatanaModel } from './KatanaModel';
 
 export const ForgeScene = () => {
   const [mode, setMode] = useState<'sheathed' | 'unsheathed' | 'disassembled'>('sheathed');
+  const [pull, setPull] = useState(0);
 
   return (
-    <div className="relative w-full h-[600px] md:h-[800px] group">
+    <div className="relative w-full h-[600px] md:h-[900px] group overflow-hidden">
       {/* UI CONTROLS OVERLAY */}
-      <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
-        <button
-          onClick={() => setMode('sheathed')}
-          className={`px-4 py-2 text-xs font-black uppercase tracking-widest border transition-all ${
-            mode === 'sheathed' ? 'bg-rose-600 border-rose-600 text-white' : 'bg-black/40 border-white/10 text-white/40 hover:text-white hover:border-white'
-          }`}
-        >
-          Sheathed
-        </button>
-        <button
-          onClick={() => setMode('unsheathed')}
-          className={`px-4 py-2 text-xs font-black uppercase tracking-widest border transition-all ${
-            mode === 'unsheathed' ? 'bg-rose-600 border-rose-600 text-white' : 'bg-black/40 border-white/10 text-white/40 hover:text-white hover:border-white'
-          }`}
-        >
-          Unsheath
-        </button>
-        <button
-          onClick={() => setMode('disassembled')}
-          className={`px-4 py-2 text-xs font-black uppercase tracking-widest border transition-all ${
-            mode === 'disassembled' ? 'bg-rose-600 border-rose-600 text-white' : 'bg-black/40 border-white/10 text-white/40 hover:text-white hover:border-white'
-          }`}
-        >
-          Disassemble
-        </button>
+      <div className="absolute top-10 left-10 z-10 flex flex-col gap-4">
+        <div className="bg-black/80 backdrop-blur-xl border border-rose-500/20 p-6 flex flex-col gap-4">
+          <h3 className="text-rose-500 font-black text-xs uppercase tracking-widest mb-2 flex items-center gap-2">
+            <span className="w-2 h-2 bg-rose-500 animate-pulse rounded-full" />
+            FORGE INTERFACE
+          </h3>
+
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={() => { setMode('sheathed'); setPull(0); }}
+              className={`px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] border transition-all ${
+                mode === 'sheathed' ? 'bg-rose-600 border-rose-600 text-white shadow-[0_0_20px_rgba(225,29,72,0.4)]' : 'bg-black border-white/10 text-white/40 hover:text-white hover:border-white'
+              }`}
+            >
+              System Locked (Sheathed)
+            </button>
+            <button
+              onClick={() => { setMode('unsheathed'); setPull(1); }}
+              className={`px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] border transition-all ${
+                mode === 'unsheathed' ? 'bg-rose-600 border-rose-600 text-white shadow-[0_0_20px_rgba(225,29,72,0.4)]' : 'bg-black border-white/10 text-white/40 hover:text-white hover:border-white'
+              }`}
+            >
+              Manual Override (Unsheath)
+            </button>
+            <button
+              onClick={() => { setMode('disassembled'); setPull(1); }}
+              className={`px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] border transition-all ${
+                mode === 'disassembled' ? 'bg-rose-600 border-rose-600 text-white shadow-[0_0_20px_rgba(225,29,72,0.4)]' : 'bg-black border-white/10 text-white/40 hover:text-white hover:border-white'
+              }`}
+            >
+              Structural Analysis
+            </button>
+          </div>
+
+          <div className="mt-4">
+            <p className="text-[9px] text-white/40 uppercase mb-2">Haptic Pull Interaction</p>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={pull}
+              onChange={(e) => {
+                const val = parseFloat(e.target.value);
+                setPull(val);
+                if (val > 0.05 && mode === 'sheathed') setMode('unsheathed');
+                if (val < 0.05 && mode === 'unsheathed') setMode('sheathed');
+              }}
+              className="w-full accent-rose-500 h-1 bg-white/10 appearance-none cursor-pointer"
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="absolute bottom-4 right-4 z-10 text-right">
-        <p className="text-[10px] text-white/20 uppercase tracking-[0.3em] font-black">
-          Cyber Forge System v1.0
-        </p>
-        <p className="text-[8px] text-rose-500/40 uppercase tracking-[0.2em]">
-          Interactive 3D Simulation
-        </p>
+      <div className="absolute bottom-10 right-10 z-10 text-right pointer-events-none">
+        <div className="flex flex-col items-end gap-1">
+          <p className="text-sm font-black text-white uppercase tracking-[0.5em] mb-2">
+            VELLIXAO PROTOCOL
+          </p>
+          <p className="text-[10px] text-rose-500/80 font-mono">STABILITY: 98.4%</p>
+          <p className="text-[10px] text-rose-500/80 font-mono">MATERIAL: CYBER-TAMAHAGANE</p>
+          <p className="text-[10px] text-rose-500/80 font-mono">CORE TEMP: 1,420°C</p>
+        </div>
       </div>
 
       <Canvas shadows dpr={[1, 2]}>
@@ -68,39 +98,47 @@ export const ForgeScene = () => {
           >
             <group position={[0, 0.5, 0]}>
               <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.5}>
-                <KatanaModel mode={mode} />
+                <KatanaModel mode={mode} pull={pull} />
               </Float>
             </group>
           </PresentationControls>
 
-          {/* LIGHTING & ENVIRONMENT */}
-          <ambientLight intensity={0.2} />
-          <pointLight position={[10, 10, 10]} intensity={1} color="#ff3333" />
-          <pointLight position={[-10, -10, -10]} intensity={0.5} color="#00ffff" />
+          {/* LIGHTING & ENVIRONMENT - BOOSTED */}
+          <ambientLight intensity={1.5} />
+          <pointLight position={[10, 10, 10]} intensity={3} color="#ffffff" />
+          <pointLight position={[-10, 5, 10]} intensity={2} color="#ff3333" />
+          <pointLight position={[0, 5, -5]} intensity={2} color="#00ffff" />
+          <spotLight
+            position={[15, 15, 5]}
+            angle={0.15}
+            penumbra={1}
+            intensity={4}
+            castShadow
+          />
 
           {/* FORGE GLOW (ANVIL AREA) */}
-          <mesh position={[0, -2.2, 0]} receiveShadow>
-            <cylinderGeometry args={[2, 2.2, 0.5, 32]} />
-            <meshStandardMaterial color="#050505" metalness={0.8} roughness={0.2} />
+          <mesh position={[0, -2.5, 0]} receiveShadow>
+            <cylinderGeometry args={[2.5, 2.8, 0.8, 32]} />
+            <meshStandardMaterial color="#080808" metalness={1} roughness={0.1} />
           </mesh>
-          <mesh position={[0, -1.9, 0]}>
-            <cylinderGeometry args={[1.8, 1.8, 0.1, 32]} />
-            <meshStandardMaterial color="#ff4400" emissive="#ff4400" emissiveIntensity={10} />
+          <mesh position={[0, -2.1, 0]}>
+            <cylinderGeometry args={[2.2, 2.2, 0.1, 32]} />
+            <meshStandardMaterial color="#ff4400" emissive="#ff4400" emissiveIntensity={15} />
           </mesh>
 
-          <pointLight position={[0, -1.5, 0]} intensity={10} color="#ff4400" distance={8} />
+          <pointLight position={[0, -1.8, 0]} intensity={15} color="#ff4400" distance={10} />
 
           {/* RISING EMBERS */}
           <Sparkles
-            count={60}
-            scale={[5, 10, 5]}
-            size={3}
-            speed={0.6}
+            count={100}
+            scale={[8, 12, 8]}
+            size={4}
+            speed={1}
             color="#ffaa00"
             position={[0, 0, 0]}
           />
 
-          <Environment preset="night" />
+          <Environment preset="studio" />
           <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
 
           <ContactShadows
