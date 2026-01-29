@@ -1,16 +1,23 @@
 import { NextResponse } from 'next/server';
-import { getScriptById } from '@/lib/db';
+import { getScriptById, initDb } from '@/lib/db';
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  await initDb();
   const { id } = await params;
   const ua = request.headers.get('user-agent') || '';
 
-  // Perketat proteksi: Izinkan GameGuardian, blokir perambah (browser)
-  const isGameGuardian = /GameGuardian/i.test(ua);
-  const isCommonBrowser = /Mozilla|Chrome|Safari|Edge|Firefox/i.test(ua);
+  // Perketat proteksi: Hanya alihkan jika terdeteksi Desktop Browser
+  // Izinkan jika mengandung GameGuardian, Android, Dalvik, atau jika UA kosong (umum di GG)
+  const isMobileOrGG = /GameGuardian|Android|Dalvik|iPhone|iPad/i.test(ua) || ua === '';
+  const isDesktopBrowser = /Windows|Macintosh|X11/i.test(ua) && /Mozilla|Chrome|Safari|Firefox/i.test(ua);
 
-  // Jika terdeteksi browser DAN bukan GameGuardian, maka alihkan ke halaman utama
-  if (isCommonBrowser && !isGameGuardian) {
+  // Alihkan hanya jika itu Desktop Browser dan tidak ada tanda-tanda GameGuardian
+  if (isDesktopBrowser && !/GameGuardian/i.test(ua)) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  // Jika User Agent mengandung perambah umum tapi bukan mobile/GG, tetap alihkan untuk keamanan
+  if (!isMobileOrGG && /Mozilla|Chrome|Safari|Edge|Firefox/i.test(ua)) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
