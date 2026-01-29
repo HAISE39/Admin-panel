@@ -9,7 +9,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const isBrowser = /Mozilla|Chrome|Safari|Edge|Firefox/i.test(ua);
 
   if (isBrowser) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   const data = readScripts();

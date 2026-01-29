@@ -84,7 +84,7 @@ export default function AdminDashboard() {
       <div className="max-w-6xl mx-auto">
         <header className="flex justify-between items-center mb-10 border-b border-zinc-800 pb-6">
           <div>
-            <h1 className="text-4xl font-bold text-blue-500 tracking-tighter">JULES-CORE</h1>
+            <h1 className="text-4xl font-bold text-blue-500 tracking-tighter">VELLIXAO</h1>
             <p className="text-zinc-500 text-xs">CLOUD SCRIPT MANAGEMENT v1.0.0</p>
           </div>
           <button

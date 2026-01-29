@@ -38,7 +38,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white p-4">
       <div className="w-full max-w-md p-8 bg-zinc-900 border border-zinc-800 rounded-lg shadow-2xl">
-        <h1 className="text-3xl font-bold mb-6 text-center text-blue-500">JULES-CORE LOGIN</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-blue-500">VELLIXAO LOGIN</h1>
         {error && <div className="bg-red-900/50 border border-red-500 text-red-200 p-3 rounded mb-4 text-sm">{error}</div>}
         <form onSubmit={handleLogin} className="space-y-4">
           <div>

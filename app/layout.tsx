@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "JULES-CORE CLOUD SCRIPTS",
+  title: "VELLIXAO CLOUD SCRIPTS",
   description: "Advanced Cloud Script Management System",
 };
 
