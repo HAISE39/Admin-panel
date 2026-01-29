@@ -8,5 +8,7 @@
 - Network:       http://192.168.0.2:3001
 
 ✓ Starting...
-✓ Ready in 1146ms
- GET / 200 in 1304ms (compile: 911ms, render: 393ms)
+⚠ Turbopack's filesystem cache has been deleted because we previously detected an internal error in Turbopack. Builds or page loads may be slower as a result.
+✓ Ready in 1568ms
+○ Compiling / ...
+ GET / 200 in 7.1s (compile: 6.4s, render: 669ms)

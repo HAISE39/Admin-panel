@@ -1,119 +1,110 @@
-import { motion } from "framer-motion";
-import { User, Cpu, Shield, Globe } from "lucide-react";
+'use client';
+
+import React, { useEffect, useRef } from 'react';
+import { createTimeline, stagger } from 'animejs';
+import { ForgeScene } from './3d/ForgeScene';
 
 export default function HomeSection() {
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
 
-  const item = {
-    hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1 }
-  };
+  useEffect(() => {
+    // Entrance Animation using Anime.js v4
+    const tl = createTimeline({
+      defaults: {
+        ease: 'outExpo',
+        duration: 1200
+      }
+    });
+
+    if (titleRef.current) {
+      tl.add(titleRef.current, {
+        translateY: [100, 0],
+        opacity: [0, 1]
+      }, 500);
+    }
+
+    if (subtitleRef.current) {
+      tl.add(subtitleRef.current, {
+        translateY: [20, 0],
+        opacity: [0, 1],
+        delay: stagger(100)
+      }, '-=800');
+    }
+  }, []);
 
   return (
-    <motion.div
-      variants={container}
-      initial="hidden"
-      animate="show"
-      className="space-y-8"
-    >
-      {/* Hero Intro */}
-      <motion.div variants={item} className="relative group">
-        <div className="absolute -inset-1 bg-gradient-to-r from-neon-pink to-neon-cyan rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-        <div className="relative glass p-8 rounded-2xl border-l-4 border-neon-pink bg-black/50">
-          <h2 className="text-3xl font-bold mb-4 flex items-center font-mono">
-            <span className="text-neon-pink mr-3">❯</span> SYSTEM.IDENTITY
-          </h2>
-          <p className="text-gray-300 leading-relaxed text-lg font-medium">
-            Greetings. I am <span className="text-white font-bold">Vellixao</span>,
-            an <span className="text-neon-cyan">AI Engineer</span> and
-            <span className="text-neon-pink">Lua specialist</span> based in the digital realm.
-            I architect high-performance Game Guardian scripts and modern web applications
-            with a focus on <span className="italic">cybernetic aesthetics</span> and seamless performance.
-          </p>
-        </div>
-      </motion.div>
-
-      {/* Grid Features */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <motion.div variants={item} className="glass p-6 rounded-2xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-20 transition-opacity">
-            <Cpu className="w-20 h-20" />
-          </div>
-          <h3 className="text-xl font-bold mb-4 text-neon-cyan uppercase tracking-wider flex items-center">
-            <Cpu className="w-5 h-5 mr-2" /> Core Expertise
-          </h3>
-          <div className="space-y-4">
-            {[
-              { label: "Lua Scripting", level: "95%" },
-              { label: "Frontend Eng.", level: "88%" },
-              { label: "Backend Architecture", level: "82%" },
-              { label: "Reverse Eng.", level: "75%" },
-            ].map((skill) => (
-              <div key={skill.label}>
-                <div className="flex justify-between text-xs font-mono mb-1">
-                  <span>{skill.label}</span>
-                  <span className="text-neon-pink">{skill.level}</span>
-                </div>
-                <div className="h-1 bg-gray-800 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: skill.level }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    className="h-full bg-gradient-to-r from-neon-pink to-neon-purple"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        <motion.div variants={item} className="glass p-6 rounded-2xl border-b-4 border-neon-cyan flex flex-col justify-between">
-          <div>
-            <h3 className="text-xl font-bold mb-4 text-neon-pink uppercase tracking-wider flex items-center">
-              <Shield className="w-5 h-5 mr-2" /> Security First
-            </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Every script and application I develop undergoes rigorous testing to ensure
-              maximum stability and <span className="text-neon-cyan">anti-detection</span> capabilities.
-              My mission is to provide premium, safe, and efficient tools for the gaming community.
-            </p>
-          </div>
-          <div className="mt-6 flex items-center space-x-4">
-            <div className="flex -space-x-2">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-8 h-8 rounded-full border-2 border-black bg-gray-800 flex items-center justify-center text-[10px] font-bold">
-                  {i}
-                </div>
-              ))}
-            </div>
-            <span className="text-[10px] text-gray-500 font-mono uppercase">Verified by 1k+ users</span>
-          </div>
-        </motion.div>
+    <div className="relative min-h-screen flex flex-col items-center pt-10 px-4 overflow-hidden">
+      {/* BACKGROUND DECO */}
+      <div className="absolute inset-0 pointer-events-none opacity-20">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.15)_0%,transparent_70%)]" />
       </div>
 
-      {/* Decorative Stats */}
-      <motion.div variants={item} className="flex justify-around py-6 glass rounded-2xl border-t border-white/5 font-mono">
-        <div className="text-center">
-          <div className="text-2xl font-bold text-neon-pink">50+</div>
-          <div className="text-[10px] text-gray-500 uppercase tracking-widest">Projects</div>
+      <div className="container mx-auto z-10 flex flex-col items-center">
+        {/* TOP TEXT CONTENT */}
+        <div className="text-center space-y-4 mb-8 max-w-4xl">
+          <div className="inline-block px-3 py-1 border border-rose-500/30 bg-rose-500/5 text-rose-500 text-[10px] uppercase tracking-[0.3em] font-black mb-2">
+            Experimental 3D Forge Environment
+          </div>
+
+          <h1
+            ref={titleRef}
+            className="text-5xl md:text-8xl font-black italic tracking-tighter leading-[0.9] text-white opacity-0"
+          >
+            THE <span className="text-rose-600 drop-shadow-[0_0_15px_rgba(225,29,72,0.5)] text-glow">BLOOD</span> <br />
+            KATANA
+          </h1>
+
+          <div ref={subtitleRef} className="space-y-4 opacity-0">
+            <p className="text-white/60 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+              Welcome to the <span className="text-rose-500 font-bold">Cyber Forge</span>.
+              Experience the fusion of traditional craftsmanship and digital security.
+              <span className="text-white"> Rotate, unsheath, and disassemble </span> the legendary blade below.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center pt-2">
+              <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white/40 border-l-2 border-rose-600 pl-3">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" /> Forge Active
+              </div>
+              <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white/40 border-l-2 border-white/20 pl-3">
+                Neural Link Established
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="text-center border-x border-white/10 px-10">
-          <div className="text-2xl font-bold text-neon-cyan">12k</div>
-          <div className="text-[10px] text-gray-500 uppercase tracking-widest">Downloads</div>
+
+        {/* INTERACTIVE 3D SCENE */}
+        <div className="w-full max-w-5xl aspect-square md:aspect-video relative rounded-3xl overflow-hidden border border-white/10 bg-black/60 backdrop-blur-2xl group shadow-2xl shadow-rose-900/10">
+          <ForgeScene />
+
+          {/* SCENE OVERLAY GRADIENTS */}
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_150px_rgba(0,0,0,0.9)]" />
+          <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-black/80 to-transparent" />
+          <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black/80 to-transparent" />
+
+          {/* UI HINT */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 pointer-events-none">
+            <div className="flex items-center gap-4 text-[8px] text-white/20 uppercase tracking-[0.5em] font-black group-hover:text-rose-500/50 transition-colors">
+              <div className="w-12 h-[1px] bg-current" />
+              DRAG TO INSPECT
+              <div className="w-12 h-[1px] bg-current" />
+            </div>
+          </div>
         </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-white">99%</div>
-          <div className="text-[10px] text-gray-500 uppercase tracking-widest">Uptime</div>
+      </div>
+
+      {/* FOOTER DECOR */}
+      <div className="mt-10 mb-6 flex flex-col items-center opacity-30">
+        <div className="w-[1px] h-12 bg-gradient-to-b from-rose-600 to-transparent mb-4" />
+        <div className="text-[10px] text-white/20 font-black tracking-[0.8em] uppercase">
+          Vellixao • Protocol • 2026
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+
+      <style jsx>{`
+        .text-glow {
+          text-shadow: 0 0 20px rgba(225, 29, 72, 0.4);
+        }
+      `}</style>
+    </div>
   );
 }
