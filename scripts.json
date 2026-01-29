@@ -1,0 +1,8 @@
+[
+  {
+    "id": "123",
+    "name": "Test Script",
+    "content": "print('Hello from GG')",
+    "createdAt": "2023-10-27T10:00:00.000Z"
+  }
+]

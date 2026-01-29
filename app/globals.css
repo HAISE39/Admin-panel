@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+}
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', sans-serif;
+}
+
+@layer utilities {
+  .cyber-border {
+    @apply border border-blue-500/30;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
+  }
+  .cyber-glow {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+}
