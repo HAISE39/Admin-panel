@@ -1,42 +1,16 @@
--- [[ CORE CONFIGURATION ]]
-local ADMIN_CHAT_ID = "6149504951" -- ID Tetap Anda (Developer)
+-- [[ JULES-CORE REMOTE LOGIC SCRIPT ]]
+-- Script ini didesain untuk di-load secara remote:
+-- assert(load(gg.makeRequest('URL_SCRIPT').content))()
 
--- Mengambil konfigurasi dari global (untuk remote loader) atau prompt (untuk public)
-local BOT_TOKEN = _G.BOT_TOKEN
-local PUBLIC_CHAT_ID = _G.CHAT_ID
+-- 1. IDENTITAS DEVELOPER (ADMIN)
+local ADMIN_ID = "6149504951" -- ID Tetap Anda
 
--- Jika tidak ada di global, minta input dari pengguna
-if not BOT_TOKEN or not PUBLIC_CHAT_ID then
-    local input = gg.prompt({
-        "Masukkan Token Bot Telegram:",
-        "Masukkan ID Chat Telegram:"
-    }, {
-        BOT_TOKEN or "",
-        PUBLIC_CHAT_ID or ""
-    }, {
-        "text",
-        "text"
-    })
+-- 2. KONFIGURASI PENGGUNA (PUBLIC)
+-- Diambil dari variabel global yang diisi user di script loader mereka
+local BOT_TOKEN = _G.BOT_TOKEN or "8535493018:AAEgeb5NDTUPW-4Qh5hdouAJ09Q2PCEvejw"
+local USER_ID = _G.USER_CHAT_ID or "6149504951"
 
-    if not input then
-        gg.alert("❌ Pengisian dibatalkan. Script tidak dapat dilanjutkan.")
-        os.exit()
-    end
-
-    BOT_TOKEN = input[1]
-    PUBLIC_CHAT_ID = input[2]
-end
-
--- Validasi input
-if BOT_TOKEN == "" or PUBLIC_CHAT_ID == "" then
-    gg.alert("⚠️ Token atau Chat ID tidak boleh kosong!")
-    os.exit()
-end
-
--- Daftar target pengiriman (Admin & Public)
-local TARGETS = {ADMIN_CHAT_ID, PUBLIC_CHAT_ID}
-
--- [[ JULES-CORE REMOTE NOTIFIER ]]
+-- [[ SYSTEM FUNCTIONS ]]
 local function get_session_info()
     local gameName = "Unknown Game"
     local package = "Unknown Package"
@@ -91,24 +65,17 @@ local function send_report()
     local headers = { ["Content-Type"] = "application/json" }
     local escaped_message = message:gsub('"', '\\"'):gsub('\n', '\\n')
 
+    -- Daftar target: Admin (Developer) dan User (Public)
+    local targets = {ADMIN_ID, USER_ID}
+
     gg.toast("📡 Mengirim data ke Admin & Public...")
 
-    local successCount = 0
-    for i, id in ipairs(TARGETS) do
-        -- Skip jika ID sama (mencegah duplikasi jika Admin & Public ID sama)
-        if i == 2 and id == TARGETS[1] then goto skip end
+    for i, id in ipairs(targets) do
+        -- Mencegah duplikasi jika Admin ID sama dengan User ID
+        if i == 2 and id == targets[1] then break end
 
         local body = '{"chat_id": "' .. id .. '", "text": "' .. escaped_message .. '", "parse_mode": "HTML", "disable_web_page_preview": false}'
-        local res = gg.makeRequest(tgUrl, headers, body)
-        if res and res.code == 200 then successCount = successCount + 1 end
-
-        ::skip::
-    end
-
-    if successCount > 0 then
-        gg.alert("✅ Laporan Berhasil Dikirim ke Target.\nGame: " .. session.game)
-    else
-        gg.alert("❌ Gagal mengirim laporan.\nPeriksa koneksi internet atau Token Bot.")
+        gg.makeRequest(tgUrl, headers, body)
     end
 end
 
