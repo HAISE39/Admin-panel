@@ -1,16 +1,6 @@
-import fs from 'fs';
-import path from 'path';
+import { neon } from '@neondatabase/serverless';
 
-/**
- * PENTING: Untuk deployment Vercel, file system bersifat read-only.
- * Sangat disarankan untuk menggunakan Vercel KV, MongoDB, atau Supabase.
- *
- * Tutorial Vercel KV: https://vercel.com/docs/storage/vercel-kv
- */
-
-const DATA_FILE = process.env.NODE_ENV === 'production'
-  ? path.join('/tmp', 'scripts.json')
-  : path.join(process.cwd(), 'scripts.json');
+const sql = neon(process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_iUr4Poatpc6z@ep-wandering-block-ahwpq5ny-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require');
 
 export interface Script {
   id: string;
@@ -19,31 +9,89 @@ export interface Script {
   createdAt: string;
 }
 
-export function readScripts(): Script[] {
+// Map database row to our Script interface
+function mapRow(row: any): Script {
+  return {
+    id: row.id.toString(),
+    name: row.name,
+    content: row.content,
+    createdAt: row.created_at.toISOString(),
+  };
+}
+
+export async function initDb() {
   try {
-    if (!fs.existsSync(DATA_FILE)) {
-      // Inisialisasi dengan data default jika file tidak ada
-      const defaultData: Script[] = [];
-      // Jika di local dan file root ada, gunakan itu
-      const localFile = path.join(process.cwd(), 'scripts.json');
-      if (fs.existsSync(localFile) && DATA_FILE !== localFile) {
-        return JSON.parse(fs.readFileSync(localFile, 'utf-8'));
-      }
-      return defaultData;
-    }
-    const content = fs.readFileSync(DATA_FILE, 'utf-8');
-    return JSON.parse(content);
+    await sql`
+      CREATE TABLE IF NOT EXISTS scripts (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+    console.log('Database initialized');
   } catch (error) {
-    console.error('Error reading scripts:', error);
+    console.error('Failed to initialize database:', error);
+  }
+}
+
+export async function getScripts(): Promise<Script[]> {
+  try {
+    const rows = await sql`SELECT * FROM scripts ORDER BY created_at DESC`;
+    return rows.map(mapRow);
+  } catch (error) {
+    console.error('Error fetching scripts:', error);
     return [];
   }
 }
 
-export function writeScripts(scripts: Script[]) {
+export async function getScriptById(id: string): Promise<Script | null> {
   try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(scripts, null, 2));
+    const rows = await sql`SELECT * FROM scripts WHERE id = ${parseInt(id)}`;
+    if (rows.length === 0) return null;
+    return mapRow(rows[0]);
   } catch (error) {
-    console.error('Error writing scripts:', error);
-    // Di Vercel ini akan gagal jika bukan di /tmp
+    console.error('Error fetching script by id:', error);
+    return null;
+  }
+}
+
+export async function createScript(name: string, content: string): Promise<Script | null> {
+  try {
+    const rows = await sql`
+      INSERT INTO scripts (name, content)
+      VALUES (${name}, ${content})
+      RETURNING *
+    `;
+    return mapRow(rows[0]);
+  } catch (error) {
+    console.error('Error creating script:', error);
+    return null;
+  }
+}
+
+export async function updateScript(id: string, name: string, content: string): Promise<Script | null> {
+  try {
+    const rows = await sql`
+      UPDATE scripts
+      SET name = ${name}, content = ${content}
+      WHERE id = ${parseInt(id)}
+      RETURNING *
+    `;
+    if (rows.length === 0) return null;
+    return mapRow(rows[0]);
+  } catch (error) {
+    console.error('Error updating script:', error);
+    return null;
+  }
+}
+
+export async function deleteScript(id: string): Promise<boolean> {
+  try {
+    const result = await sql`DELETE FROM scripts WHERE id = ${parseInt(id)}`;
+    return true; // Simple success assumption
+  } catch (error) {
+    console.error('Error deleting script:', error);
+    return false;
   }
 }

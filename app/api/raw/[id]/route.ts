@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readScripts } from '@/lib/db';
+import { getScriptById } from '@/lib/db';
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -12,8 +12,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  const data = readScripts();
-  const script = data.find((s) => s.id === id);
+  const script = await getScriptById(id);
 
   if (script) {
     return new Response(script.content, {

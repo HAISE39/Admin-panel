@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/HAISE39/Admin-panel#readme",
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^25.1.0",
     "@types/react": "^19.2.10",

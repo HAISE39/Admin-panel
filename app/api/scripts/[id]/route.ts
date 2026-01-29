@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readScripts, writeScripts } from '@/lib/db';
+import { getScriptById, updateScript, deleteScript } from '@/lib/db';
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   // Server-side auth check
@@ -8,13 +8,11 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
   const { id } = await params;
   const body = await request.json();
-  let data = readScripts();
-  const index = data.findIndex((s) => s.id === id);
 
-  if (index !== -1) {
-    data[index] = { ...data[index], ...body, id };
-    writeScripts(data);
-    return NextResponse.json(data[index]);
+  const updated = await updateScript(id, body.name, body.content);
+
+  if (updated) {
+    return NextResponse.json(updated);
   }
 
   return NextResponse.json({ message: 'Script not found' }, { status: 404 });
@@ -26,22 +24,18 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
   if (!auth) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
   const { id } = await params;
-  let data = readScripts();
-  const initialLength = data.length;
-  data = data.filter((s) => s.id !== id);
+  const success = await deleteScript(id);
 
-  if (data.length < initialLength) {
-    writeScripts(data);
+  if (success) {
     return NextResponse.json({ success: true });
   }
 
-  return NextResponse.json({ message: 'Script not found' }, { status: 404 });
+  return NextResponse.json({ message: 'Failed to delete script' }, { status: 500 });
 }
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const data = readScripts();
-  const script = data.find((s) => s.id === id);
+  const script = await getScriptById(id);
 
   if (script) {
     return NextResponse.json(script);
