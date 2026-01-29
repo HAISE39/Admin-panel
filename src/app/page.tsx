@@ -8,9 +8,10 @@ import { cn } from "@/lib/utils";
 import HomeSection from "@/components/HomeSection";
 import WebsitesSection from "@/components/WebsitesSection";
 import StoreSection from "@/components/StoreSection";
+import HangarSection from "@/components/HangarSection";
 import MascotCharacter from "@/components/MascotCharacter";
 
-type Tab = "home" | "websites" | "store";
+type Tab = "home" | "websites" | "store" | "hangar";
 
 export default function Main() {
   const [activeTab, setActiveTab] = useState<Tab>("home");
@@ -41,6 +42,7 @@ export default function Main() {
     { id: "home", label: "HOME", icon: Home },
     { id: "websites", label: "WEBSITES", icon: Globe },
     { id: "store", label: "STORE", icon: ShoppingCart },
+    { id: "hangar", label: "HANGAR", icon: Zap },
   ];
 
   return (
@@ -119,6 +121,7 @@ export default function Main() {
               {activeTab === "home" && <HomeSection />}
               {activeTab === "websites" && <WebsitesSection />}
               {activeTab === "store" && <StoreSection />}
+              {activeTab === "hangar" && <HangarSection />}
             </motion.div>
           </AnimatePresence>
         </div>

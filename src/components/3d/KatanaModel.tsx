@@ -8,9 +8,10 @@ import * as THREE from 'three';
 interface KatanaProps {
   mode: 'sheathed' | 'unsheathed' | 'disassembled';
   pull: number;
+  skillActive?: boolean;
 }
 
-export const KatanaModel: React.FC<KatanaProps> = ({ mode, pull }) => {
+export const KatanaModel: React.FC<KatanaProps> = ({ mode, pull, skillActive = false }) => {
   const bladeRef = useRef<THREE.Group>(null);
   const sayaRef = useRef<THREE.Group>(null);
   const tsubaRef = useRef<THREE.Group>(null);
@@ -157,15 +158,38 @@ export const KatanaModel: React.FC<KatanaProps> = ({ mode, pull }) => {
         )}
       </group>
 
-      {/* PARTICLES */}
+      {/* PARTICLES & AURA */}
       {mode !== 'sheathed' && (
-        <Sparkles
-          count={80}
-          scale={5}
-          size={4}
-          speed={1.5}
-          color="#ff1144"
-        />
+        <group>
+          <Sparkles
+            count={skillActive ? 300 : 80}
+            scale={skillActive ? 6 : 4}
+            size={skillActive ? 6 : 3}
+            speed={skillActive ? 3 : 1.5}
+            color="#ff1144"
+          />
+          {skillActive && (
+            <group>
+              <Sparkles
+                count={150}
+                scale={5}
+                size={8}
+                speed={4}
+                color="#ffa500"
+              />
+              <mesh scale={[0.8, 0.8, 3.5]} position={[0, 0.2, 1.5]}>
+                <boxGeometry />
+                <meshStandardMaterial
+                  color="#ff4400"
+                  transparent
+                  opacity={0.2}
+                  emissive="#ff0000"
+                  emissiveIntensity={20}
+                />
+              </mesh>
+            </group>
+          )}
+        </group>
       )}
     </group>
   );

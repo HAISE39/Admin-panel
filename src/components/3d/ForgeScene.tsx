@@ -17,6 +17,7 @@ import { KatanaModel } from './KatanaModel';
 export const ForgeScene = () => {
   const [mode, setMode] = useState<'sheathed' | 'unsheathed' | 'disassembled'>('sheathed');
   const [pull, setPull] = useState(0);
+  const [skillActive, setSkillActive] = useState(false);
 
   return (
     <div className="relative w-full h-[600px] md:h-[900px] group overflow-hidden">
@@ -52,6 +53,20 @@ export const ForgeScene = () => {
               }`}
             >
               Structural Analysis
+            </button>
+          </div>
+
+          <div className="pt-2 border-t border-white/10">
+            <button
+              onClick={() => setSkillActive(!skillActive)}
+              className={`w-full px-6 py-4 text-[11px] font-black uppercase tracking-[0.3em] border transition-all flex items-center justify-center gap-3 group/skill ${
+                skillActive
+                  ? 'bg-orange-600 border-orange-500 text-white shadow-[0_0_40px_rgba(249,115,22,0.6)] animate-pulse'
+                  : 'bg-black border-orange-500/30 text-orange-500/60 hover:text-orange-500 hover:border-orange-500 hover:bg-orange-500/5'
+              }`}
+            >
+              <div className={`w-2 h-2 rounded-full ${skillActive ? 'bg-white' : 'bg-orange-500 animate-ping'}`} />
+              {skillActive ? 'SUN BREATHING: UNLEASHED' : 'SUN BREATHING: STANDBY'}
             </button>
           </div>
 
@@ -97,8 +112,12 @@ export const ForgeScene = () => {
             azimuth={[-Math.PI / 1.4, Math.PI / 1.4]}
           >
             <group position={[0, 0.5, 0]}>
-              <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.5}>
-                <KatanaModel mode={mode} pull={pull} />
+              <Float
+                speed={skillActive ? 4 : 1.5}
+                rotationIntensity={skillActive ? 1.5 : 0.5}
+                floatIntensity={skillActive ? 2 : 0.5}
+              >
+                <KatanaModel mode={mode} pull={pull} skillActive={skillActive} />
               </Float>
             </group>
           </PresentationControls>

@@ -52,17 +52,6 @@ export default function MascotCharacter({ className = "fixed bottom-0 right-0 w-
           <div className="absolute inset-0 bg-linear-to-tr from-transparent via-orange-500/5 to-transparent opacity-50" />
         </div>
 
-        {/* Floating Tag */}
-        <motion.div
-          animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/3 -left-8 bg-black/90 border-l-4 border-orange-600 backdrop-blur-xl px-4 py-2 rounded-r-sm"
-        >
-          <div className="flex flex-col">
-            <span className="text-orange-500 font-mono text-[10px] uppercase tracking-[0.3em] font-bold">Sun Protocol</span>
-            <span className="text-white/40 font-mono text-[8px] uppercase tracking-widest">Type: Origin-00</span>
-          </div>
-        </motion.div>
       </div>
     </motion.div>
   );
