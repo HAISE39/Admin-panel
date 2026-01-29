@@ -21,17 +21,27 @@ function mapRow(row: any): Script {
 
 export async function initDb() {
   try {
+    // Gunakan BIGSERIAL untuk mendukung ID besar (seperti Date.now)
     await sql`
       CREATE TABLE IF NOT EXISTS scripts (
-        id SERIAL PRIMARY KEY,
+        id BIGSERIAL PRIMARY KEY,
         name TEXT NOT NULL,
         content TEXT NOT NULL,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
     `;
-    console.log('Database initialized');
+
+    // Migrasi jika kolom id masih INTEGER (SERIAL)
+    try {
+        await sql`ALTER TABLE scripts ALTER COLUMN id TYPE BIGINT`;
+    } catch (e) {
+        // Abaikan jika sudah BIGINT atau error lain (misal: permission)
+    }
+
+    console.log('Database initialized successfully');
   } catch (error) {
     console.error('Failed to initialize database:', error);
+    throw error; // Lempar error agar API bisa menangkapnya
   }
 }
 
@@ -46,8 +56,11 @@ export async function getScripts(): Promise<Script[]> {
 }
 
 export async function getScriptById(id: string): Promise<Script | null> {
+  const numericId = parseInt(id);
+  if (isNaN(numericId)) return null;
+
   try {
-    const rows = await sql`SELECT * FROM scripts WHERE id = ${parseInt(id)}`;
+    const rows = await sql`SELECT * FROM scripts WHERE id = ${numericId}`;
     if (rows.length === 0) return null;
     return mapRow(rows[0]);
   } catch (error) {
@@ -71,11 +84,14 @@ export async function createScript(name: string, content: string): Promise<Scrip
 }
 
 export async function updateScript(id: string, name: string, content: string): Promise<Script | null> {
+  const numericId = parseInt(id);
+  if (isNaN(numericId)) return null;
+
   try {
     const rows = await sql`
       UPDATE scripts
       SET name = ${name}, content = ${content}
-      WHERE id = ${parseInt(id)}
+      WHERE id = ${numericId}
       RETURNING *
     `;
     if (rows.length === 0) return null;
@@ -87,9 +103,12 @@ export async function updateScript(id: string, name: string, content: string): P
 }
 
 export async function deleteScript(id: string): Promise<boolean> {
+  const numericId = parseInt(id);
+  if (isNaN(numericId)) return false;
+
   try {
-    const result = await sql`DELETE FROM scripts WHERE id = ${parseInt(id)}`;
-    return true; // Simple success assumption
+    await sql`DELETE FROM scripts WHERE id = ${numericId}`;
+    return true;
   } catch (error) {
     console.error('Error deleting script:', error);
     return false;
