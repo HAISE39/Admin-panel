@@ -1,38 +1,28 @@
-# 💠 JULES-CORE PNG FUSION SYSTEM
+# 💠 JULES-CORE PNG PROTECTOR (All-In-One)
 
-Sistem ini dirancang untuk menyembunyikan script Lua di dalam file gambar PNG (Obfuscation) agar tidak mudah dibaca atau dideteksi.
+Sistem ini dirancang untuk menyembunyikan script Lua di dalam format PNG yang kemudian dibungkus menjadi **SATU script mandiri**. Tidak perlu lagi kirim 2 file (builder + loader).
 
-## 🛠️ Kenapa ada 2 Script?
+## 🚀 Cara Penggunaan (Hanya 1 Script)
 
-Sistem ini membutuhkan dua bagian untuk bekerja:
-1.  **`png_builder.lua` (Developer Tool):** Digunakan oleh ANDA untuk mengubah script Lua asli menjadi file PNG yang terenkripsi.
-2.  **`png_loader.lua` (End-User Loader):** Digunakan oleh PEMAKAI (atau anda sendiri) untuk menjalankan file PNG tersebut. Script ini bertugas mengekstrak kode rahasia dari gambar dan menjalankannya di memori.
+### Langkah 1: Jalankan Protector
+1. Buka Game Guardian dan jalankan **`JULES_PNG_PROTECTOR.lua`**.
+2. **Input:** Pilih script asli yang ingin kamu lindungi.
+3. **Output:** Masukkan nama file hasil (contoh: `Script_VIP_Selesai.lua`).
+4. **Key:** Masukkan kunci rahasia (bebas).
+5. Klik OK.
 
----
-
-## 🚀 Cara Penggunaan
-
-### Langkah 1: Proses Fusion (Enkripsi)
-1.  Buka Game Guardian dan jalankan **`png_builder.lua`**.
-2.  Masukkan path script Lua asli anda (contoh: `/sdcard/my_script.lua`).
-3.  Tentukan nama output (contoh: `Vellixao_Secret.png.lua`).
-4.  Masukkan **Cryptographic Key** (Kunci ini harus sama saat di loader nanti).
-5.  Klik OK. File baru akan tercipta.
-
-### Langkah 2: Proses Boot (Menjalankan)
-1.  Buka **`png_loader.lua`**.
-2.  Scroll ke bagian paling bawah di bagian `SETTINGS`.
-3.  Ubah `target` menjadi lokasi file PNG yang tadi dibuat.
-4.  Ubah `key` agar sesuai dengan kunci yang anda masukkan saat proses Fusion.
-5.  Jalankan **`png_loader.lua`** di Game Guardian.
-6.  Selesai! Script asli anda akan berjalan secara "gaib" dari dalam gambar.
+### Langkah 2: Distribusi
+- Kamu akan mendapatkan file baru (sesuai nama Output tadi).
+- Berikan file baru tersebut ke pembeli/user kamu.
+- User **hanya perlu menjalankan file tersebut** di Game Guardian.
+- Script akan otomatis terbuka dan berjalan tanpa perlu file tambahan.
 
 ---
 
-## 🛡️ Fitur Keamanan
-- **Rolling XOR Cipher:** Mengacak data script agar tidak bisa dibaca teks biasa.
-- **PNG Masking:** File hasil builder memiliki header PNG yang valid, sehingga terlihat seperti gambar rusak bagi hex editor biasa.
-- **Bit32 Fallback:** Tetap bekerja meskipun di versi Game Guardian lama yang tidak punya library bit32.
+## 🛡️ Kenapa Pakai Ini?
+- **Tidak Bingung:** User hanya butuh 1 file saja.
+- **Stealth:** Kode asli disembunyikan di dalam string byte yang menyerupai format gambar PNG.
+- **Secure:** Menggunakan enkripsi XOR agar script tidak bisa di-edit/intip dengan mudah.
 
 ---
 **Created by VELLIXAO | JULES-CORE AI**
