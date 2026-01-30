@@ -74,9 +74,11 @@ function boot_system(config)
 end
 
 -- [[ CONFIGURATION ]]
+-- Masukkan path file PNG hasil builder atau URL link raw
+-- Pastikan KEY sama dengan yang dimasukkan saat proses build
 local SETTINGS = {
-    target = gg.EXT_STORAGE .. "/Vellixao_Fused.png.lua", -- Path or URL
-    key = "JULES-CORE-2025" -- Must match Builder key
+    target = gg.EXT_STORAGE .. "/Vellixao_Fused.png.lua", -- Path file atau URL (http...)
+    key = "JULES-CORE-2025" -- Harus sama dengan kunci di Builder
 }
 
 if gg then

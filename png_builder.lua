@@ -64,7 +64,7 @@ function start()
     if out then
         out:write(final_package)
         out:close()
-        gg.alert("✅ FUSION COMPLETE\n\nFile: " .. out_path .. "\n\nPackage is now disguised as a PNG image. Execute using the JULES-CORE Loader.")
+        gg.alert("✅ FUSION COMPLETE\n\nFile: " .. out_path .. "\n\nPackage is now disguised as a PNG image.\n\n💡 CARA PAKAI:\n1. Gunakan png_loader.lua untuk menjalankan file ini.\n2. Pastikan KEY yang digunakan sama (" .. config[3] .. ")")
     else
         gg.alert("🚫 SYSTEM ERROR: Permission denied or invalid output path.")
     end
